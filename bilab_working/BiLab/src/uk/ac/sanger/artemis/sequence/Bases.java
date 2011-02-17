@@ -280,7 +280,7 @@ public class Bases {
 
     int array_start_size =
       (int) (range.getCount () *
-             at_content * at_content * (2-at_content) *
+             at_content * at_content * (2 - at_content) *
              query_codons.size () / 64);
 
     if (array_start_size < 20) {
@@ -479,7 +479,7 @@ public class Bases {
 
     int array_start_size =
       (int) (range.getCount () *
-             at_content * at_content * (2-at_content) * 3 / 64);
+             at_content * at_content * (2 - at_content) * 3 / 64);
 
     if (array_start_size < 20) {
       array_start_size = 20;

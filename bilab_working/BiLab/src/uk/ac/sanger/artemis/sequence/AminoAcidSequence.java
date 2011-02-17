@@ -64,8 +64,8 @@ public class AminoAcidSequence {
 
     for (int i = 0 ; i < number_of_codons * 3 ; i += 3) {
       final char aa = getCodonTranslation (bases.charAt (i),
-                                           bases.charAt (i+1),
-                                           bases.charAt (i+2));
+                                           bases.charAt (i + 1),
+                                           bases.charAt (i + 2));
       if (aa == '.' && unknown_is_x) {
         aa_buffer.append ('x');
       } else {

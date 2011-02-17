@@ -187,7 +187,7 @@ public class GCDeviationAlgorithm extends BaseAlgorithm {
     final float g_plus_c = g_count + c_count;
 
     if (g_plus_c > 0) {
-      return new Float (g_minus_c/g_plus_c);
+      return new Float (g_minus_c / g_plus_c);
     } else {
       return new Float (0.0);
     }

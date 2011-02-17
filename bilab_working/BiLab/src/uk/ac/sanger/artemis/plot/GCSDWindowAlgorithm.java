@@ -101,7 +101,7 @@ public class GCSDWindowAlgorithm extends BaseAlgorithm {
       }
     }
 
-    final float gc_content = gc_count/sequence.length () * 100;
+    final float gc_content = gc_count / sequence.length () * 100;
 
     final float gc_average =
       getStrand ().getBases ().getAverageGCPercent ();

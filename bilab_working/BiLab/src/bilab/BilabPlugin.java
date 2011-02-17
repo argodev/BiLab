@@ -201,7 +201,7 @@ Notify.debug("current section[2] URI="+store.getSectionURI(uri,2));
     
     registerViewer(new TypeSpec(molecule.class), new TypeSpec(JMolViewer.class)); // molecule viewer
 
-    registerViewer(new TypeSpec(alignment.class), new TypeSpec(JalViewAlignmentViewer.class)); // multiple alignment viewer
+    registerViewer(new TypeSpec(Alignment.class), new TypeSpec(JalViewAlignmentViewer.class)); // multiple alignment viewer
     
     registerViewer(new TypeSpec(picture.class), new TypeSpec(PictureViewer.class)); 
     registerViewer(new TypeSpec(java.net.URL.class), new TypeSpec(HTMLViewer.class)); 
@@ -253,7 +253,7 @@ Notify.debug("current section[2] URI="+store.getSectionURI(uri,2));
     // NB: register subclasses before their more generic supers
     registerResourceImporter(new TypeSpec(MoleculeImpl.class));
     registerResourceImporter(new TypeSpec(seq.class));
-    registerResourceImporter(new TypeSpec(alignment.class));
+    registerResourceImporter(new TypeSpec(Alignment.class));
     registerResourceImporter(new TypeSpec(picture.class));
     
     initializePython();

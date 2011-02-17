@@ -97,8 +97,8 @@ public class CodonUsageWeight extends CodonWeight {
 //                          strand_residue_data[synonymous_codon_index]);
 
     return
-      (data[index]/residue_data[synonymous_codon_index])/
-      (strand_data[index]/strand_residue_data[synonymous_codon_index]);
+      (data[index] / residue_data[synonymous_codon_index]) /
+      (strand_data[index] / strand_residue_data[synonymous_codon_index]);
   }
 
   /**
@@ -192,7 +192,7 @@ public class CodonUsageWeight extends CodonWeight {
 
         final int lower_index = current_index & 0x03;
 
-        final int real_index = upper_index + lower_index + i*4;
+        final int real_index = upper_index + lower_index + i * 4;
 
         if (line_data[i] < 0.01F) {
           data[real_index] = 0.01F;

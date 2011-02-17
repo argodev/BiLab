@@ -20,7 +20,7 @@ public class Emboss
   // Alignment consensus group
   
   
-  public static seq cons(alignment a)
+  public static seq cons(Alignment a)
   {
     Notify.unimplemented(Emboss.class);
     return null;

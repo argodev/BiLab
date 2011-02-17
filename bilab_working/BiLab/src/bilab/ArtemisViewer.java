@@ -1,3 +1,24 @@
+/**
+* This document is a part of the source code and related artifacts for BiLab, an open source interactive workbench for 
+* computational biologists.
+*
+* http://www.collectionspace.org
+*
+* Copyright © 2011 Oak Ridge National Laboratory
+*
+* This program is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General 
+* Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any 
+* later version.
+*
+* This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied 
+* warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more 
+* details.
+*
+* You should have received a copy of the GNU Lesser General Public License along with this program; if not, write to 
+* the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+*
+* The license is also available at: http://www.gnu.org/copyleft/lgpl.html
+*/
 package bilab;
 
 import org.eclipse.swt.*;
@@ -15,14 +36,11 @@ import uk.ac.sanger.artemis.util.*;
 import uk.ac.sanger.artemis.sequence.Bases;
 import uk.ac.sanger.artemis.sequence.NoSequenceException;
 
-
 import java.awt.BorderLayout;
 import java.awt.Frame;
 import javax.swing.*;
 
 import scigol.Debug;
-
-
 
 public class ArtemisViewer extends ViewerBase
 {
@@ -42,31 +60,24 @@ public class ArtemisViewer extends ViewerBase
     sequence = null;
   }
   
-  
   protected ArtemisPanel artemisPanel;
-  
   
   public static class ArtemisPanel extends JPanel
   {
     public ArtemisPanel()
     {
-      
     }
   }
-  
-  
   
   public Point preferedSize()
   {
     return new Point(SWT.DEFAULT,182);
-    
   }
   
   public Point maximumSize()
   {
     return new Point(SWT.MAX,SWT.MAX);
   }
-  
   
   public String get_title()
   {
@@ -79,19 +90,15 @@ public class ArtemisViewer extends ViewerBase
     if (sequence == null) return "sequence: none";
     return "molecule: "+sequence.get_DetailText();
   }
- 
   
   public final static String inlinePrefix = "sequence://";
-
  
   Composite embed, fixed;
   Frame compositeFrame;
   
-  
   public void dispose()
   {
     // TODO Auto-generated method stub
-
   }
 
   public Control getControl()
@@ -106,10 +113,8 @@ public class ArtemisViewer extends ViewerBase
 
   public void refresh()
   {
-    //setInput(mol);
     fixed.redraw();
   }
-  
 
   public void setInput(Object input)
   {
@@ -134,9 +139,7 @@ public class ArtemisViewer extends ViewerBase
     if (sequence != null) {
 
       try {
-      
         uk.ac.sanger.artemis.Entry entry = new uk.ac.sanger.artemis.Entry(bjentry);
-      
       
         // create an EntryEdit for the sequence
         final Bases bases = entry.getBases();
@@ -152,19 +155,16 @@ public class ArtemisViewer extends ViewerBase
         
         String name = entry_group.getDefaultEntry().getName();
         
-        
         Box vbox_panel = Box.createVerticalBox();
 
         Box hbox_panel = Box.createHorizontalBox();
         hbox_panel.add(vbox_panel);
-
         
         Box topvbox_panel = Box.createVerticalBox();
         topvbox_panel.add(new JLabel(name+":"));
         topvbox_panel.add(hbox_panel);
         artemisPanel.setLayout(new BorderLayout());
         artemisPanel.add(topvbox_panel, "North");
-
         
         BasePlotGroup base_plot_group = new BasePlotGroup(entry_group, artemisPanel, selection, goto_event_source);
         vbox_panel.add(base_plot_group);
@@ -188,21 +188,17 @@ public class ArtemisViewer extends ViewerBase
       } catch (NoSequenceException e) {
         sequence=null;
       }
-      
     }
     
     if (sequence == null) {
       Notify.devWarning(this,"ArtemisViewer.setInput() - seq is null");
       ; // set viewer to empty here!!!
     }
-
   }
-
   
   public void selectionChanged(IWorkbenchPart part, ISelection selection) 
   {
   }
   
   seq sequence;
-  
 }

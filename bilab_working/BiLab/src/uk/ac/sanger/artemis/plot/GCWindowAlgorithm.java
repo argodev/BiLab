@@ -80,7 +80,7 @@ public class GCWindowAlgorithm extends BaseAlgorithm {
 
 //    System.out.println ("start: " + start + " end: " + end + " returning: " + gc_count/sequence.length ()); 
 
-    values[0] = gc_count/sequence.length () * 100;
+    values[0] = gc_count / sequence.length () * 100;
   }
 
   /**

@@ -138,31 +138,31 @@ public class Codon12CorrelationAlgorithm extends BaseAlgorithm {
     
     for (int frame = 0 ; frame < 3 ; ++frame) {
       final double cor1_2_score =
-        3.0 * (1.0 * positional_base_counts[0][frame]/sub_sequence_length *
+        3.0 * (1.0 * positional_base_counts[0][frame] / sub_sequence_length *
                correlation_score_factors_1[0] +
                
-               1.0 * positional_base_counts[1][frame]/sub_sequence_length * 
+               1.0 * positional_base_counts[1][frame] / sub_sequence_length * 
                correlation_score_factors_1[1] +
                
-               1.0 * positional_base_counts[2][frame]/sub_sequence_length * 
+               1.0 * positional_base_counts[2][frame] / sub_sequence_length * 
                correlation_score_factors_1[2] +
                
-               1.0 * positional_base_counts[3][frame]/sub_sequence_length * 
+               1.0 * positional_base_counts[3][frame] / sub_sequence_length * 
                correlation_score_factors_1[3] +
                
-               1.0 * positional_base_counts[0][(frame + 1)%3]/
+               1.0 * positional_base_counts[0][(frame + 1) % 3 ] /
                sub_sequence_length * 
                correlation_score_factors_2[0] +
                
-               1.0 * positional_base_counts[1][(frame + 1)%3]/
+               1.0 * positional_base_counts[1][(frame + 1) % 3 ] /
                sub_sequence_length * 
                correlation_score_factors_2[1] +
                
-               1.0 * positional_base_counts[2][(frame + 1)%3]/
+               1.0 * positional_base_counts[2][(frame + 1) % 3 ] /
                sub_sequence_length * 
                correlation_score_factors_2[2] +
                
-               1.0 * positional_base_counts[3][(frame + 1)%3]/
+               1.0 * positional_base_counts[3][(frame + 1) % 3 ] /
                sub_sequence_length * 
                correlation_score_factors_2[3]) +
         0.5;         // add 0.5 because that is what the old uk.ac.sanger.artemis did

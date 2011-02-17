@@ -129,7 +129,7 @@ public class GCFrameAlgorithm extends BaseAlgorithm {
 
     for (int frame = 0 ; frame < 3 ; ++frame) {
       // multiply by 3 because we are taking every third base
-      values[frame] = 1.0F * gc_counts[frame]/sub_sequence_length * 3 * 100;
+      values[frame] = 1.0F * gc_counts[frame] / sub_sequence_length * 3 * 100;
     }
   }
 

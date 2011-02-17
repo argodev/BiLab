@@ -131,7 +131,7 @@ public class CoilFeatureAlgorithm extends FeatureAlgorithm {
     final float gcc = gauss (gcc_mean, gcc_sd, score);
     final float gg = gauss (gg_mean,  gg_sd,  score);
 
-    return (float) (gcc/(30.*gg+gcc));
+    return (float) (gcc / (30. * gg + gcc));
   }
   
   /**

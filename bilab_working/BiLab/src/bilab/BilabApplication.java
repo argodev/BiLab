@@ -11,31 +11,36 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 
 public class BilabApplication implements IApplication {
-	
-	public Object start(IApplicationContext context) throws Exception {
+
+	/** {@inheritDoc} */
+	public final Object start(IApplicationContext context) throws Exception {
 		Display display = PlatformUI.createDisplay();
-		
+
 		try {
 			int returnCode = PlatformUI.createAndRunWorkbench(display, new BilabWorkbenchAdvisor());
-			if (returnCode == PlatformUI.RETURN_RESTART)
+			if (returnCode == PlatformUI.RETURN_RESTART) {
 				return IApplication.EXIT_RESTART;
-			else
+			} else {
 				return IApplication.EXIT_OK;
-			
+			}
+
 		} finally {
 			display.dispose();
 		}
 	}
-	
-	public void stop() {
+
+	/** {@inheritDoc} */
+	public final void stop() {
 		final IWorkbench workbench = PlatformUI.getWorkbench();
-		if (workbench == null)
+		if (workbench == null) {
 			return;
+		}
 		final Display display = workbench.getDisplay();
 		display.syncExec(new Runnable() {
 			public void run() {
-				if (!display.isDisposed())
+				if (!display.isDisposed()) {
 					workbench.close();
+				}
 			}
 		});
 	}
