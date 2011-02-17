@@ -1,0 +1,235 @@
+LOCUS       NM_001716               2824 bp    mRNA    linear   PRI 26-OCT-2004
+DEFINITION  Homo sapiens Burkitt lymphoma receptor 1, GTP binding protein
+            (chemokine (C-X-C motif) receptor 5) (BLR1), transcript variant 1,
+            mRNA.
+ACCESSION   NM_001716
+VERSION     NM_001716.2  GI:14589867
+KEYWORDS    .
+SOURCE      Homo sapiens (human)
+  ORGANISM  Homo sapiens
+            Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi;
+            Mammalia; Eutheria; Primates; Catarrhini; Hominidae; Homo.
+REFERENCE   1  (bases 1 to 2824)
+  AUTHORS   Aust,G., Sittig,D., Becherer,L., Anderegg,U., Schutz,A., Lamesch,P.
+            and Schmucking,E.
+  TITLE     The role of CXCR5 and its ligand CXCL13 in the compartmentalization
+            of lymphocytes in thyroids affected by autoimmune thyroid diseases
+  JOURNAL   Eur. J. Endocrinol. 150 (2), 225-234 (2004)
+   PUBMED   14763921
+  REMARK    GeneRIF: CXCR5 and CXCL13 play an essential role in maintaining B-
+            and T-cells in lymphocytic infiltrates and ectopic follicles in
+            thyroid tissue from patients affected by autoimmunity.
+REFERENCE   2  (bases 1 to 2824)
+  AUTHORS   Lisignoli,G., Piacentini,A., Toneguzzi,S., Grassi,F., Tschon,M.,
+            Cristino,S., Facchini,A. and Mariani,E.
+  TITLE     Age-associated changes in functional response to CXCR3 and CXCR5
+            chemokine receptors in human osteoblasts
+  JOURNAL   Biogerontology 4 (5), 309-317 (2003)
+   PUBMED   14618028
+  REMARK    GeneRIF: Data demonstrate a significant age-dependent difference in
+            the response of osteoblasts to CXCR3 and CXCR5 activation.
+REFERENCE   3  (bases 1 to 2824)
+  AUTHORS   Battle,T.E. and Yen,A.
+  TITLE     Ectopic expression of CXCR5/BLR1 accelerates retinoic acid- and
+            vitamin D(3)-induced monocytic differentiation of U937 cells
+  JOURNAL   Exp. Biol. Med. (Maywood) 227 (9), 753-762 (2002)
+   PUBMED   12324654
+  REMARK    GeneRIF: Data show that blr1 was induced early during cell
+            differentiation and because its overexpression accelerated
+            monocytic differentiation, it may be important for signals
+            controlling cell differentiation.
+REFERENCE   4  (bases 1 to 2824)
+  AUTHORS   Kim,C.H., Johnston,B. and Butcher,E.C.
+  TITLE     Trafficking machinery of NKT cells: shared and differential
+            chemokine receptor expression among V alpha 24(+)V beta 11(+) NKT
+            cell subsets with distinct cytokine-producing capacity
+  JOURNAL   Blood 100 (1), 11-16 (2002)
+   PUBMED   12070001
+  REMARK    GeneRIF: Most Natural killer t-cells express receptors for
+            extralymphoid tissue or inflammation-related chemokines (CCR2,
+            CCR5, and CXCR3), while few NKT cells express lymphoid
+            tissue-homing chemokine receptors (CCR7 and CXCR5).
+REFERENCE   5  (bases 1 to 2824)
+  AUTHORS   Schaerli,P., Loetscher,P. and Moser,B.
+  TITLE     Cutting edge: induction of follicular homing precedes effector Th
+            cell development
+  JOURNAL   J. Immunol. 167 (11), 6082-6086 (2001)
+   PUBMED   11714765
+  REMARK    GeneRIF: CXCR5 is a common and early marker for newly generated
+            memory CD4+ T cell subsets during ongoing immune responses.
+REFERENCE   6  (bases 1 to 2824)
+  AUTHORS   Muller,G. and Lipp,M.
+  TITLE     Signal transduction by the chemokine receptor CXCR5: structural
+            requirements for G protein activation analyzed by chimeric
+            CXCR1/CXCR5 molecules
+  JOURNAL   Biol. Chem. 382 (9), 1387-1397 (2001)
+   PUBMED   11688722
+  REMARK    GeneRIF: structural requirements for the activation of signal
+            transduction pathways by CXCR5
+REFERENCE   7  (bases 1 to 2824)
+  AUTHORS   Legler,D.F., Loetscher,M., Roos,R.S., Clark-Lewis,I., Baggiolini,M.
+            and Moser,B.
+  TITLE     B cell-attracting chemokine 1, a human CXC chemokine expressed in
+            lymphoid tissues, selectively attracts B lymphocytes via BLR1/CXCR5
+  JOURNAL   J. Exp. Med. 187 (4), 655-660 (1998)
+   PUBMED   9463416
+REFERENCE   8  (bases 1 to 2824)
+  AUTHORS   Barella,L., Loetscher,M., Tobler,A., Baggiolini,M. and Moser,B.
+  TITLE     Sequence variation of a novel heptahelical leucocyte receptor
+            through alternative transcript formation
+  JOURNAL   Biochem. J. 309 (Pt 3), 773-779 (1995)
+   PUBMED   7639692
+REFERENCE   9  (bases 1 to 2824)
+  AUTHORS   Dobner,T., Wolf,I., Emrich,T. and Lipp,M.
+  TITLE     Differentiation-specific expression of a novel G protein-coupled
+            receptor from Burkitt's lymphoma
+  JOURNAL   Eur. J. Immunol. 22 (11), 2795-2799 (1992)
+   PUBMED   1425907
+COMMENT     REVIEWED REFSEQ: This record has been curated by NCBI staff. The
+            reference sequence was derived from X68149.1.
+            On Jul 3, 2001 this sequence version replaced gi:4502414.
+            
+            Summary: This gene was identified as a gene specifically expressed
+            in Burkitt's lymphoma and lymphatic tissues. The protein encoded by
+            this gene is predicted to be a seven transmembrane G protein-
+            coupled receptor and belongs to the CXC chemokine receptor family.
+            BLC, a B-lymphocyte chemoattractant, was identified to be a
+            specific ligand for this receptor. Studies of this gene and its
+            mouse conterpart strongly suggest the essential function of this
+            gene in B cell migration and localization within specific anatomic
+            compartments, such as follicles in lymph nodes as well as in
+            spleen. Two alternatively spliced variants of this gene exist.
+            
+            Transcript Variant: This variant (1) differs from variant 2 in its
+            5' region, which contains an upstream, in-frame translational
+            initiation codon. This variant thus encodes a protein that is 45 aa
+            longer at N-terminus than isoform 2.
+            COMPLETENESS: complete on the 3' end.
+FEATURES             Location/Qualifiers
+     source          1..2824
+                     /organism="Homo sapiens"
+                     /mol_type="mRNA"
+                     /db_xref="taxon:9606"
+                     /chromosome="11"
+                     /map="11q23.3"
+     gene            1..2824
+                     /gene="BLR1"
+                     /note="synonyms: CXCR5, MDR15"
+                     /db_xref="GeneID:643"
+                     /db_xref="LocusID:643"
+                     /db_xref="MIM:601613"
+     misc_feature    1..134
+                     /gene="BLR1"
+                     /note="Region: unique 5' region for transcript variant 1"
+     CDS             85..1203
+                     /gene="BLR1"
+                     /note="isoform 1 is encoded by transcript variant 1;
+                     Burkitt lymphoma receptor 1, GTP-binding protein; C-X-C
+                     chemokine receptor type 5; monocyte-derived receptor 15;
+                     go_component: integral to plasma membrane [goid 0005887]
+                     [evidence TAS] [pmid 1425907];
+                     go_function: rhodopsin-like receptor activity [goid
+                     0001584] [evidence IEA];
+                     go_function: C-X-C chemokine receptor activity [goid
+                     0016494] [evidence IEA];
+                     go_function: angiotensin type II receptor activity [goid
+                     0004945] [evidence IEA];
+                     go_process: B-cell activation [goid 0042113] [evidence
+                     IEA];
+                     go_process: cell motility [goid 0006928] [evidence TAS]
+                     [pmid 1425907];
+                     go_process: G-protein coupled receptor protein signaling
+                     pathway [goid 0007186] [evidence TAS] [pmid 1425907]"
+                     /codon_start=1
+                     /product="Burkitt lymphoma receptor 1 isoform 1"
+                     /protein_id="NP_001707.1"
+                     /db_xref="GI:4502415"
+                     /db_xref="GeneID:643"
+                     /db_xref="LocusID:643"
+                     /db_xref="MIM:601613"
+                     /translation="MNYPLTLEMDLENLEDLFWELDRLDNYNDTSLVENHLCPATEGP
+                     LMASFKAVFVPVAYSLIFLLGVIGNVLVLVILERHRQTRSSTETFLFHLAVADLLLVF
+                     ILPFAVAEGSVGWVLGTFLCKTVIALHKVNFYCSSLLLACIAVDRYLAIVHAVHAYRH
+                     RRLLSIHITCGTIWLVGFLLALPEILFAKVSQGHHNNSLPRCTFSQENQAETHAWFTS
+                     RFLYHVAGFLLPMLVMGWCYVGVVHRLRQAQRRPQRQKAVRVAILVTSIFFLCWSPYH
+                     IVIFLDTLARLKAVDNTCKLNGSLPVAITMCEFLGLAHCCLNPMLYTFAGVKFRSDLS
+                     RLLTKLGCTGPASLCQLFPSWRRSSLSESENATSLTTF"
+     misc_feature    250..312
+                     /gene="BLR1"
+                     /note="number 1; Region: predicted transmembrane region"
+     misc_feature    349..411
+                     /gene="BLR1"
+                     /note="number 2; Region: predicted transmembrane region"
+     misc_feature    457..519
+                     /gene="BLR1"
+                     /note="number 3; Region: predicted transmembrane region"
+     misc_feature    586..648
+                     /gene="BLR1"
+                     /note="number 4; Region: predicted transmembrane region"
+     misc_feature    742..804
+                     /gene="BLR1"
+                     /note="number 5; Region: predicted transmembrane region"
+     misc_feature    862..924
+                     /gene="BLR1"
+                     /note="number 6; Region: predicted transmembrane region"
+     misc_feature    997..1059
+                     /gene="BLR1"
+                     /note="number 7; Region: predicted transmembrane region"
+     polyA_signal    2697..2701
+                     /gene="BLR1"
+     polyA_signal    2778..2782
+                     /gene="BLR1"
+     polyA_site      2801
+                     /gene="BLR1"
+                     /evidence=experimental
+ORIGIN      
+        1 gctgccacct ctctagaggc acctggcggg gagcctctca acataagaca gtgaccagtc
+       61 tggtgactca cagccggcac agccatgaac tacccgctaa cgctggaaat ggacctcgag
+      121 aacctggagg acctgttctg ggaactggac agattggaca actataacga cacctccctg
+      181 gtggaaaatc atctctgccc tgccacagag gggcccctca tggcctcctt caaggccgtg
+      241 ttcgtgcccg tggcctacag cctcatcttc ctcctgggcg tgatcggcaa cgtcctggtg
+      301 ctggtgatcc tggagcggca ccggcagaca cgcagttcca cggagacctt cctgttccac
+      361 ctggccgtgg ccgacctcct gctggtcttc atcttgccct ttgccgtggc cgagggctct
+      421 gtgggctggg tcctggggac cttcctctgc aaaactgtga ttgccctgca caaagtcaac
+      481 ttctactgca gcagcctgct cctggcctgc atcgccgtgg accgctacct ggccattgtc
+      541 cacgccgtcc atgcctaccg ccaccgccgc ctcctctcca tccacatcac ctgtgggacc
+      601 atctggctgg tgggcttcct ccttgccttg ccagagattc tcttcgccaa agtcagccaa
+      661 ggccatcaca acaactccct gccacgttgc accttctccc aagagaacca agcagaaacg
+      721 catgcctggt tcacctcccg attcctctac catgtggcgg gattcctgct gcccatgctg
+      781 gtgatgggct ggtgctacgt gggggtagtg cacaggttgc gccaggccca gcggcgccct
+      841 cagcggcaga aggcagtcag ggtggccatc ctggtgacaa gcatcttctt cctctgctgg
+      901 tcaccctacc acatcgtcat cttcctggac accctggcga ggctgaaggc cgtggacaat
+      961 acctgcaagc tgaatggctc tctccccgtg gccatcacca tgtgtgagtt cctgggcctg
+     1021 gcccactgct gcctcaaccc catgctctac actttcgccg gcgtgaagtt ccgcagtgac
+     1081 ctgtcgcggc tcctgacgaa gctgggctgt accggccctg cctccctgtg ccagctcttc
+     1141 cctagctggc gcaggagcag tctctctgag tcagagaatg ccacctctct caccacgttc
+     1201 taggtcccag tgtccccttt tattgctgct tttccttggg gcaggcagtg atgctggatg
+     1261 ctccttccaa caggagctgg gatcctaagg gctcaccgtg gctaagagtg tcctaggagt
+     1321 atcctcattt ggggtagcta gaggaaccaa cccccatttc tagaacatcc ctgccagctc
+     1381 ttctgccggc cctggggcta ggctggagcc cagggagcgg aaagcagctc aaaggcacag
+     1441 tgaaggctgt ccttacccat ctgcaccccc ctgggctgag agaacctcac gcacctccca
+     1501 tcctaatcat ccaatgctca agaaacaact tctacttctg cccttgccaa cggagagcgc
+     1561 ctgcccctcc cagaacacac tccatcagct taggggctgc tgacctccac agcttcccct
+     1621 ctctcctcct gcccacctgt caaacaaagc cagaagctga gcaccagggg atgagtggag
+     1681 gttaaggctg aggaaaggcc agctggcagc agagtgtggc cttcggacaa ctcagtccct
+     1741 aaaaacacag acattctgcc aggcccccaa gcctgcagtc atcttgacca agcaggaagc
+     1801 tcagactggt tgagttcagg tagctgcccc tggctctgac cgaaacagcg ctgggtccac
+     1861 cccatgtcac cggatcctgg gtggtctgca ggcagggctg actctaggtg cccttggagg
+     1921 ccagccagtg acctgaggaa gcgtgaaggc cgagaagcaa gaaagaaacc cgacagaggg
+     1981 aagaaaagag ctttcttccc gaaccccaag gagggagatg gatcaatcaa acccggcggt
+     2041 cccctccgcc aggcgagatg gggtggggtg gagaactcct agggtggctg ggtccagggg
+     2101 atgggaggtt gtgggcattg atggggaagg aggctggctt gtcccctcct cactcccttc
+     2161 ccataagcta tagacccgag gaaactcaga gtcggaacgg agaaaggtgg actggaaggg
+     2221 gcccgtggga gtcatctcaa ccatcccctc cgtggcatca ccttaggcag ggaagtgtaa
+     2281 gaaacacact gaggcaggga agtccccagg ccccaggaag ccgtgccctg cccccgtgag
+     2341 gatgtcactc agatggaacc gcaggaagct gctccgtgct tgtttgctca cctggggtgt
+     2401 gggaggcccg tccggcagtt ctgggtgctc cctaccacct ccccagcctt tgatcaggtg
+     2461 gggagtcagg gacccctgcc cttgtcccac tcaagccaag cagccaagct ccttgggagg
+     2521 ccccactggg gaaataacag ctgtggctca cgtgagagtg tcttcacggc aggacaacga
+     2581 ggaagcccta agacgtccct tttttctctg agtatctcct cgcaagctgg gtaatcgatg
+     2641 ggggagtctg aagcagatgc aaagaggcaa gaggctggat tttgaatttt ctttttaata
+     2701 aaaaggcacc tataaaacag gtcaatacag tacaggcagc acagagaccc ccggaacaag
+     2761 cctaaaaatt gtttcaaaat aaaaaccaag aagatgtctt caaaaaaaaa aaaaaaaaaa
+     2821 aaaa
+//
+

@@ -1,0 +1,91 @@
+LOCUS       BC008182                 1474 bp   mRNA    linear   PRI 29-JUN-2004
+ACCESSION   BC008182
+VERSION     BC008182.1  GI:14198244
+DEFINITION  Homo sapiens DnaJ (Hsp40) homolog, subfamily A, member 1, mRNA (cDNA
+            clone MGC:5217 IMAGE:2900892), complete cds.
+KEYWORDS    MGC.
+SOURCE      Homo sapiens (human)
+  ORGANISM  Homo sapiens Eukaryota; Metazoa; Chordata; Craniata; Vertebrata;   
+            Euteleostomi; Mammalia; Eutheria; Primates; Catarrhini; Hominidae;
+            Homo.
+COMMENT     Contact: MGC help desk Email: cgapbs-r@mail.nih.gov Tissue         
+            Procurement: ATCC cDNA Library Preparation: Life Technologies, Inc.
+            cDNA Library Arrayed by: The I.M.A.G.E. Consortium (LLNL) DNA      
+            Sequencing by: Baylor College of Medicine Human Genome Sequencing  
+            Center Center code: BCM-HGSC Web site:                             
+            http://www.hgsc.bcm.tmc.edu/cdna/ Contact: amg@bcm.tmc.edu         
+            Gunaratne, P.H., Garcia, A.M., Lu, X., Hulyk, S.W., Loulseged, H., 
+            Kowis, C.R., Sneed, A.J., Martin, R.G., Muzny, D.M., Nanavati, A.N.,
+            Gibbs, R.A. Clone distribution: MGC clone distribution information
+            can be found through the I.M.A.G.E. Consortium/LLNL at:            
+            http://image.llnl.gov Series: IRAK Plate: 3 Row: c Column: 17 This 
+            clone was selected for full length sequencing because it passed the
+            following selection criteria: matched mRNA gi: 4504510.
+FEATURES             Location/Qualifiers
+     source          1..1474
+                     /clone="MGC:5217 IMAGE:2900892"
+                     /clone_lib="NIH_MGC_10"
+                     /db_xref="taxon:9606"
+                     /lab_host="DH10B"
+                     /mol_type="mRNA"
+                     /note="Vector: pCMV-SPORT6"
+                     /organism="Homo sapiens"
+                     /tissue_type="Placenta, choriocarcinoma"
+     gene            1..1474
+                     /db_xref="GeneID:3301"
+                     /db_xref="MIM:602837"
+                     /gene="DNAJA1"
+                     /note="synonyms: HDJ2, HSDJ, HSJ2, HSPF4"
+     CDS             105..1298
+                     /codon_start=1
+                     /db_xref="GI:14198245"
+                     /db_xref="GeneID:3301"
+                     /db_xref="MIM:602837"
+                     /gene="DNAJA1"
+                     /product="DnaJ (Hsp40) homolog, subfamily A, member 1"
+                     /protein_id="AAH08182.1"
+                     /translation="MVKETTYYDVLGVKPNATQEELKKAYRKLALKYHPDKNPNEGEKF
+                     KQISQAYEVLSDAKKRELYDKGGEQAIKEGGAGGGFGSPMDIFDMFFGGGGRMQRERRG
+                     KNVVHQLSVTLEDLYNGATRKLALQKNVICDKCEGRGGKKGAVECCPNCRGTGMQIRIH
+                     QIGPGMVQQIQSVCMECQGHGERISPKDRCKSCNGRKIVREKKILEVHIDKGMKDGQKI
+                     TFHGEGDQEPGLEPGDIIIVLDQKDHAVFTRRGEDLFMCMDIQLVEALCGFQKPISTLD
+                     NRTIVITSHPGQIVKHGDIKCVLNEGMPIYRRPYEKGRLIIEFKVNFPENGFLSPDKLS
+                     LLEKLLPERKEVEETDEMDQVELVDFDPNQERRRHYNGEAYEDDEHHPRGGVQCQTS"
+     misc_difference 194
+                     /gene="DNAJA1"
+                     /note="'C' in cDNA is 'T' in the human genome; no amino
+                     acid change. The chimpanzee genome agrees with the cDNA
+                     sequence, suggesting that this difference is unlikely to be
+                     due to an artifact."
+     misc_difference 1460..1474
+                     /gene="DNAJA1"
+                     /note="polyA tail: 15 bases do not align to the human
+                     genome."
+BASE COUNT    490 a   267 c   375 g   342 t    0 others
+ORIGIN
+        1 gctcggtgag aggcggagga gcggtaacta ccccggctgc gcacagctcg gcgctccttc     
+       61 ccgctccctc acacaccggc ctcagcccgc accggcagta gaagatggtg aaagaaacaa     
+      121 cttactacga tgttttgggg gtcaaaccca atgctactca ggaagaattg aaaaaggctt     
+      181 ataggaaact ggccttgaag taccatcctg ataagaaccc aaatgaagga gagaagttta     
+      241 aacagatttc tcaagcttac gaagttctct ctgatgcaaa gaaaagggaa ttatatgaca     
+      301 aaggaggaga acaggcaatt aaagagggtg gagcaggtgg cggttttggc tcccccatgg     
+      361 acatctttga tatgtttttt ggaggaggag gaaggatgca gagagaaagg agaggtaaaa     
+      421 atgttgtaca tcagctctca gtaaccctag aagacttata taatggtgca acaagaaaac     
+      481 tggctctgca aaagaatgtg atttgtgaca aatgtgaagg tagaggaggt aagaaaggag     
+      541 cagtagagtg ctgtcccaat tgccgaggta ctggaatgca aataagaatt catcagatag     
+      601 gacctggaat ggttcagcaa attcagtctg tgtgcatgga gtgccagggc catggggagc     
+      661 ggatcagtcc taaagataga tgtaaaagct gcaacggaag gaagatagtt cgagagaaga     
+      721 aaattttaga agttcatatt gacaaaggca tgaaagatgg ccagaagata acattccatg     
+      781 gtgaaggaga ccaagaacca ggactggagc caggcgatat tatcattgtg ttagatcaga     
+      841 aggaccatgc tgtttttact cgacgaggag aagacctttt catgtgtatg gacatacagc     
+      901 tcgttgaagc actgtgtggc ttccagaagc caatatctac tcttgacaac cgaaccatcg     
+      961 tcatcacctc tcatccaggt cagattgtca agcatggaga tatcaagtgt gtactaaatg     
+     1021 aaggcatgcc aatttatcgt agaccatatg aaaagggtcg cctaatcatc gaatttaagg     
+     1081 taaactttcc tgagaatggc tttctctctc ctgataaact gtctttgctg gaaaaactcc     
+     1141 tacccgagag gaaggaagtg gaagagactg atgagatgga ccaagtagaa ctggtggact     
+     1201 ttgatccaaa tcaggaaaga cggcgccact acaatggaga agcatatgag gatgatgaac     
+     1261 atcatcccag aggtggtgtt cagtgtcaga cctcttaatg ggccagtgaa taacactcac     
+     1321 tgctggcatt taatgtgcag tagtgaatga gtgaaggact gtaatcataa tatgctcact     
+     1381 acttgctctt gtttttgttt taataaacta tagtagtgtt ttaaaaagtt aaatgaagaa     
+     1441 taaacgcaaa tataaaagca aaaaaaaaaa aaaa                                 
+//

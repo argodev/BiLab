@@ -1,0 +1,65 @@
+LOCUS       HSA277242               1194 bp    mRNA    linear   PRI 01-JUN-2000
+DEFINITION  Homo sapiens partial mRNA for HDJ2 protein.
+ACCESSION   AJ277242
+VERSION     AJ277242.1  GI:8249463
+KEYWORDS    HDJ2 gene; HDJ2 protein; heat shock protein.
+SOURCE      Homo sapiens (human)
+  ORGANISM  Homo sapiens
+            Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi;
+            Mammalia; Eutheria; Primates; Catarrhini; Hominidae; Homo.
+REFERENCE   1
+  AUTHORS   Chen,Y., Biro,P.A. and Bottazzo,G.F.
+  TITLE     HDJ2 -one of the DnaJ like proteins, a molecular chaperone and
+            specific regulator of the heat shock protein 70 (hsp70) family, is
+            present in human testis
+  JOURNAL   Unpublished
+REFERENCE   2  (bases 1 to 1194)
+  AUTHORS   Chen,Y.L.
+  TITLE     Direct Submission
+  JOURNAL   Submitted (28-MAR-2000) Chen Y.L., Rheumatology, Royal Free
+            Hospital, Rowland Hill St, London, UNITED KINGDOM
+FEATURES             Location/Qualifiers
+     source          1..1194
+                     /organism="Homo sapiens"
+                     /mol_type="mRNA"
+                     /db_xref="taxon:9606"
+                     /tissue_type="testis"
+                     /clone_lib="lambda gt11 testis"
+     gene            1..1194
+                     /gene="HDJ2"
+     CDS             271..>1046
+                     /gene="HDJ2"
+                     /codon_start=1
+                     /evidence=experimental
+                     /product="HDJ2 protein"
+                     /protein_id="CAB93148.1"
+                     /db_xref="GI:8249464"
+                     /db_xref="GOA:Q9NXZ8"
+                     /db_xref="UniProt/TrEMBL:Q9NXZ8"
+                     /translation="MQIRIHQIGPGMVQQIQSVCMECQGHGERISPKDRCKSCNGRKI
+                     VREKKILEVHIDKGMKDGQKITFHGEGDQEPGLEPGDIIIVLDQKDHAVFTRRGEDLF
+                     MCMDIQLVEALCGFQKPISTLDNRTIVITSHPGQIVKHGDIKCVLNEGMPIYRRPYEK
+                     GRLIIEFKVNFPENGFLSPDKLSLLEKLLPERKEVEETDEMDQVELVDFDPNQERRGH
+                     YNGEAYEDDEHHPRGGVQCQTSLNGPVNNTHCWHLMCSSE"
+ORIGIN      
+        1 gggaaacagg caattaaaga gggtggagca ggtggcggtt ttggctcccc catggacatc
+       61 tttgatatgt tttttggagg aggaggaagg atgcagagag aaaggagagg taaaaatgtt
+      121 gtacatcagc tctcagtaac cctagaagac ttatataatg gtgcaacaag aaaactggct
+      181 ctgcaaaaga atgtgatttg tgacaaatgt gaaggtagag gaggtaagaa aggagcagta
+      241 gagtgctgtc ccaattgccg aggtactgga atgcaaataa gaattcatca gataggacct
+      301 ggaatggttc agcaaattca gtctgtgtgc atggagtgcc agggccatgg ggagcggatc
+      361 agtcctaaag atagatgtaa aagctgcaac ggaaggaaga tagttcgaga gaagaaaatt
+      421 ttagaagttc atattgacaa aggcatgaaa gatggccaga agataacatt ccatggtgaa
+      481 ggagaccaag aaccaggact ggagccaggc gatattatca ttgtgttaga tcagaaggac
+      541 catgctgttt ttactcgacg aggagaagac cttttcatgt gtatggacat acagctcgtt
+      601 gaagcactgt gtggcttcca gaagccaata tctactcttg acaaccgaac catcgtcatc
+      661 acctctcatc caggtcagat tgtcaagcat ggagatatca agtgtgtact aaatgaaggc
+      721 atgccaattt atcgtagacc atatgaaaag ggtcgcctaa tcatcgaatt taaggtaaac
+      781 tttcctgaga atggctttct ctctcctgat aaactgtctt tgctggaaaa actcctaccc
+      841 gagaggaagg aagtggaaga gactgatgag atggaccaag tagaactggt ggactttgat
+      901 ccaaatcagg aaagacgggg ccactacaat ggagaagcat atgaggatga tgaacatcat
+      961 cccagaggtg gtgttcagtg tcagacctct cttaatgggc cagtgaataa cactcactgc
+     1021 tggcatttaa tgtgcagtag tgaatgagtg aaggactgta atcataatat gctcactact
+     1081 tgctcttgtt tttgttttat taaactatag tagtgtttta aaaagttaaa tgaagaataa
+     1141 acgcaaatat aaaagctcaa aaaaaaaaaa ccccccttcc ccgccatttt tggg
+//

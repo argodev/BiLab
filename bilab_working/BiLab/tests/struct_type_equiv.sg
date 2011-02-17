@@ -1,0 +1,23 @@
+{
+
+  let A = class {
+    i:int;
+    r:real;
+    n:string = "class A";
+    name = func(->string) {n}
+  };
+  
+  let B = class {
+    i:int;
+    r:real;
+    n:string = "class B";
+    name = func(->string) {n}
+  };
+  
+  let b:A = B();
+  
+  logger("expect: class B \ngot: "+b.name());
+}
+
+
+

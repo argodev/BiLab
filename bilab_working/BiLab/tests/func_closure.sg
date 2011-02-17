@@ -1,0 +1,17 @@
+{ 
+  // in this example, the function returned from h() has a & b in its closure
+  let h = func(->func(->int)) {
+    let a = 2;
+    let b = 3;
+    func(->int) {a}
+  };
+  
+  let geta = h();
+  logger("expected: 2\ngot:"+geta());
+}
+
+
+
+ 
+
+

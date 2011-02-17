@@ -1,0 +1,109 @@
+LOCUS       1GP2_A                   353 aa            linear   ROD 13-NOV-1996
+DEFINITION  Chain A, G Protein Heterotrimer Gi_alpha_1 Beta_1 Gamma_2 With Gdp
+            Bound.
+ACCESSION   1GP2_A
+VERSION     1GP2_A  GI:1942397
+DBSOURCE    pdb: molecule 1GP2, chain 65, release Nov 13, 1996;
+            deposition: Nov 13, 1996;
+            class: Complex (Gtp-BindingTRANSDUCER);
+            source: Mol_id: 1; Organism_scientific: Rattus Norvegicus;
+            Organism_common: Rat; Expression_system: Escherichia Coli; Mol_id:
+            2; Organism_scientific: Bos Taurus; Organism_common: Bovine;
+            Mol_id: 3; Organism_scientific: Bos Taurus; Organism_common:
+            Bovine; Expression_system: Sf9 Cells; Expression_system_vector:
+            Baculovirus; Other_details: Bovine Beta 1 And Gamma 2 Were
+            Coexpressed In Sf9 Cells Infected With Recombinant Baculoviruses
+            And Purified As A Complex;
+            Exp. method: X-Ray Diffraction.
+KEYWORDS    .
+SOURCE      Rattus norvegicus (Norway rat)
+  ORGANISM  Rattus norvegicus
+            Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi;
+            Mammalia; Eutheria; Rodentia; Sciurognathi; Muridae; Murinae;
+            Rattus.
+REFERENCE   1  (residues 1 to 353)
+  AUTHORS   Wall,M.A., Coleman,D.E., Lee,E., Iniguez-Lluhi,J.A., Posner,B.A.,
+            Gilman,A.G. and Sprang,S.R.
+  TITLE     The structure of the G protein heterotrimer Gi alpha 1 beta 1 gamma
+            2
+  JOURNAL   Cell 83 (6), 1047-1058 (1995)
+  MEDLINE   96107343
+   PUBMED   8521505
+REFERENCE   2  (residues 1 to 353)
+  AUTHORS   Wall,M.A. and Sprang,S.R.
+  TITLE     Direct Submission
+  JOURNAL   Submitted (13-NOV-1996)
+COMMENT     Revision History:
+            FEB 12 97 Initial Entry.
+FEATURES             Location/Qualifiers
+     source          1..353
+                     /organism="Rattus norvegicus"
+                     /db_xref="taxon:10116"
+     SecStr          10..31
+                     /sec_str_type="helix"
+                     /note="helix 1"
+     Region          join(32..62,180..353)
+                     /region_name="Domain 1"
+                     /note="NCBI Domains"
+     SecStr          32..39
+                     /sec_str_type="sheet"
+                     /note="strand 1"
+     SecStr          45..55
+                     /sec_str_type="helix"
+                     /note="helix 2"
+     Region          63..179
+                     /region_name="Domain 2"
+                     /note="NCBI Domains"
+     SecStr          69..90
+                     /sec_str_type="helix"
+                     /note="helix 3"
+     SecStr          100..109
+                     /sec_str_type="helix"
+                     /note="helix 4"
+     SecStr          120..132
+                     /sec_str_type="helix"
+                     /note="helix 5"
+     SecStr          133..141
+                     /sec_str_type="helix"
+                     /note="helix 6"
+     SecStr          150..158
+                     /sec_str_type="helix"
+                     /note="helix 7"
+     SecStr          169..176
+                     /sec_str_type="helix"
+                     /note="helix 8"
+     SecStr          183..191
+                     /sec_str_type="sheet"
+                     /note="strand 2"
+     SecStr          192..200
+                     /sec_str_type="sheet"
+                     /note="strand 3"
+     SecStr          218..226
+                     /sec_str_type="sheet"
+                     /note="strand 4"
+     SecStr          241..254
+                     /sec_str_type="helix"
+                     /note="helix 9"
+     SecStr          261..269
+                     /sec_str_type="sheet"
+                     /note="strand 5"
+     SecStr          270..277
+                     /sec_str_type="helix"
+                     /note="helix 10"
+     SecStr          295..308
+                     /sec_str_type="helix"
+                     /note="helix 11"
+     SecStr          318..324
+                     /sec_str_type="sheet"
+                     /note="strand 6"
+     SecStr          328..345
+                     /sec_str_type="helix"
+                     /note="helix 12"
+ORIGIN      
+        1 gctlsaedka averskmidr nlredgekaa revkllllga gesgkstivk qmkiiheagy
+       61 seeeckqyka vvysntiqsi iaiiramgrl kidfgdaara ddarqlfvla gaaeegfmta
+      121 elagvikrlw kdsgvqacfn rsreyqlnds aayylndldr iaqpnyiptq qdvlrtrvkt
+      181 tgivethftf kdlhfkmfdv ggqrserkkw ihcfegvtai ifcvalsdyd lvlaedeemn
+      241 rmhesmklfd sicnnkwftd tsiilflnkk dlfeekikks plticypeya gsntyeeaaa
+      301 yiqcqfedln krkdtkeiyt hftcatdtkn vqfvfdavtd viiknnlkdc glf
+//
