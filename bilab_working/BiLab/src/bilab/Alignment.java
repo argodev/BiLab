@@ -2,7 +2,7 @@
 * This document is a part of the source code and related artifacts for BiLab, an open source interactive workbench for 
 * computational biologists.
 *
-* http://www.collectionspace.org
+* http://computing.ornl.gov/
 *
 * Copyright © 2011 Oak Ridge National Laboratory
 *
