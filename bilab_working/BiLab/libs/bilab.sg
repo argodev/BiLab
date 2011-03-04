@@ -25,7 +25,7 @@ namespace bilab.lib {
   @[bilab.Summary("Serine molecule")]        let Ser:molecule = MoleculeImpl.Ser;
   @[bilab.Summary("Threonine molecule")]     let Thr:molecule = MoleculeImpl.Thr;
   @[bilab.Summary("Tryptophan molecule")]    let Trp:molecule = MoleculeImpl.Trp;
-  @[bilab.Summary("Tyrosine molecule")]      let Tys:molecule = MoleculeImpl.Tyr;
+  @[bilab.Summary("Tyrosine molecule")]      let Tyr:molecule = MoleculeImpl.Tyr;
   @[bilab.Summary("Valine molecule")]        let Val:molecule = MoleculeImpl.Val;
 
   @[bilab.Summary("Water molecule")]         let water:molecule = MoleculeImpl.Water;
