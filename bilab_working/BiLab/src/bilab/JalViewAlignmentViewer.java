@@ -81,7 +81,7 @@ public class JalViewAlignmentViewer extends ViewerBase
   AlignmentPanel ap;
   ScorePanel sp;
   
-  Alignment input;
+  bilab.alignment input;
   
   
   public void dispose()
@@ -133,8 +133,8 @@ public class JalViewAlignmentViewer extends ViewerBase
   {
     if (this.input == input) return; // nothing changed
     
-    if ((input != null) && (input instanceof Alignment)) {
-      this.input = (Alignment)input;
+    if ((input != null) && (input instanceof alignment)) {
+      this.input = (alignment)input;
     }
 
     // first, remove the current viewer, if any

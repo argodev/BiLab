@@ -102,7 +102,7 @@ public class ExternalApps
   
   
   
-  public static Alignment clustalw(scigol.List sequences)
+  public static alignment clustalw(scigol.List sequences)
   {
     // check that the list contains either all DNA or all protein
     if (sequences.get_size() < 2)
@@ -169,7 +169,7 @@ public class ExternalApps
       
       
       // now read in the output file
-      Alignment aln = (Alignment)Util.readResource(outputResourceName, "CLUSTALW").value;
+      alignment aln = (alignment)Util.readResource(outputResourceName, "CLUSTALW").value;
       /*
       InputStream clustalwFile = BilabPlugin.findResourceStream(outputResourceName);
       BufferedReader clustalwFileReader = new BufferedReader(new InputStreamReader(clustalwFile));

@@ -32,9 +32,9 @@ import jalview.Sequence;
 import scigol.List;
 
 // A list of sequences with alignment information
-public class Alignment extends List implements IAnnotated, IResourceIOProvider {
+public class alignment extends List implements IAnnotated, IResourceIOProvider {
 
-  public Alignment() {
+  public alignment() {
     alignedSeqs = new Sequence[0];
     seqScores = new ScoreSequence[0];
     annotation = new scigol.Map();
@@ -106,7 +106,7 @@ public class Alignment extends List implements IAnnotated, IResourceIOProvider {
 		throw new BilabException("unsupported alignment resource type:" + resourceType);
 	}
       
-      Alignment aln = new Alignment();
+      alignment aln = new alignment();
       
       aln.alignedSeqs = FormatAdapter.read(jalViewType, inputString.toString());
       aln.seqScores = new ScoreSequence[aln.alignedSeqs.length]; 
@@ -124,7 +124,7 @@ public class Alignment extends List implements IAnnotated, IResourceIOProvider {
   }
   
   @Summary("create a resource containing data in a supported format from a seq")
-  public static void exportResource(final Alignment a, final String resourceName, final String resourceType)
+  public static void exportResource(final alignment a, final String resourceName, final String resourceType)
   {
     try {
       String jalViewType;
