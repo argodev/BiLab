@@ -156,8 +156,7 @@ public class Alignment extends List implements IAnnotated, IResourceIOProvider {
     }
   }
   
-  public final String toString()
-  {
+  public final String toString() {
     String s = "alignment(";
     for (int i = 0; i < alignedSeqs.length; i++) {
       s += alignedSeqs[i].name;
