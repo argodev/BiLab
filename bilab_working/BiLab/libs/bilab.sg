@@ -25,10 +25,23 @@ namespace bilab.lib {
   @[bilab.Summary("Serine molecule")]        let Ser:molecule = MoleculeImpl.Ser;
   @[bilab.Summary("Threonine molecule")]     let Thr:molecule = MoleculeImpl.Thr;
   @[bilab.Summary("Tryptophan molecule")]    let Trp:molecule = MoleculeImpl.Trp;
-  @[bilab.Summary("Tyrosine molecule")]      let Tys:molecule = MoleculeImpl.Tyr;
+  @[bilab.Summary("Tyrosine molecule")]      let Tyr:molecule = MoleculeImpl.Tyr;
   @[bilab.Summary("Valine molecule")]        let Val:molecule = MoleculeImpl.Val;
 
   @[bilab.Summary("Water molecule")]         let water:molecule = MoleculeImpl.Water;
+ // Add functionality of some common carbohydrates
+  @[bilab.Summary("BDGLUCOSE molecule")]     let bdglucose:molecule = MoleculeImpl.bdglucose;
+  @[bilab.Summary("BDGALACTOSE molecule")]   let bdgalactose:molecule = MoleculeImpl.bdgalactose;
+  @[bilab.Summary("BDMANNOSE molecule")]     let bdmannose:molecule = MoleculeImpl.bdmannose;
+  @[bilab.Summary("BDALLOSE molecule")]     let bdallose:molecule = MoleculeImpl.bdallose;
+  @[bilab.Summary("BDALTROSE molecule")]     let bdaltrose:molecule = MoleculeImpl.bdaltrose;
+  @[bilab.Summary("BDGULOSE molecule")]     let bdgulose:molecule = MoleculeImpl.bdgulose;
+  @[bilab.Summary("BDTALOSE molecule")]     let bdtalose:molecule = MoleculeImpl.bdtalose;
+  @[bilab.Summary("SUCROSE molecule")]       let sucrose:molecule = MoleculeImpl.sucrose;
+  @[bilab.Summary("DXYLOSE molecule")]       let dxylose:molecule = MoleculeImpl.dxylose;
+  @[bilab.Summary("LGLUCOSE molecule")]      let lglucose:molecule = MoleculeImpl.lglucose;
+  
+
 
   @[bilab.Summary("Read a resource (e.g. a file)")]
   let read = func(resourceName:string, resourceType:string = "unknown" -> any) 
