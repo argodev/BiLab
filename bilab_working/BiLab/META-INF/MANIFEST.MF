@@ -3,7 +3,6 @@ Bundle-Name: BiLab Plug-in
 Bundle-SymbolicName: bilab; singleton=true
 Bundle-Version: 0.3
 Bundle-ClassPath: bilab.jar,
- libs/Jmol.jar,
  libs/biojava-1.4pre1.jar,
  libs/bytecode-0.92.jar,
  libs/commons-cli.jar,
@@ -13,11 +12,12 @@ Bundle-ClassPath: bilab.jar,
  libs/antlr.jar,
  libs/Ice.jar,
  libs/jython/jython.jar,
- libs/jalview-1.7.5b.jar,
  libs/sqlite.jar,
  libs/jakarta-regexp-1.2.jar,
  libs/jemAlign.jar,
- libs/jobcontrol.jar
+ libs/jobcontrol.jar,
+ libs/jalview-1.7.5b.jar,
+ libs/Jmol.jar
 Bundle-Activator: bilab.BilabPlugin
 Bundle-Vendor: ORNL
 Bundle-Localization: plugin

@@ -1,17 +1,9 @@
-
 package scigol;
 
+public class ParserSharedInputStateWrapper extends antlr.ParserSharedInputState {
+    public CombinedSharedInputState state;
 
-  
-public class ParserSharedInputStateWrapper extends antlr.ParserSharedInputState
-{
-  public ParserSharedInputStateWrapper(CombinedSharedInputState istate)
-  {
-    state = istate;
-  }
-  
-  
-  public CombinedSharedInputState state;
+    public ParserSharedInputStateWrapper(final CombinedSharedInputState istate) {
+        state = istate;
+    }
 }
-
-

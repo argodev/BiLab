@@ -1,36 +1,30 @@
-
 package scigol;
 
-import java.io.*;
+import java.io.InputStream;
+import java.io.Reader;
 
-  
-public class LexerSharedInputStateWrapper extends antlr.LexerSharedInputState
-{
-  public LexerSharedInputStateWrapper(CombinedSharedInputState istate, antlr.InputBuffer inbuf) 
-  {
-    super(inbuf);
-    initialize(istate);
-  }
-  
-  public LexerSharedInputStateWrapper(CombinedSharedInputState istate, InputStream inStream)
-  {
-    super(inStream);
-    initialize(istate);
-  }
-  
-  public LexerSharedInputStateWrapper(CombinedSharedInputState istate, Reader inReader)
-  {
-    super(inReader);
-    initialize(istate);
-  }
-  
+public class LexerSharedInputStateWrapper extends antlr.LexerSharedInputState {
+    public CombinedSharedInputState state;
 
-  protected void initialize(CombinedSharedInputState istate)
-  {
-    state = istate;
-  }
-    
-  
-  public CombinedSharedInputState state;
+    public LexerSharedInputStateWrapper(final CombinedSharedInputState istate,
+            final antlr.InputBuffer inbuf) {
+        super(inbuf);
+        initialize(istate);
+    }
+
+    public LexerSharedInputStateWrapper(final CombinedSharedInputState istate,
+            final InputStream inStream) {
+        super(inStream);
+        initialize(istate);
+    }
+
+    public LexerSharedInputStateWrapper(final CombinedSharedInputState istate,
+            final Reader inReader) {
+        super(inReader);
+        initialize(istate);
+    }
+
+    protected void initialize(final CombinedSharedInputState istate) {
+        state = istate;
+    }
 }
-
