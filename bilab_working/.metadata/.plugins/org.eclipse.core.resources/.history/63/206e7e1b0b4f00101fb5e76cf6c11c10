@@ -1,5 +1,0 @@
-org.eclipse.ui/DOCK_PERSPECTIVE_BAR=right
-
-org.eclipse.ui/SHOW_TEXT_ON_PERSPECTIVE_BAR=false
-
-org.eclipse.ui/initialFastViewBarLocation=left
