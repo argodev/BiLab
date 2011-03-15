@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<checkstyle-configurations file-format-version="5.0.0" default-check-configuration="BioLab Style Rules">
+  <check-configuration name="BioLab Style Rules" location="/BiLab/eclipse_checkstyle" type="project" description="ORNL CSRG Java Rules for BioLab project">
+    <additional-data name="protect-config-file" value="false"/>
+  </check-configuration>
+</checkstyle-configurations>

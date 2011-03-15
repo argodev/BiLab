@@ -1,0 +1,36 @@
+source.bilab.jar = src/
+output.bilab.jar = bin/
+bin.includes = plugin.xml,\
+               META-INF/,\
+               bilab.jar,\
+               libs/,\
+               resources/,\
+               plugin_customization.ini,\
+               build.properties,\
+               src/etc/,\
+               src/images/,\
+               libs/jalview.jar,\
+               libs/Jmol-12.1.13.jar
+jars.extra.classpath = libs/biojava-1.4pre1.jar,\
+                       libs/bytecode-0.92.jar,\
+                       libs/commons-cli.jar,\
+                       libs/commons-collections-2.1.jar,\
+                       libs/commons-dbcp-1.1.jar,\
+                       libs/commons-pool-1.1.jar,\
+                       libs/antlr.jar,\
+                       libs/Ice.jar,\
+                       libs/Jmol-12.1.13.jar,\
+                       libs/jython/jython.jar,\
+                       libs/jalview.jar,\
+                       libs/sqlite.jar,\
+                       libs/jemAlign.jar,\
+                       libs/jobcontrol.jar
+src.includes = libs/,\
+               resources/,\
+               plugin.xml,\
+               plugin_customization.ini,\
+               build.properties,\
+               src/
+src.excludes = libs/jython/cachedir/
+bin.excludes = libs/jython/cachedir/
+

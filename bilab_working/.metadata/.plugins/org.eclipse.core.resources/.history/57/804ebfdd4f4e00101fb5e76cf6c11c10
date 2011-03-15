@@ -1,0 +1,5 @@
+package bilab;
+
+public interface IAnnotated {
+    scigol.Map get_annotations();
+}
