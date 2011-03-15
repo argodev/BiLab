@@ -1,4 +1,4 @@
-﻿/**
+/**
  * This document is a part of the source code and related artifacts for BiLab,
  * an open source interactive workbench for computational biologists.
  * 
@@ -28,6 +28,11 @@
 package bilab;
 
 public interface IAnnotated {
-    @Summary("get a map of annotation (key -> value)")
+
+    /**
+     * Get a map of annotations (key - value)
+     * @return
+     */
     scigol.Map get_annotations();
+    
 }

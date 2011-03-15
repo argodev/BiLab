@@ -1,7 +1,16 @@
 Manifest-Version: 1.0
-Bundle-Name: BiLab Plug-in
-Bundle-SymbolicName: bilab; singleton=true
-Bundle-Version: 0.3
+Bundle-ManifestVersion: 2
+Bundle-Name: BiLab Scientific Workbench
+Bundle-SymbolicName: bilab; singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: bilab.BilabPlugin
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.core.resources,
+ org.eclipse.ui,
+ org.eclipse.ui.views,
+ org.eclipse.ui.ide
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ClassPath: bilab.jar,
  libs/biojava-1.4pre1.jar,
  libs/bytecode-0.92.jar,
@@ -17,19 +26,7 @@ Bundle-ClassPath: bilab.jar,
  libs/jemAlign.jar,
  libs/jobcontrol.jar,
  libs/jalview-1.7.5b.jar,
- libs/Jmol.jar
-Bundle-Activator: bilab.BilabPlugin
-Bundle-Vendor: ORNL
-Bundle-Localization: plugin
-Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.core.resources,
- org.eclipse.ui,
- org.eclipse.ui.views,
- org.eclipse.ui.ide,
- org.eclipse.gef
-Eclipse-AutoStart: true
-Provide-Package: bilab,
- bilab.notebook,
- bilab.notebook.model,
- bilab.notebook.model.commands,
- bilab.notebook.parts
+ libs/Jmol.jar,
+ libs/org.eclipse.draw2d_3.6.2.v20110128-0100.jar,
+ libs/org.eclipse.gef_3.6.2.v20110110-2020.jar
+Eclipse-AutoStart: true 

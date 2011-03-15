@@ -48,6 +48,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.python.util.PythonInterpreter;
+import org.eclipse.jface.resource.ImageDescriptor;
 
 import scigol.CombinedSharedInputState;
 import scigol.Debug;
@@ -65,9 +66,13 @@ import antlr.TokenStreamException;
 import antlr.collections.AST;
 
 /**
- * The main plugin class to be used in the desktop.
+ * The BilabPlugin class controls the application/plug-in life cycle
  */
 public class BilabPlugin extends AbstractUIPlugin {
+
+    // The plug-in ID
+    public static final String PLUGIN_ID = "biLab"; //$NON-NLS-1$
+    
     // registry of Viewer for specific value types
     final static class RegistryPair {
         public TypeSpec valueType;
@@ -139,7 +144,7 @@ public class BilabPlugin extends AbstractUIPlugin {
     public static OutputStream createResourceStream(final String resourceName)
             throws IOException {
         // if resourceName looks like an absolute path, leave it alone.
-        // Otheriwse, prepend
+        // Otherwise, prepend
         // the workspace area
 
         String pathName = resourceName;
@@ -180,7 +185,7 @@ public class BilabPlugin extends AbstractUIPlugin {
     public static void deleteResource(final String resourceName)
             throws IOException {
         // if resourceName looks like an absolute path, leave it alone.
-        // Otheriwse, prepend
+        // Otherwise, prepend
         // the workspace area
 
         String pathName = resourceName;
@@ -322,6 +327,8 @@ public class BilabPlugin extends AbstractUIPlugin {
 
     /**
      * Returns the shared instance.
+     * 
+     * @return the shared instance
      */
     public static BilabPlugin getDefault() {
         return plugin;
@@ -444,7 +451,7 @@ public class BilabPlugin extends AbstractUIPlugin {
 
         // now, for each resource type (if any) we get the list of possible
         // importer types and try
-        // each in turn until we succefully import the resource (and return null
+        // each in turn until we successfully import the resource (and return null
         // if no importers succeed)
         Object imported = null;
 
@@ -828,6 +835,7 @@ public class BilabPlugin extends AbstractUIPlugin {
      */
     public void start(final BundleContext context) throws Exception {
         super.start(context);
+        plugin = this;
 
         // !!!!!!!!!!!!!!!!!!!
         // !!! testing area
@@ -1054,6 +1062,10 @@ public class BilabPlugin extends AbstractUIPlugin {
         super.stop(context);
         plugin = null;
         resourceBundle = null;
+    }
+    
+    public static ImageDescriptor getImageDescriptor(String path) {
+        return imageDescriptorFromPlugin(PLUGIN_ID, path);
     }
 
 }

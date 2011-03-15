@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?eclipse version="3.0"?>
+<?eclipse version="3.4"?>
 <plugin>
 	<extension
        id="bilab"
        name="Bilab"
        point="org.eclipse.core.runtime.products"> 
 		<product name="Bilab" application="bilab.BilabApplication" description="Interactive environment for bio-informatics"> 
-			<property name="windowImages" value="eclipse.gif,eclipse32.gif"/> 
-			<property name="aboutImage" value="eclipse_lg.gif"/> 
-			<property name="aboutText" value="interactive environment for bio-informatics"/> 
+			<property name="windowImages" value="icons/bilab16.png,icons/bilab32.png"/> 
+			<property name="aboutImage" value="icons/about.png"/> 
+			<property name="aboutText" value="Interactive environment for bio-informatics"/> 
 			<property name="appName" value="Bilab"/> 
 			<property name="preferenceCustomization" value="plugin_customization.ini"/> 
 		</product> 
@@ -105,5 +105,45 @@
                menubarPath="toolMenu/mainGroup"
                id="bilab.ViewAction"/>
       </actionSet>
+   </extension>
+   <extension
+         id="product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="bilab.BilabApplication"
+            name="Bialb Test">
+         <property
+               name="appName"
+               value="Bialb Test">
+         </property>
+         <property
+               name="startupForegroundColor"
+               value="000000">
+         </property>
+         <property
+               name="startupMessageRect"
+               value="7,252,445,20">
+         </property>
+         <property
+               name="startupProgressRect"
+               value="5,1000,445,15">
+         </property>
+         <property
+               name="preferenceCustomization"
+               value="plugin_customization.ini">
+         </property>
+         <property
+               name="aboutImage"
+               value="icons/about.png">
+         </property>
+         <property
+               name="aboutText"
+               value="This is sample text for the about me page. Thank you to Ganesh for all your work in making this a reality.">
+         </property>
+         <property
+               name="windowImages"
+               value="icons/bilab16.png,icons/bilab32.png,icons/bilab48.png,icons/bilab64.png,icons/bilab128.png">
+         </property>
+      </product>
    </extension>
 </plugin>

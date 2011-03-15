@@ -29,6 +29,11 @@ package bilab;
 
 public class BilabException extends RuntimeException {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
     public BilabException() {
     }
 

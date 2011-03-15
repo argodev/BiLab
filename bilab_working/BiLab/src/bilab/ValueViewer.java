@@ -1,4 +1,4 @@
-﻿/**
+/**
  * This document is a part of the source code and related artifacts for BiLab,
  * an open source interactive workbench for computational biologists.
  * 

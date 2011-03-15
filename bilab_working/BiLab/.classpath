@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry exported="true" kind="lib" path="libs/org.eclipse.draw2d_3.6.2.v20110128-0100.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/org.eclipse.gef_3.6.2.v20110110-2020.jar"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="libs/Jmol.jar"/>

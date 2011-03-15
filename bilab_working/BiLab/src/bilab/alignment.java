@@ -40,12 +40,22 @@ import java.util.LinkedList;
 
 import scigol.List;
 
-// A list of sequences with alignment information
+/**
+ * A list of sequences with alignment information
+ * @author ru7
+ *
+ */
 public class alignment extends List implements IAnnotated, IResourceIOProvider {
 
+    /**
+     * 
+     */
     @Sophistication(Sophistication.Advanced)
     public Sequence[] alignedSeqs;
 
+    /**
+     * 
+     */
     @Sophistication(Sophistication.Advanced)
     public ScoreSequence[] seqScores;
 
@@ -63,7 +73,12 @@ public class alignment extends List implements IAnnotated, IResourceIOProvider {
         supportedResourceTypes.add("PFAM");
     }
 
-    @Summary("create a resource containing data in a supported format from a seq")
+    /**
+     * Create a resource containing data in a supported format from a sequence.
+     * @param a
+     * @param resourceName
+     * @param resourceType
+     */
     public static void exportResource(final alignment a,
             final String resourceName, final String resourceType) {
         try {
@@ -102,10 +117,18 @@ public class alignment extends List implements IAnnotated, IResourceIOProvider {
         }
     }
 
+    /**
+     * @return
+     */
     public static java.util.List<String> getSupportedResourceTypes() {
         return supportedResourceTypes;
     }
 
+    /**
+     * @param resourceName
+     * @param resourceType
+     * @return
+     */
     public static Object importResource(final String resourceName,
             final String resourceType) {
         try {
