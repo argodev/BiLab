@@ -127,7 +127,9 @@ public class MoleculeImpl implements molecule, IResourceIOProvider {
     public static molecule A, C, G, T, U, Ala, Arg, Asn, Asp, Cys, Gln, Glu,
             Gly, His, Ile, Leu, Lys, Met, Phe, Pro, Ser, Thr, Trp, Tyr, Val,
 
-            Water;
+            Water, bdglucose, bdgalactose, bdmannose, sucrose, 
+            dxylose, lglucose, bdallose, bdaltrose, bdgulose,
+            bdtalose; 
 
     static {
 
@@ -159,7 +161,16 @@ public class MoleculeImpl implements molecule, IResourceIOProvider {
         Val = fromResource("val.pdb", "Valine");
 
         Water = fromResource("water.xyz", "Water");
-
+        bdglucose = fromResource("bdglucose.xyz", "BDGlucose"); 
+        bdgalactose = fromResource("bdgalactose.xyz", "BDGalactose"); 
+        bdmannose = fromResource("bdmannose.xyz", "BDMannose"); 
+        bdallose = fromResource("bdallose.xyz", "BDAllose"); 
+        bdaltrose = fromResource("bdaltrose.xyz", "BDAltrose"); 
+        bdgulose = fromResource("bdgulose.xyz", "BDGulose"); 
+        bdtalose = fromResource("bdtalose.xyz", "BDTalose"); 
+        sucrose = fromResource("sucrose.xyz", "Sucrose"); 
+        dxylose = fromResource("d-xylose.xyz", "DXylose"); 
+        lglucose = fromResource("l_glucose.xyz", "l_glucose");  
     }
 
     public MoleculeImpl(final String name) {
