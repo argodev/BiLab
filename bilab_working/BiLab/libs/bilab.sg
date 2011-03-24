@@ -37,10 +37,22 @@ namespace bilab.lib {
   @[bilab.Summary("BDALTROSE molecule")]     let bdaltrose:molecule = MoleculeImpl.bdaltrose;
   @[bilab.Summary("BDGULOSE molecule")]     let bdgulose:molecule = MoleculeImpl.bdgulose;
   @[bilab.Summary("BDTALOSE molecule")]     let bdtalose:molecule = MoleculeImpl.bdtalose;
-  @[bilab.Summary("SUCROSE molecule")]       let sucrose:molecule = MoleculeImpl.sucrose;
-  @[bilab.Summary("DXYLOSE molecule")]       let dxylose:molecule = MoleculeImpl.dxylose;
-  @[bilab.Summary("LGLUCOSE molecule")]      let lglucose:molecule = MoleculeImpl.lglucose;
+  @[bilab.Summary("SUCROSE molecule")]      let sucrose:molecule = MoleculeImpl.sucrose;
+  @[bilab.Summary("DXYLOSE molecule")]      let dxylose:molecule = MoleculeImpl.dxylose;
+  @[bilab.Summary("LGLUCOSE molecule")]     let lglucose:molecule = MoleculeImpl.lglucose;
+  @[bilab.Summary("TREHALOSE molecule")]    let trehalose:molecule = MoleculeImpl.trehalose;
+  @[bilab.Summary("CELLOBIOSE molecule")]    let cellobiose:molecule = MoleculeImpl.cellobiose;
   
+ // Add functionality of some common lipids  
+  
+  @[bilab.Summary("CHOLESTROL molecule")]    let cholestrol:molecule = MoleculeImpl.cholestrol;
+  @[bilab.Summary("Dipalmitoylphosphatidylcholine molecule")]   let dppc:molecule = MoleculeImpl.dppc;
+  @[bilab.Summary("Dilauroylphosphatidylethanolamine molecule")]   let dlpe:molecule = MoleculeImpl.dlpe;
+  @[bilab.Summary("1,2-dimyristoyl-sn-glycero-3-phospho-rac-1-glycerol molecule")]  let dmpg:molecule = MoleculeImpl.dmpg;
+  @[bilab.Summary("Arachidonic_acid molecule")]  let arachidonic:molecule = MoleculeImpl.arachidonic;
+  @[bilab.Summary("Linoleic_fatty_acid molecule")]  let linoleic:molecule = MoleculeImpl.linoleic;
+  @[bilab.Summary("Oleic_fatty_acid molecule")]  let oleic:molecule = MoleculeImpl.oleic;
+
 
 
   @[bilab.Summary("Read a resource (e.g. a file)")]

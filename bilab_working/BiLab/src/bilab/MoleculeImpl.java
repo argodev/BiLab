@@ -129,7 +129,8 @@ public class MoleculeImpl implements molecule, IResourceIOProvider {
 
             Water, bdglucose, bdgalactose, bdmannose, sucrose, 
             dxylose, lglucose, bdallose, bdaltrose, bdgulose,
-            bdtalose; 
+            bdtalose, trehalose, cellobiose, cholestrol, dppc,
+            dlpe, dmpg, pdmpg, arachidonic, linoleic, oleic; 
 
     static {
 
@@ -171,6 +172,16 @@ public class MoleculeImpl implements molecule, IResourceIOProvider {
         sucrose = fromResource("sucrose.xyz", "Sucrose"); 
         dxylose = fromResource("d-xylose.xyz", "DXylose"); 
         lglucose = fromResource("l_glucose.xyz", "l_glucose");  
+        trehalose = fromResource("trehalose.xyz", "trehalose");  
+        cellobiose = fromResource("cellobiose.xyz", "cellobiose");  
+        cholestrol = fromResource("cholestrol.xyz", "cholestrol");  
+        dppc = fromResource("dppc.xyz", "dppc");  
+        dlpe = fromResource("dlpe.xyz", "dlpe");  
+        dmpg = fromResource("dmpg.xyz", "dmpg");  
+        pdmpg = fromResource("pdmpg.xyz", "pdmpg");  
+        arachidonic = fromResource("arachidonic.xyz", "arachidonic");  
+        linoleic = fromResource("linoleic.xyz", "linoleic");  
+        oleic = fromResource("oleic.xyz", "oleic");  
     }
 
     public MoleculeImpl(final String name) {
