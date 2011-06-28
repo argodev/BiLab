@@ -27,8 +27,21 @@ namespace bilab.lib {
   @[bilab.Summary("Tryptophan molecule")]    let Trp:molecule = MoleculeImpl.Trp;
   @[bilab.Summary("Tyrosine molecule")]      let Tyr:molecule = MoleculeImpl.Tyr;
   @[bilab.Summary("Valine molecule")]        let Val:molecule = MoleculeImpl.Val;
+  
+ @[bilab.Summary("GLUCOSE molecule")]        let GLUCOSE:molecule = MoleculeImpl.GLUCOSE;
+ @[bilab.Summary("GALACTOSE molecule")]      let GALACTOSE:molecule = MoleculeImpl.GALACTOSE;
+ @[bilab.Summary("AdenosineMonoPhosphate molecule")]  let AMP:molecule = MoleculeImpl.AMP;
+ @[bilab.Summary("AdenosineTriPhosphate molecule")]  let ATP:molecule = MoleculeImpl.ATP;
+ @[bilab.Summary("GuanosineTriPhosphate molecule")]  let GTP:molecule = MoleculeImpl.GTP;
+ @[bilab.Summary("DNA molecule")]  let DNA_HELIX:molecule = MoleculeImpl.DNA_HELIX;
 
-  @[bilab.Summary("Water molecule")]         let water:molecule = MoleculeImpl.Water;
+//Photosynthesis compounds 
+ @[bilab.Summary("Beta-Carotene molecule")]  let carotene:molecule = MoleculeImpl.carotene;
+ @[bilab.Summary("Chlorophyll molecule")]  let chlorophyll:molecule = MoleculeImpl.chlorophyll;
+ @[bilab.Summary("Cytochrome molecule")]  let cytochrome:molecule = MoleculeImpl.cytochrome;
+ @[bilab.Summary("Quinone molecule")]  let quinone:molecule = MoleculeImpl.quinone;
+
+ @[bilab.Summary("Water molecule")]         let water:molecule = MoleculeImpl.Water;
  // Add functionality of some common carbohydrates
   @[bilab.Summary("BDGLUCOSE molecule")]     let bdglucose:molecule = MoleculeImpl.bdglucose;
   @[bilab.Summary("BDGALACTOSE molecule")]   let bdgalactose:molecule = MoleculeImpl.bdgalactose;
@@ -325,8 +338,9 @@ namespace bilab.lib {
 
 
   // some useful common constants
-
+  @[bilab.Summary("Pi value")]
   let pi = 3.1415926535897932384626433832795; 
+  @[bilab.Summary("Euler Number")]
   let e  = 2.71828182845904523536028747135266249;
   @[bilab.Summary("Avogadros number")]
   let Na = 6.0221415e23;   // Avogadros no.
@@ -334,8 +348,13 @@ namespace bilab.lib {
   let mu = 1.66053886e-27; // unified atomic mass 
   @[bilab.Summary("Boltzmann constant")]
   let k  = 1.3806505e-23;  // Boltzmann
-  @[bilab.Summary("electron mass")]
+  @[bilab.Summary("electron mass in kg units")]
   let me = 9.1093826e-31;  // electron mass
+  @[bilab.Summary("Planck's constant in m2 kg sec-1")]
+  let h = 6.626e-34;  // Planck's constant in m2 kg sec-1
+  @[bilab.Summary("Universal Gas Constant kcal mol-1 K")]
+  let R = 1.987e-3;  // Universal Gas Constant kcal mol-1 K
+
   //let C = 299792458;       // Einstein's constant
 
 

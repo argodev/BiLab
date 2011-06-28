@@ -14,11 +14,11 @@
                   read("sequences/CXCR1_RAT.gb"), read("sequences/BLR1_HUMAN.gb") );
                   
   // pre-computed alignment of the seqs above
-  let cxcraln:alignment = read("sequences/cxcr_multi_seq.msf");
+  //let cxcraln:alignment = read("sequences/cxcr_multi_seq.msf");
   
-  let cxr1:protein = cxcrseqs(1).transcription.translation;
-  let cxr2:protein = cxcrseqs(2).transcription.translation;
-  let cxrl = (cxr1,cxr2);
+  //let cxr1:protein = cxcrseqs(1).transcription.translation;
+  //let cxr2:protein = cxcrseqs(2).transcription.translation;
+  //let cxrl = (cxr1,cxr2);
   
   let gilist = ("14198244","23612083","2804157","15084307");
   // pre-load these elements in-case there is no network

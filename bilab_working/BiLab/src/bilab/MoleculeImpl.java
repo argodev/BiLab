@@ -130,7 +130,9 @@ public class MoleculeImpl implements molecule, IResourceIOProvider {
             Water, bdglucose, bdgalactose, bdmannose, sucrose, 
             dxylose, lglucose, bdallose, bdaltrose, bdgulose,
             bdtalose, trehalose, cellobiose, cholestrol, dppc,
-            dlpe, dmpg, pdmpg, arachidonic, linoleic, oleic; 
+            dlpe, dmpg, pdmpg, arachidonic, linoleic, oleic, GLUCOSE, 
+            GALACTOSE, AMP, ATP, GTP, DNA_HELIX, carotene, cytochrome,
+            chlorophyll, quinone ; 
 
     static {
 
@@ -161,7 +163,18 @@ public class MoleculeImpl implements molecule, IResourceIOProvider {
         Tyr = fromResource("tyr.pdb", "Tyrosine");
         Val = fromResource("val.pdb", "Valine");
 
-        Water = fromResource("water.xyz", "Water");
+        GLUCOSE = fromResource("GLUCOSE.pdb", "GLUCOSE");
+        GALACTOSE = fromResource("GALACTOSE.pdb", "GALACTOSE");
+        AMP = fromResource("amp.pdb", "AMP");
+        ATP = fromResource("atp.pdb", "ATP");
+        GTP = fromResource("gtp.pdb", "GTP");
+        DNA_HELIX = fromResource("dna.pdb", "DNA");
+        carotene = fromResource("carotene.pdb", "carotene");
+        chlorophyll = fromResource("chlorophyll.pdb", "chlorophyll");
+        quinone = fromResource("quinone.pdb", "quinone");
+        cytochrome = fromResource("cytochrome.pdb", "cytochrome");
+        
+	Water = fromResource("water.xyz", "Water");
         bdglucose = fromResource("bdglucose.xyz", "BDGlucose"); 
         bdgalactose = fromResource("bdgalactose.xyz", "BDGalactose"); 
         bdmannose = fromResource("bdmannose.xyz", "BDMannose"); 

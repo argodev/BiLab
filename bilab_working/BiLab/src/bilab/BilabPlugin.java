@@ -1,29 +1,29 @@
 /**
- * This document is a part of the source code and related artifacts for BiLab,
- * an open source interactive workbench for computational biologists.
- * 
- * http://computing.ornl.gov/
- * 
- * Copyright © 2011 Oak Ridge National Laboratory
- * 
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- * 
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
+* This document is a part of the source code and related artifacts for BiLab,
+* an open source interactive workbench for computational biologists.
+*
+* http://computing.ornl.gov/
+*
+* Copyright © 2011 Oak Ridge National Laboratory
+*
+* Permission is hereby granted, free of charge, to any person obtaining a copy
+* of this software and associated documentation files (the "Software"), to deal
+* in the Software without restriction, including without limitation the rights
+* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+* copies of the Software, and to permit persons to whom the Software is
+* furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included in
+* all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+* SOFTWARE.
+*/
 
 package bilab;
 
@@ -66,8 +66,8 @@ import antlr.TokenStreamException;
 import antlr.collections.AST;
 
 /**
- * The BilabPlugin class controls the application/plug-in life cycle
- */
+* The BilabPlugin class controls the application/plug-in life cycle
+*/
 public class BilabPlugin extends AbstractUIPlugin {
 
     // The plug-in ID
@@ -326,10 +326,10 @@ public class BilabPlugin extends AbstractUIPlugin {
     }
 
     /**
-     * Returns the shared instance.
-     * 
-     * @return the shared instance
-     */
+* Returns the shared instance.
+*
+* @return the shared instance
+*/
     public static BilabPlugin getDefault() {
         return plugin;
     }
@@ -376,9 +376,9 @@ public class BilabPlugin extends AbstractUIPlugin {
     }
 
     /**
-     * Returns the string from the plugin's resource bundle, or 'key' if not
-     * found.
-     */
+* Returns the string from the plugin's resource bundle, or 'key' if not
+* found.
+*/
     public static String getResourceString(final String key) {
         final ResourceBundle bundle = BilabPlugin.getDefault()
                 .getResourceBundle();
@@ -663,7 +663,7 @@ public class BilabPlugin extends AbstractUIPlugin {
         }
         if (!existsResourceType(resourceTypeName)) { // new type
 
-            Notify.logInfo(BilabPlugin.class, "  registering "
+            Notify.logInfo(BilabPlugin.class, " registering "
                     + resourceTypeName + ": " + description);
 
             rtinfo = new ResourceTypeInfo(resourceTypeName, description, exts);
@@ -775,8 +775,8 @@ public class BilabPlugin extends AbstractUIPlugin {
     protected NamespaceScope globalScope;
 
     /**
-     * The constructor.
-     */
+* The constructor.
+*/
     public BilabPlugin() {
         super();
         plugin = this;
@@ -788,8 +788,8 @@ public class BilabPlugin extends AbstractUIPlugin {
     }
 
     /**
-     * Returns the plugin's resource bundle,
-     */
+* Returns the plugin's resource bundle,
+*/
     public ResourceBundle getResourceBundle() {
         try {
             if (resourceBundle == null) {
@@ -805,7 +805,7 @@ public class BilabPlugin extends AbstractUIPlugin {
     protected void initializePython() {
         try {
             Notify.devInfo(this, "Instantiating Python interpreter [Jython]");
-            final String pythonHome = resourceURLToFilename(findResource("libs/jython"));
+            final String pythonHome = resourceURLToFilename(findResource("libs/jython2.5.2"));
             final Properties pythonProps = new Properties();
             pythonProps.setProperty("python.home", pythonHome);
             pythonProps.setProperty("python.path", pythonHome);
@@ -831,8 +831,8 @@ public class BilabPlugin extends AbstractUIPlugin {
     }
 
     /**
-     * This method is called upon plug-in activation
-     */
+* This method is called upon plug-in activation
+*/
     public void start(final BundleContext context) throws Exception {
         super.start(context);
         plugin = this;
@@ -840,67 +840,67 @@ public class BilabPlugin extends AbstractUIPlugin {
         // !!!!!!!!!!!!!!!!!!!
         // !!! testing area
         /*
-         * try {
-         * 
-         * // JalView Frame f = new Frame("SeqPanel");
-         * 
-         * Sequence[] seq = FormatAdapter.read(
-         * "U:\\dev\\GTL\\win\\BiLabRCP\\BiLab\\resources\\sequences\\cxcr_multi_seq.msf"
-         * ,"File","MSF"); ScoreSequence[] s = new ScoreSequence[seq.length];
-         * for (int i=0;i < seq.length;i++) { s[i] = new ScoreSequence(seq[i]);
-         * } DrawableSequence[] s1 = new DrawableSequence[seq.length]; for (int
-         * i=0;i < seq.length;i++) { s1[i] = new DrawableSequence(seq[i]); }
-         * 
-         * AlignmentPanel ap = new AlignmentPanel(null,s1); ScorePanel sp = new
-         * ScorePanel(null,s); //ap.setScorePanel(sp); f.setLayout(new
-         * BorderLayout()); f.add("Center",ap); f.add("South",sp);
-         * f.resize(700,500); //f.pack(); f.show(); //!!! JalView
-         * 
-         * 
-         * 
-         * 
-         * //String[] args = new String[] {
-         * "U:\\dev\\GTL\\win\\BiLabRCP\\BiLab\\resources\\molecules\\AF084455.embl"
-         * }; //uk.ac.sanger.artemis.components.ArtemisMain.main(new String[0]);
-         * 
-         * } catch (Exception e) {
-         * Notify.devWarning(this,"exception in Artemis:"+e);
-         * e.printStackTrace(); //Debug.WL(""+e); }
-         * 
-         * //SQLiteTest.test();
-         */
+* try {
+*
+* // JalView Frame f = new Frame("SeqPanel");
+*
+* Sequence[] seq = FormatAdapter.read(
+* "U:\\dev\\GTL\\win\\BiLabRCP\\BiLab\\resources\\sequences\\cxcr_multi_seq.msf"
+* ,"File","MSF"); ScoreSequence[] s = new ScoreSequence[seq.length];
+* for (int i=0;i < seq.length;i++) { s[i] = new ScoreSequence(seq[i]);
+* } DrawableSequence[] s1 = new DrawableSequence[seq.length]; for (int
+* i=0;i < seq.length;i++) { s1[i] = new DrawableSequence(seq[i]); }
+*
+* AlignmentPanel ap = new AlignmentPanel(null,s1); ScorePanel sp = new
+* ScorePanel(null,s); //ap.setScorePanel(sp); f.setLayout(new
+* BorderLayout()); f.add("Center",ap); f.add("South",sp);
+* f.resize(700,500); //f.pack(); f.show(); //!!! JalView
+*
+*
+*
+*
+* //String[] args = new String[] {
+* "U:\\dev\\GTL\\win\\BiLabRCP\\BiLab\\resources\\molecules\\AF084455.embl"
+* }; //uk.ac.sanger.artemis.components.ArtemisMain.main(new String[0]);
+*
+* } catch (Exception e) {
+* Notify.devWarning(this,"exception in Artemis:"+e);
+* e.printStackTrace(); //Debug.WL(""+e); }
+*
+* //SQLiteTest.test();
+*/
         /*
-         * try { FileSystemNotebookStore store =
-         * FileSystemNotebookStore.getInstance(); String loc =
-         * "/C:/Documents and Settings/jungd/Desktop/tmp";
-         * Notify.debug(this,"exists? "
-         * +(store.existsNotebook(loc+"/MyNotebook")));
-         * 
-         * String uri = null; if (!store.existsNotebook(loc+"/MyNotebook")) {
-         * Notify.debug(this,"creating notebook MyNotebook in "+loc); uri =
-         * store.createNotebook(loc,"MyNotebook");
-         * Notify.debug(this,"resulting URI:"+uri);
-         * store.createSection(uri,"Introduction",null); } else { uri =
-         * store.getCurrentNotebookVersion(loc+"/MyNotebook");
-         * Notify.debug(this,"notebook URI:"+uri); }
-         * 
-         * Notify.debug(this,"exists? "+(store.existsNotebook(uri)));
-         * 
-         * String[] versions = store.listNotebookVersionURIs(uri); for(String
-         * ver : versions) Notify.debug("  version:"+ver);
-         * 
-         * Notify.debug("current version="+store.getCurrentNotebookVersion(
-         * "file:///C:/Documents%20and%20Settings/jungd/Desktop/tmp/MyNotebook?version=another&page=5"
-         * ));
-         * 
-         * Notify.debug("current section count="+store.getSectionCount(uri));
-         * Notify.debug("current section[1] URI="+store.getSectionURI(uri,1));
-         * Notify.debug("current section[2] URI="+store.getSectionURI(uri,2));
-         * //store.deleteNotebookAll(uri);
-         * 
-         * } catch (Exception e) { e.printStackTrace();
-         * Notify.devError(this,"got exception:"+e.getMessage()); }
-         */
+* try { FileSystemNotebookStore store =
+* FileSystemNotebookStore.getInstance(); String loc =
+* "/C:/Documents and Settings/jungd/Desktop/tmp";
+* Notify.debug(this,"exists? "
+* +(store.existsNotebook(loc+"/MyNotebook")));
+*
+* String uri = null; if (!store.existsNotebook(loc+"/MyNotebook")) {
+* Notify.debug(this,"creating notebook MyNotebook in "+loc); uri =
+* store.createNotebook(loc,"MyNotebook");
+* Notify.debug(this,"resulting URI:"+uri);
+* store.createSection(uri,"Introduction",null); } else { uri =
+* store.getCurrentNotebookVersion(loc+"/MyNotebook");
+* Notify.debug(this,"notebook URI:"+uri); }
+*
+* Notify.debug(this,"exists? "+(store.existsNotebook(uri)));
+*
+* String[] versions = store.listNotebookVersionURIs(uri); for(String
+* ver : versions) Notify.debug(" version:"+ver);
+*
+* Notify.debug("current version="+store.getCurrentNotebookVersion(
+* "file:///C:/Documents%20and%20Settings/jungd/Desktop/tmp/MyNotebook?version=another&page=5"
+* ));
+*
+* Notify.debug("current section count="+store.getSectionCount(uri));
+* Notify.debug("current section[1] URI="+store.getSectionURI(uri,1));
+* Notify.debug("current section[2] URI="+store.getSectionURI(uri,2));
+* //store.deleteNotebookAll(uri);
+*
+* } catch (Exception e) { e.printStackTrace();
+* Notify.devError(this,"got exception:"+e.getMessage()); }
+*/
 
         // !!!
         // !!!!!!!!! end testing area
@@ -909,19 +909,34 @@ public class BilabPlugin extends AbstractUIPlugin {
 
         // load libraries
         Notify.logInfo(this, "Loading libraries");
-        loadLibrary("biojava-1.4pre1.jar");
-        loadLibrary("jakarta-regexp-1.2.jar");
+        loadLibrary("biojava.jar");
+        loadLibrary("jakarta-regexp-1.5.jar");
         loadLibrary("commons-collections-2.1.jar");
+        loadLibrary("commons-net-2.2.jar");
         loadLibrary("jobcontrol.jar");
+        loadLibrary("antlr-2.7.6.jar");
+        loadLibrary("commons-logging-1.0.4.jar");
+        loadLibrary("commons-discovery-0.2.jar");
+        loadLibrary("javaws.jar");
+        loadLibrary("xercesImpl.jar");
+        loadLibrary("jalview-1.7.5b.jar");
         loadLibrary("Jmol.jar");
         loadLibrary("Ice.jar");
-        // loadLibrary("jython/jython.jar");
+        loadLibrary("jgrapht-jdk1.5.jar");
+        loadLibrary("dasobert.jar");
+        loadLibrary("junit-4.8.1.jar");
+        loadLibrary("jemboss.jar");
+        loadLibrary("jaligner.jar");
+        loadLibrary("cdk-1.2.10.jar");
+
+        //loadLibrary("jython.jar");
 
         // register some select classes
         NamespaceScope.registerLibraryClass("bilab", "seq");
         NamespaceScope.registerLibraryClass("bilab", "DNA");
         NamespaceScope.registerLibraryClass("bilab", "RNA");
         NamespaceScope.registerLibraryClass("bilab", "protein");
+        NamespaceScope.registerLibraryClass("bilab", "carbohydrate");
         NamespaceScope.registerLibraryClass("bilab", "alignment");
         NamespaceScope.registerLibraryClass("bilab", "molecule");
         NamespaceScope.registerLibraryClass("bilab", "seqdb");
@@ -932,6 +947,7 @@ public class BilabPlugin extends AbstractUIPlugin {
         NamespaceScope.registerLibraryClass("bilab", "Sophistication");
         NamespaceScope.registerLibraryClass("bilab", "Util");
         NamespaceScope.registerLibraryClass("bilab", "Emboss");
+        //NamespaceScope.registerLibraryClass("bilab", "jython");
         NamespaceScope.registerLibraryClass("bilab", "ExternalApps");
         NamespaceScope.registerLibraryClass("bilab", "INotifier");
         NamespaceScope.registerLibraryClass("bilab", "IAnnotated");
@@ -947,6 +963,8 @@ public class BilabPlugin extends AbstractUIPlugin {
         registerViewer(new TypeSpec(RNA.class), new TypeSpec(
                 ArtemisViewer.class));
         registerViewer(new TypeSpec(protein.class), new TypeSpec(
+                SeqStringViewer.class));
+        registerViewer(new TypeSpec(carbohydrate.class), new TypeSpec(
                 SeqStringViewer.class));
 
         registerViewer(new TypeSpec(molecule.class), new TypeSpec(
@@ -1054,8 +1072,8 @@ public class BilabPlugin extends AbstractUIPlugin {
     }
 
     /**
-     * This method is called when the plug-in is stopped
-     */
+* This method is called when the plug-in is stopped
+*/
     public void stop(final BundleContext context) throws Exception {
         python.cleanup();
 
@@ -1069,3 +1087,5 @@ public class BilabPlugin extends AbstractUIPlugin {
     }
 
 }
+
+

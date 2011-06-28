@@ -10,12 +10,31 @@
 </HEAD>
 <BODY LANG="en-US" DIR="LTR">
 <H2>Bilab Quick-start</H2>
+<P>Bilab is an interactive tool with a user interface for biological applications
+and mathematical calculations using a console similar to Matlab.
+It allows a sequence of amino acids to be read in and manipulations done
+on the protein sequence to achieve desired results.
 <P>The Bilab main window is comprised of distinct <B>views</B>. To
 the left is the interactive <I>Console</I> view where scigol language
 expressions and commands can be entered. The view in the lower right
 is <I>Value</I> view (probably where you are reading this). It
 displays values that have been selected in the <I>Environemt</I> view
 above, or values evaluated using the <B>.show</B> console command. 
+<P>It has a Jmol viewer for viewing biomacromolecules in the pdb format
+wherein the xyz coordinates obtained from experimental methods are
+deposited in the Protein Data bank. It supports different resource types
+and one can view the different file types supported using
+<P>
+  >resourceTypes
+
+<H3>HTML viewer</H3> 
+<P> With the HTML viewer one can browse different websites and download the
+structures for different biomacromolecules. 
+<H3> Important websites for bioinformatics:</H3>
+<P>http://www.pdb.org // Protein data bank is a repository for protein, enzyme
+                         crystal structures obtained from various experimental methods.
+<P>http://www.clustal.org  // Multiple sequence allignment
+<P>http://emboss.sourceforge.net/
 </P>
 <P>The Environment view displays a hierarchical tree of the objects
 available, such as functions that can be called, values of any type -
@@ -23,9 +42,17 @@ such as numbers, lists, molecules etc. Selecting an object in the
 Environment view will cause its value to be display in the Value view
 - invoking any special viewers that are available depending on the
 type of the object. 
+
 </P>
 <P><BR><BR>
 </P>
+<H3> Scigol</H3>
+<P>
+It has a Scigol intepreter to perform basic mathematical calculations
+involving matrices.
+<P>a) trignometric functions
+<P>b) simple matrix computations
+
 <H3>Entering Scigol expressions</H3>
 <P>Try out some simple Scigol expressions in the console view: 
 </P>
@@ -123,7 +150,7 @@ translation of DNA <B>d2</B> and protein dequence <B>p3</B>; first
 put them into a list and then invoke the <B>clustalw</B> function <I>(or
 simply type the list directly as the argument to the function)</I>:</P>
 <PRE>slist = ( p, translate(d2), p3 )
-clustalw(slist)</PRE><P>
+clustalw(slist)</PRE><P> doesnot work
 The result of the function is an <B>alignment</B> &ndash; another
 Bilab type. The result is also displayed in a custom viewer for
 alignments (JalView based).</P>
@@ -135,8 +162,81 @@ extensive help available. For example:</P>
 <PRE STYLE="margin-bottom: 0.2in">.help antigenic</PRE><P>
 <BR><BR>
 </P>
-<P><I>[*<B>NB</B>: Very little help text has been written in the
-current Bilab implementation prototype]</I></P>
+<H3> [A] Walkthrough of simple operations in BiLab </H3>
+<L1><P><B> 1) Commands on the console for biological manipulations </B>
+<PRE STYLE="margin-bottom: 0.2in"> Ala</PRE><P>
+</P> The picture of Alanine amino acid appears in the Jmol viewer.
+     One can then measure the distances, angles and dihedrals between the atoms
+</P> Presently the version supports all 20 amino acids, the nucleotide bases
+     for DNA and RNA.
+</P> Added feature is the ability to look at the fundamental building
+     blocks for carbohydrates and lipids. For example: </P>
+<PRE STYLE="margin-bottom: 0.2in">bdglucose</PRE><P>
+</P> This will provide a Beta-D-glucose pyrannose carbohydrate molecule in Jmol
+     viewer.
+</P> Alternatively on the console one can type
+<PRE STYLE="margin-bottom: 0.2in">.show read ("molecules/Tyr.pdb")</PRE><P>
+</P> Jmol viewer would display a tyrosine amino-acid.
+
+<L1><P><B> 2) Adding protein sequences </B>
+<PRE STYLE="margin-bottom: 0.2in">  p1 = protein ("CGPY")</PRE><P>
+<PRE STYLE="margin-bottom: 0.2in">  p2 = protein ("TYR")</PRE><P>
+<PRE STYLE="margin-bottom: 0.2in">  seq1 = p1.get_rawsequence()</PRE><P>
+<PRE STYLE="margin-bottom: 0.2in">  seq2 = p2.get_rawsequence()</PRE><P>
+<PRE STYLE="margin-bottom: 0.2in">  y =protein(seq1+seq2)</PRE><P>
+</P>  y = CGPYTYR
+<PRE STYLE="margin-bottom: 0.2in">  y.seq.length()</PRE><P> 
+</P>The amino-acid length of the final protein
+</P>7
+</P>The range of the protein/peptide is [0-6]
+<PRE STYLE="margin-bottom: 0.2in">  y(0)</PRE><P> 
+</P>This will open up amino acid Cysteine in the Jmol viewer.
+<PRE STYLE="margin-bottom: 0.2in"> y.avgIsoMass </PRE><P> 
+</P> outputs the mass of the final protein
+</P> avgIsoMass=695.81828000000001
+
+
+<L1><P><B> 3) DNA, RNA manipulation </B>
+<PRE STYLE="margin-bottom: 0.2in"> dna1 = DNA("ACG") </PRE><P> 
+<PRE STYLE="margin-bottom: 0.2in"> r3 = transcribe (dna1)</PRE><P> 
+</P>  r3 = T ACG; TGC R
+<PRE STYLE="margin-bottom: 0.2in"> dna1.seq.length()</PRE><P> 
+</P> 3
+<PRE STYLE="margin-bottom: 0.2in"> dna1.get.Compliment()</PRE><P> 
+</P> R CGT; GCA T
+
+<L1><P><B> 4) Importing a file supported by BiLab </B>
+</P> Any file that needs to be viewed in BiLab needs to 
+    be put under the resources/molecules or resources/sequences directory
+    depending on the resource file type.
+</P> The permissions of the file needs to be changed to rwx
+<PRE STYLE="margin-bottom: 0.2in">chmod +rwx <filename></PRE><P> 
+<PRE STYLE="margin-bottom: 0.2in"> .show read ("molecules/<filename>.pdb")</PRE><P> 
+<PRE STYLE="margin-bottom: 0.2in"> .show read ("sequences/<filename>.msf")</PRE><P> 
+
+
+<H3> [B] Adding common molecules to the bilab resources so that they can instantly accessed. </H3>
+</P> Download the xyz coordinate file from protein data bank and place it under resources/molecules.
+</P> The permissions of the file needs to be changed to rwx: Use chmod +rwx <filename.xyz>
+</P> Under libs/bilab.sg  ADD:  @[bilab.Summary("BDGLUCOSE molecule")]     let bdglucose:molecule = MoleculeImpl.bdglucose;
+</P> In directory src and file MoleculeImpl.java: Declare under public static "the name of molecule"
+</P> Add in static declaration "bdglucose = fromResource("bdglucose.xyz", "BDGlucose");"
+
+
+<L1><P><B> Common Carbohydrates </B>
+</P> bdglucose, bdgalactose, bdmannose, sucrose,
+</P> dxylose, lglucose, bdallose, bdaltrose, bdgulose,
+</P> bdtalose, trehalose, cellobiose
+
+<L1><P><B> Common Lipids </B>
+</P> cholestrol, dppc,dlpe, dmpg, pdmpg,
+</P> arachidonic, linoleic, oleic. 
+</P>
+
+<H3> Viewing the QuickStart commands page on BiLab console </H3>
+<PRE STYLE="margin-bottom: 0.2in">quickstart = read("docs/quickstart.html")</PRE><P>
+<P><I>[*<B>NB</B>:  Under Construction.</I></P>
+
 <H2><BR><BR>
 </H2>
 <H2>TODO hit-list:</H2>

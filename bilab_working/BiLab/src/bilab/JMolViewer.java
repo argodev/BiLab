@@ -166,6 +166,7 @@ public class JMolViewer extends ViewerBase {
 
                     jmolViewer
                             .evalString("ribbons ON; color ribbons structure");
+                    //jmolViewer.evalString("select protein; cartoon; colour structure; select ligand; spacefill; colour cpk; select dna; spacefill 0.4; colour cpk"; select water; spacefill 0.2, colour cpk");
                     // jmolViewer.evalString("spacefill off; rockets ON; color rockets structure");
 
                     jmolViewer.scaleFitToScreen();

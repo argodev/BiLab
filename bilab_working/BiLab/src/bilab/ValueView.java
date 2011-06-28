@@ -53,7 +53,8 @@ public class ValueView extends ViewPart implements ISelectionListener {
     @Override
     public void createPartControl(final Composite parent) {
         valueViewer = new ValueViewer(parent);
-        setInput(new scigol.Value(Util.readResource("molecules/1GP2.pdb", ""))); // !!!
+        //setInput(new scigol.Value(Util.readResource("molecules/1GP2.pdb", ""))); // !!!
+        setInput(new scigol.Value(Util.readResource("molecules/dna.pdb", ""))); // !!!
 
         // the ValueView may want to provide selection events & also listen for
         // them

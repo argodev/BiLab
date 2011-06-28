@@ -125,7 +125,7 @@ public class NamespaceScope extends Scope {
         registerLibraryClass("scigol", "TypeSpec");
         registerLibraryClass("scigol", "Value");
         registerLibraryClass("scigol", "Vector");
-        // registerLibraryClass("scigol","Class");
+        //registerLibraryClass("scigol","Class");
         registerLibraryClass("scigol", "TypeManager");
     }
 

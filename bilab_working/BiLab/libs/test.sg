@@ -1,0 +1,12 @@
+{ 
+Ala;
+bdglucose;
+let P1 = protein ("CGPY");
+let P2 = protein ("TYR");
+let seq1 = P1.get_rawsequence();
+let seq2 = P2.get_rawsequence();
+let P3 =protein(seq1+seq2);
+P3.seq.length();
+P3(0);
+P3.avgIsoMass;
+};
