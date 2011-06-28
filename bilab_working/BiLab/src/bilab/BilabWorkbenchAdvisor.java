@@ -50,39 +50,4 @@ public class BilabWorkbenchAdvisor extends WorkbenchAdvisor {
     public String getInitialWindowPerspectiveId() {
         return PERSPECTIVE_ID;
     }
-
-    // WorkbenchWindowAdvisor.preWindowOpen should be used???
-
-    // public void preWindowOpen(IWorkbenchWindowConfigurer configurer) {
-    // super.preWindowOpen(configurer);
-    // configurer.setInitialSize(new Point(1600-48, 1200-48));
-    // configurer.setShowCoolBar(true);
-    // configurer.setShowStatusLine(true);
-    // configurer.setShowMenuBar(true);
-    // configurer.setShowPerspectiveBar(true);
-    // configurer.setShowProgressIndicator(true);
-    // configurer.setTitle("BiLab - v0.1.3 Prototype (reg)");
-    // }
-
-    // public void eventLoopException(Throwable t)
-    // {
-    // try to get the message from the exception
-    // String m = t.getMessage();
-
-    // if we didn't get it, let's try to get it another way...
-    // if (m==null) {
-    // t = t.getCause();
-    // m = t.getMessage();
-    // }
-
-    // if we still didn't get it, let's return the class at least
-    // if (m==null) m = t.getClass().toString();
-
-    // display the error
-    // Notify.userWarning(this,"an exception occured within the Bilab interface: "
-    // + m);
-
-    // dump the stack trace
-    // t.printStackTrace(); ///!!! appropriate?
-    // }
 }

@@ -4,7 +4,7 @@
  * 
  * http://computing.ornl.gov/
  * 
- * Copyright Â© 2011 Oak Ridge National Laboratory
+ * Copyright © 2011 Oak Ridge National Laboratory
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal

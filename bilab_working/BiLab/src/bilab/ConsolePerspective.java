@@ -50,7 +50,7 @@ public class ConsolePerspective implements IPerspectiveFactory {
 
         folder.addView("bilab.BrowserView");
 
-        // folder.addView("bilab.TextView");
+         folder.addView("bilab.TextView");
 
         // then environment navigator view
         page.addView("bilab.EnvNavigatorView", IPageLayout.RIGHT, 0.7f,
