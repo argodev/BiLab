@@ -1,0 +1,440 @@
+namespace bilab.lib { 
+
+  // convenient funcs for the molecules in MoleculeImpl
+  @[bilab.Summary("Adenine molecule")]       let A:molecule = MoleculeImpl.A;
+  @[bilab.Summary("Cytosine molecule")]      let C:molecule = MoleculeImpl.C;
+  @[bilab.Summary("Guanine molecule")]       let G:molecule = MoleculeImpl.G;
+  @[bilab.Summary("Thymine molecule")]       let T:molecule = MoleculeImpl.T;
+  @[bilab.Summary("Uracil molecule")]        let U:molecule = MoleculeImpl.U;
+
+  @[bilab.Summary("Alanine molecule")]       let Ala:molecule = MoleculeImpl.Ala;
+  @[bilab.Summary("Arginine molecule")]      let Arg:molecule = MoleculeImpl.Arg;
+  @[bilab.Summary("Asparagine molecule")]    let Asn:molecule = MoleculeImpl.Asn;
+  @[bilab.Summary("Aspartate molecule")]     let Asp:molecule = MoleculeImpl.Asp;
+  @[bilab.Summary("Cysteine molecule")]      let Cys:molecule = MoleculeImpl.Cys;
+  @[bilab.Summary("Glutamine molecule")]     let Gln:molecule = MoleculeImpl.Gln;
+  @[bilab.Summary("Glutamate molecule")]     let Glu:molecule = MoleculeImpl.Glu;
+  @[bilab.Summary("Glycine molecule")]       let Gly:molecule = MoleculeImpl.Gly;
+  @[bilab.Summary("Histidine molecule")]     let His:molecule = MoleculeImpl.His;
+  @[bilab.Summary("Isoleucine molecule")]    let Ile:molecule = MoleculeImpl.Ile;
+  @[bilab.Summary("Leucine molecule")]       let Leu:molecule = MoleculeImpl.Leu;
+  @[bilab.Summary("Lysine molecule")]        let Lys:molecule = MoleculeImpl.Lys;
+  @[bilab.Summary("Methionine molecule")]    let Met:molecule = MoleculeImpl.Met;
+  @[bilab.Summary("Phenylalanine molecule")] let Phe:molecule = MoleculeImpl.Phe;
+  @[bilab.Summary("Proline molecule")]       let Pro:molecule = MoleculeImpl.Pro;
+  @[bilab.Summary("Serine molecule")]        let Ser:molecule = MoleculeImpl.Ser;
+  @[bilab.Summary("Threonine molecule")]     let Thr:molecule = MoleculeImpl.Thr;
+  @[bilab.Summary("Tryptophan molecule")]    let Trp:molecule = MoleculeImpl.Trp;
+  @[bilab.Summary("Tyrosine molecule")]      let Tyr:molecule = MoleculeImpl.Tyr;
+  @[bilab.Summary("Valine molecule")]        let Val:molecule = MoleculeImpl.Val;
+  
+ @[bilab.Summary("GLUCOSE molecule")]        let GLUCOSE:molecule = MoleculeImpl.GLUCOSE;
+ @[bilab.Summary("GALACTOSE molecule")]      let GALACTOSE:molecule = MoleculeImpl.GALACTOSE;
+ @[bilab.Summary("AdenosineMonoPhosphate molecule")]  let AMP:molecule = MoleculeImpl.AMP;
+ @[bilab.Summary("AdenosineTriPhosphate molecule")]  let ATP:molecule = MoleculeImpl.ATP;
+ @[bilab.Summary("GuanosineTriPhosphate molecule")]  let GTP:molecule = MoleculeImpl.GTP;
+ @[bilab.Summary("DNA molecule")]  let DNA_HELIX:molecule = MoleculeImpl.DNA_HELIX;
+
+//Photosynthesis compounds 
+ @[bilab.Summary("Beta-Carotene molecule")]  let carotene:molecule = MoleculeImpl.carotene;
+ @[bilab.Summary("Chlorophyll molecule")]  let chlorophyll:molecule = MoleculeImpl.chlorophyll;
+ @[bilab.Summary("Cytochrome molecule")]  let cytochrome:molecule = MoleculeImpl.cytochrome;
+ @[bilab.Summary("Quinone molecule")]  let quinone:molecule = MoleculeImpl.quinone;
+
+ @[bilab.Summary("Water molecule")]         let water:molecule = MoleculeImpl.Water;
+ // Add functionality of some common carbohydrates
+  @[bilab.Summary("BDGLUCOSE molecule")]     let bdglucose:molecule = MoleculeImpl.bdglucose;
+  @[bilab.Summary("BDGALACTOSE molecule")]   let bdgalactose:molecule = MoleculeImpl.bdgalactose;
+  @[bilab.Summary("BDMANNOSE molecule")]     let bdmannose:molecule = MoleculeImpl.bdmannose;
+  @[bilab.Summary("BDALLOSE molecule")]     let bdallose:molecule = MoleculeImpl.bdallose;
+  @[bilab.Summary("BDALTROSE molecule")]     let bdaltrose:molecule = MoleculeImpl.bdaltrose;
+  @[bilab.Summary("BDGULOSE molecule")]     let bdgulose:molecule = MoleculeImpl.bdgulose;
+  @[bilab.Summary("BDTALOSE molecule")]     let bdtalose:molecule = MoleculeImpl.bdtalose;
+  @[bilab.Summary("SUCROSE molecule")]      let sucrose:molecule = MoleculeImpl.sucrose;
+  @[bilab.Summary("DXYLOSE molecule")]      let dxylose:molecule = MoleculeImpl.dxylose;
+  @[bilab.Summary("LGLUCOSE molecule")]     let lglucose:molecule = MoleculeImpl.lglucose;
+  @[bilab.Summary("TREHALOSE molecule")]    let trehalose:molecule = MoleculeImpl.trehalose;
+  @[bilab.Summary("CELLOBIOSE molecule")]    let cellobiose:molecule = MoleculeImpl.cellobiose;
+  
+ // Add functionality of some common lipids  
+  
+  @[bilab.Summary("CHOLESTROL molecule")]    let cholestrol:molecule = MoleculeImpl.cholestrol;
+  @[bilab.Summary("Dipalmitoylphosphatidylcholine molecule")]   let dppc:molecule = MoleculeImpl.dppc;
+  @[bilab.Summary("Dilauroylphosphatidylethanolamine molecule")]   let dlpe:molecule = MoleculeImpl.dlpe;
+  @[bilab.Summary("1,2-dimyristoyl-sn-glycero-3-phospho-rac-1-glycerol molecule")]  let dmpg:molecule = MoleculeImpl.dmpg;
+  @[bilab.Summary("Arachidonic_acid molecule")]  let arachidonic:molecule = MoleculeImpl.arachidonic;
+  @[bilab.Summary("Linoleic_fatty_acid molecule")]  let linoleic:molecule = MoleculeImpl.linoleic;
+  @[bilab.Summary("Oleic_fatty_acid molecule")]  let oleic:molecule = MoleculeImpl.oleic;
+
+
+
+  @[bilab.Summary("Read a resource (e.g. a file)")]
+  let read = func(resourceName:string, resourceType:string = "unknown" -> any) 
+  { 
+    bilab.Util.readResource(resourceName, resourceType) 
+  };
+   
+   
+  @[bilab.Summary("Write a resource (e.g. a file)")]
+  let write = func(resource:any, resourceName:string, resourceType:string = "unknown" -> string) 
+  { 
+    bilab.Util.writeResource(resource, resourceName, resourceType) 
+  };
+   
+   
+  @[bilab.Summary("URL for quickstart guide HTML document")]
+  let quickstart = read("docs/quickstart.html");
+   
+   
+  // make some methods available as functions
+  
+  @[bilab.Summary("transcribe DNA into RNA")]
+  let transcribe = func(d:DNA -> RNA) { d.transcription };
+  
+  @[bilab.Summary("translate RNA into protein")]
+  let translate = func(r:RNA -> protein) { r.translation }; 
+  @[bilab.Summary("translate DNA into protein")]
+  let translate = func(d:DNA -> protein) { d.transcription.translation };
+   
+  @[bilab.Summary("compute protein mono isotopic mass")]
+  let monoisotopicmass = func(p:protein -> real) { p.MonoIsotopicMass };
+
+  @[bilab.Summary("compute protein average isotopic mass")]
+  let avgisomass = func(p:protein -> real) { p.avgIsoMass };
+   
+   
+
+  @[bilab.Summary("NCBI protein database; online")]
+  let NCBIprot = seqdb("NCBI","protein");
+  
+  @[bilab.Summary("NCBI nucleotide database (Genbank); online")]
+  let genbank = seqdb("NCBI", "nucleotide");
+
+
+  //
+  // EMBOSSS function wrappers
+  //
+  
+  
+  // Alignment consensus
+  
+  @[bilab.Summary("U consensus from multiple alignments")]
+  let cons = func(a:alignment, plurity:real=0, identity:int=0 -> seq)
+    { scigol.Debug.Unimplemented() };
+
+  @[bilab.Summary("U merge two large overlapping nucleic acid sequences")]
+  let megamerger = func(s1:seq, s2:seq, wordSize:int=20, prefer1:bool=false -> seq)
+    { scigol.Debug.Unimplemented() };
+    
+  @[bilab.Summary("U merge two overlapping nucleic acid sequences")]
+  let merger = func(s1:seq, s2:seq, gapOpen:real=50.0, gapExtend:real=5.0 -> seq)
+    { scigol.Debug.Unimplemented() };
+  
+    
+  // Alignment differences
+  
+  @[bilab.Summary("U Find differences between nearly identical sequences")]
+  let diffseq = func(s1:seq, s2:seq, wordSize:int=10 -> list)
+    { scigol.Debug.Unimplemented() };
+    
+  
+  // Alignment dot plots
+  
+  @[bilab.Summary("thresholded dotplot of two sequences")]
+  let dotmatcher = func(sa:seq, sb:seq, windowSize:int=10, threshold:int=23 -> picture)
+    { bilab.Emboss.dotmatcher(sa,sb,windowSize,threshold) };
+
+  @[bilab.Summary("U non-overlapping wordmatch dotplot of two sequences")]
+  let dotpath = func(sa:seq, sb:seq, wordSize:int=4, overlaps:bool=false, boxit:bool=true -> any)
+    { scigol.Debug.Unimplemented() };
+
+  @[bilab.Summary("U wordmatch dotplot of two sequences")]
+  let dottup = func(sa:seq, sb:seq, wordSize:int=10, boxit:bool=true -> any)
+    { scigol.Debug.Unimplemented() };
+
+  @[bilab.Summary("U all-against-all dotplots of a set of sequences")]
+  let polydot = func(seqs:list, wordSize:int=6, boxit:bool=true, gap:int=10 -> any)
+    { scigol.Debug.Unimplemented() };
+
+
+  // Alignment global
+
+  @[bilab.Summary("U align EST and genomic DNA sequences")]
+  let est2genome = func(estseq:seq, genome:seq, match:int=1, mismatch:int=1, gappenalty:int=2,
+                        intronpenalty:int=40, splicepenalty:int=20, minscore:int=30,
+                        splice:bool=true, mode:string="both" -> string)
+    { scigol.Debug.Unimplemented() };
+  
+  @[bilab.Summary("U Needleman-Wunsch global alignment")]
+  let needle = func(sa:seq, sb:seq, gapopen:real=10.0, gapentend:real=0.5 -> alignment)
+    { scigol.Debug.Unimplemented() };
+    
+  @[bilab.Summary("U find best global alignment between two sequences")]
+  let stretcher = func(sa:seq, sb:seq, gappenalty:int=0, gaplength:int=0 -> alignment)
+    { scigol.Debug.Unimplemented() };
+    
+    
+  // Alignment local
+  
+  @[bilab.Summary("U find best local alignments between two sequences")]
+  let matcher = func(sa:seq, sb:seq, gappenalty:int=0, gaplength:int=0, alternatives:int=1 -> alignment)
+    { scigol.Debug.Unimplemented() };
+    
+  @[bilab.Summary("U all-against-all comparison of a set of sequences (c.f. polydot)")]
+  let seqmatchall = func(seqs:list, wordsize:int=4 -> string)
+    { scigol.Debug.Unimplemented() };
+    
+  @[bilab.Summary("U find match of a large sequence against one or more sequences")]
+  let supermatcher = func(sa:seq, seqs:seqdb, wordsize:int=4 -> alignment)
+    { scigol.Debug.Unimplemented() };
+    
+  @[bilab.Summary("U Smith-Waterman local alignment")]
+  let wateralign = func(sa:seq, sb:seq, gapopen:real=10.0, gapextend:real=0.5 -> alignment)
+    { scigol.Debug.Unimplemented() };      
+    
+  @[bilab.Summary("U find all exact matches of a given size between 2 sequences")]
+  let wordmatch = func(sa:seq, sb:seq, wordsize:int=4 -> alignment)
+    { scigol.Debug.Unimplemented() };
+
+  
+  // Alignment multiple
+  
+  
+  // Display
+  
+  
+  // Edit
+  
+  
+  // Enzyme kinetics
+  
+  
+  // Feature tables
+  
+  
+  // Information
+  
+  
+  // Nucleic 2d structure
+  
+  
+  // Nucleic codon usage
+  
+  
+  // Nucleic composition
+  
+  
+  // Nucleic cpg islands
+  
+  
+  // Nucleic gene finding
+  
+  
+  // Nucleic motifs
+  
+  
+  // Nucleic primers
+  
+  
+  // Nucleic profiles
+  
+  
+  // Nucleic repeats
+  
+  
+  // Nucleic restriction
+  
+  
+  // Nucleic transcription
+  
+  
+  // Nucleic translation
+  
+  
+  // Phylogeny distance matrix
+  
+  
+  // Protein 2d structure
+  
+  
+  // Protein 3d structure
+  
+  
+  // Protein composition
+  
+  
+  // Protein motifs
+
+  @[scigol.redirect("bilab.Emboss.antigenic")]
+  let antigenic = func(s:seq, maxLength:int=6, format:string = "gff" -> any)
+    { bilab.Emboss.antigenic(s,maxLength, format) };
+
+  @[scigol.redirect("bilab.Emboss.digest")]
+  let digest = func(s:seq, reagent:int=1, unfavoured:bool=false, overlap:bool=false, allpartials:bool=false -> any)
+    { bilab.Emboss.digest(s,reagent, unfavoured, overlap, allpartials) };
+
+  @[scigol.redirect("bilab.Emboss.fuzzpro")]
+  let fuzzpro = func(s:seq, pattern:string, mismatches:int=0 -> any)
+    { bilab.Emboss.fuzzpro(s,pattern, mismatches) };
+
+  @[scigol.redirect("bilab.Emboss.fuzztran")]
+  let fuzztran = func(s:seq, pattern:string, frame:string="1", code:int=0, mismatches:int=0 -> any)
+    { bilab.Emboss.fuzztran(s,pattern, frame, code, mismatches) };
+
+  @[scigol.redirect("bilab.Emboss.helixturnhelix")]
+  let helixturnhelix = func(s:seq, mean:real=238.71, sd:real=293.61, minsd:real=2.5 -> any)
+    { bilab.Emboss.helixturnhelix(s,mean,sd,minsd) };
+
+  @[scigol.redirect("bilab.Emboss.sigcleave")]
+  let sigcleave = func(s:seq, minWeight:real=3.5, prokaryote:bool=false -> any)
+    { bilab.Emboss.sigcleave(s,minWeight, prokaryote) };
+
+
+  // Protein mutation
+  
+  
+  // Protein profiles
+  
+  
+  // Protein sequence alignment
+  
+  // end EMBOSS
+
+
+
+
+  // ClustalW
+
+  @[bilab.Summary("ClustalW multiple sequence alignment")]
+  @[bilab.Doc("file:docs/EBI Help.htm")]
+  let clustalw = func(seqs:list -> any) 
+    { bilab.ExternalApps.clustalw(seqs) };
+
+
+  // RNAll
+  @[bilab.Summary("local RNA secondary structure prediction")]
+  @[bilab.Doc("file:docs/RNAllHelp.html")]
+  let rnall = func(s:seq, overlapping:bool=false, terminatorPredict:bool=false,
+                   windowSize:int=30, energyThreashold:real=-5.0, symMapThreashold:real=10.0,
+                   loopSize:int=3, tweight:real=3.0, hybridEnergy:real=-11.7, produceCTFile:bool=false 
+                   -> any)
+    { bilab.ExternalApps.RNAll(s, !overlapping, terminatorPredict, windowSize,
+                               energyThreashold, symMapThreashold, loopSize,
+                               tweight, hybridEnergy, produceCTFile) 
+    };
+
+
+
+  // NCBI
+  @[bilab.Summary("U Basic Protein BLAST")]
+  let blastp = func(p:protein, db:seqdb -> alignment)
+    { scigol.Debug.Unimplemented() };
+    
+  @[bilab.Summary("U Position-Specific Iterated (PSI)-BLAST")]
+  let psiblast = func(p:protein, db:seqdb -> alignment)
+    { scigol.Debug.Unimplemented() };
+     
+
+
+
+  // some useful common constants
+  @[bilab.Summary("Pi value")]
+  let pi = 3.1415926535897932384626433832795; 
+  @[bilab.Summary("Euler Number")]
+  let e  = 2.71828182845904523536028747135266249;
+  @[bilab.Summary("Avogadros number")]
+  let Na = 6.0221415e23;   // Avogadros no.
+  @[bilab.Summary("unified atomic mass")]
+  let mu = 1.66053886e-27; // unified atomic mass 
+  @[bilab.Summary("Boltzmann constant")]
+  let k  = 1.3806505e-23;  // Boltzmann
+  @[bilab.Summary("electron mass in kg units")]
+  let me = 9.1093826e-31;  // electron mass
+  @[bilab.Summary("Planck's constant in m2 kg sec-1")]
+  let h = 6.626e-34;  // Planck's constant in m2 kg sec-1
+  @[bilab.Summary("Universal Gas Constant kcal mol-1 K")]
+  let R = 1.987e-3;  // Universal Gas Constant kcal mol-1 K
+
+  //let C = 299792458;       // Einstein's constant
+
+
+  // math functions
+
+  @[bilab.Summary("absolute value")]
+  let abs = func(r:real -> real) { java.lang.Math.abs(r) };
+  
+  @[bilab.Summary("arc cosine")]
+  let acos = func(r:real -> real) { java.lang.Math.acos(r) };
+
+  @[bilab.Summary("arc sine")]
+  let asin = func(r:real -> real) { java.lang.Math.asin(r) };
+
+  @[bilab.Summary("arc tangent")]
+  let atan = func(r:real -> real) { java.lang.Math.atan(r) };
+
+  @[bilab.Summary("arc tangent y/x")]
+  let atan2 = func(y:real, x:real -> real) { java.lang.Math.atan2(y,x) };
+
+  @[bilab.Summary("cosine")]
+  let cos = func(r:real -> real) { java.lang.Math.cos(r) };
+
+  @[bilab.Summary("hyperbolic cosine")]
+  let cosh = func(r:real -> real) { java.lang.Math.cosh(r) };
+
+  @[bilab.Summary("natural logarithm")]
+  let ln = func(r:real -> real) { java.lang.Math.log(r) };
+
+  @[bilab.Summary("base 10 logarithm")]
+  let log = func(r:real -> real) { java.lang.Math.log10(r) };
+
+  @[bilab.Summary("sine")]
+  let sin = func(r:real -> real) { java.lang.Math.sin(r) };
+
+  @[bilab.Summary("hyperbolic sine")]
+  let sinh = func(r:real -> real) { java.lang.Math.sinh(r) };
+
+  @[bilab.Summary("tangent")]
+  let tan = func(r:real -> real) { java.lang.Math.tan(r) };
+
+  @[bilab.Summary("hyperbolic tangent")]
+  let tanh = func(r:real -> real) { java.lang.Math.tanh(r) };
+
+  @[bilab.Summary("square root")]
+  let sqrt = func(r:real -> real) { java.lang.Math.sqrt(r) };
+
+  @[bilab.Summary("random value [0..1)")]
+  let random = func(->real) { java.lang.Math.random() };
+
+  @[bilab.Summary("round to integer")]
+  let round = func(r:real -> real) { real(java.lang.Math.round(r)) };
+
+  @[bilab.Summary("convert radians to degrees")]
+  let toDeg = func(r:real -> real) { java.lang.Math.toDegrees(r) };
+
+  @[bilab.Summary("convert degrees to radians")]
+  let toRad = func(r:real -> real) { java.lang.Math.toRadians(r) };
+
+
+
+  @[bilab.Summary("vector dot product")]
+  let dot = func(v1:vector, v2:vector -> real) { v1.dot(v2) };
+  
+  @[bilab.Summary("zero vector")]
+  let zero = func(dim:int -> vector) { vector().zero(dim) };
+  
+  @[bilab.Summary("zero matrix")]
+  let zero = func(r:int, c:int -> matrix) { matrix().zero(r,c) };
+  
+  @[bilab.Summary("identity matrix")]
+  let ident = func(dim:int -> matrix) { matrix().identity(dim) };
+  
+  @[bilab.Summary("mean of vector components")]
+  let mean = func(v:vector -> real) { bilab.Util.mean(v) };
+
+
+  // misc.
+
+  @[bilab.Summary("map of resource type names to descriptions")]
+  let resourceTypes:map = bilab.Util.resourceTypesMap();
+
+};

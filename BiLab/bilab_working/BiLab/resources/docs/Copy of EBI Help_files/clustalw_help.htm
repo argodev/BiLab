@@ -1,0 +1,673 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0048)http://www.ebi.ac.uk/clustalw/clustalw_help.html -->
+<HTML><HEAD><TITLE>Clustalw help</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=windows-1252">
+<META content="Clustalw, Multiple sequence alignments" name=keywords>
+<META content="Rodrigo Lopez, Stephen Robinson, Ville Silventoinen" name=author>
+<SCRIPT language=javascript type=text/javascript>
+var _mainwindow = null;
+if (top == self)
+   {
+    top.location.href = "help.html";
+   }
+</SCRIPT>
+<LINK href="clustalw_help_files/stylesheet.css" type=text/css rel=stylesheet>
+<META content="MSHTML 6.00.2745.2800" name=GENERATOR></HEAD>
+<BODY bgColor=#ffffff><A name=top></A>
+<TABLE cellPadding=5 width=550 border=0>
+  <TBODY>
+  <TR>
+    <TD>
+      <TABLE cellSpacing=0 cellPadding=4 width="100%" border=0>
+        <TBODY>
+        <TR>
+          <TD class=tablegreen noWrap><NOBR>&nbsp;<SPAN 
+            class=whitetitle>Help</SPAN>&nbsp;</NOBR></TD>
+          <TD width="100%"><NOBR 
+        class=pagetitle>&nbsp;ClustalW</NOBR></TD></TR></TBODY></TABLE>
+      <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+        <TBODY>
+        <TR>
+          <TD background=clustalw_help_files/hor.gif height=3><IMG height=3 
+            src="clustalw_help_files/trans.gif" 
+      width=25></TD></TR></TBODY></TABLE><BR><A 
+      href="http://www.ebi.ac.uk/clustalw/index.html" target=_mainwindow><IMG 
+      height=28 hspace=4 src="clustalw_help_files/launch.gif" width=85 
+      align=right border=0></A><BR><BR>
+      <UL type=disc>
+        <LI class=subheading>INTRODUCTION <BR><BR><SPAN class=text>Multiple 
+        alignments of protein sequences are important tools in studying 
+        sequences. The basic information they provide is identification of 
+        conserved sequence regions. This is very useful in designing experiments 
+        to test and modify the function of specific proteins, in predicting the 
+        function and structure of proteins, and in identifying new members of 
+        protein families. <BR><BR>Sequences can be aligned across their entire 
+        length (global alignment) or only in certain regions (local alignment). 
+        This is true for pairwise and multiple alignments. Global alignments 
+        need to use gaps (representing insertions/deletions) while local 
+        alignments can avoid them, aligning regions between gaps. ClustalW is a 
+        fully automatic program for global multiple alignment of DNA and protein 
+        sequences. The alignment is progressive and considers the sequence 
+        redundancy. Trees can also be calculated from multiple alignments. The 
+        program has some adjustable parameters with reasonable defaults. 
+        </SPAN><BR><BR><A class=greenboldsmall_anchor 
+        href="http://www.ebi.ac.uk/2can/tutorials/nucleotide/clustalw.html" 
+        target=_blank><IMG height=23 src="clustalw_help_files/2can_icon.jpg" 
+        width=34 border=0> ClustalW Nucleotide Tutorial </A><BR><A 
+        class=greenboldsmall_anchor 
+        href="http://www.ebi.ac.uk/2can/tutorials/protein/clustalw.html" 
+        target=_blank><IMG height=23 src="clustalw_help_files/2can_icon.jpg" 
+        width=34 border=0> ClustalW Protein Tutorial </A><BR><BR><SPAN 
+        class=pbold>For additional help on ClustalW also see: </SPAN>
+        <UL>
+          <LI><A class=greenboldsmall_anchor 
+          href="http://www.ebi.ac.uk/clustalw/faq_help.html">ClustalW FAQ</A> 
+          <LI><A class=greenboldsmall_anchor 
+          href="http://www.ebi.ac.uk/clustalw/clustalw_detail.html" 
+          target=_blank>ClustalW Improving Sensitivity</A> </LI></UL></LI></UL>
+      <P><A name=sequence></A>
+      <UL type=disc>
+        <LI><SPAN class=subheading>YOUR SEQUENCES</SPAN> <BR>
+        <P>Please make sure that your sequences have different names as the 
+        first 30 characters of the name are significant. If clustalw finds two 
+        or more sequences with the same name it will fail! <A 
+        href="http://www.ebi.ac.uk/clustalw/alignment.txt" target=_blank>View 
+        example</A>. Click <A 
+        href="http://www.ebi.ac.uk/clustalw/help2.html">here</A> for more 
+        information on sequence errors. 
+        <P>ClustalW currently supports 7 multiple sequence formats. These 
+        are:<BR><BR></P>
+        <LI><A href="http://www.ebi.ac.uk/help/pir_frame.html" 
+        target=_top>NBRF/PIR </A>
+        <LI><A href="http://www.ebi.ac.uk/help/embl_frame.html" 
+        target=_top>EMBL</A> /<A 
+        href="http://www.ebi.ac.uk/help/swiss_frame.html" target=_top> 
+        UniProt/SwissProt </A>
+        <LI><A href="http://www.ebi.ac.uk/help/Fasta_frame.html" 
+        target=_top>Pearson (Fasta) </A>
+        <LI><A href="http://www.ebi.ac.uk/help/gde_frame.html" target=_top>GDE 
+        </A>
+        <LI><A href="http://www.ebi.ac.uk/help/ClustalW_frame.html" 
+        target=_top>ALN/ClustalW </A>
+        <LI><A href="http://www.ebi.ac.uk/help/MSF_frame.html" 
+        target=_top>GCG/MSF </A>
+        <LI><A href="http://www.ebi.ac.uk/help/rsf_frame.html" 
+        target=_top>RSF</A> <BR><BR><A 
+        href="http://www.ebi.ac.uk/help/formats_frame.html" target=_top>More on 
+        Sequence Formats</A><BR>
+        <P class=pbold>Please remove any white space space or empty lines from 
+        the beginning of your input. 
+        <P><I><B>N.B. Bootstrapping is possible, you can paste your .aln files 
+        from your results back into the clustalw submission form. 
+        </B></I></P></LI></UL>
+      <P><A name=email></A>
+      <UL>
+        <LI><SPAN class=subheading>YOUR EMAIL</SPAN> <BR><BR>You must type your 
+        email address in this text box if you are running a job via email. <SPAN 
+        class=text>It is not necessary to fill in the box if you are running 
+        your search interactively.</SPAN> </LI></UL>
+      <P><A name=title></A>
+      <UL>
+        <LI><SPAN class=subheading>ALIGNMENT TITLE</SPAN> <BR><BR>You may type 
+        any text you want to help you identify your search results. </LI></UL>
+      <P><A name=results></A>
+      <UL>
+        <LI><SPAN class=subheading>RESULTS </SPAN><BR><BR>This option lets you 
+        choose between email and interactive runs. The email run requires you to 
+        type an email address in the email text box, and your results will be 
+        delivered when they are ready to your email address, thus avoiding 
+        waiting for your results as with an interactive run. For example: 
+        joe@somewhere.domain.country. <BR><BR><I>The default is interactive.</I> 
+        </LI></UL>
+      <P> 
+      <P><A name=alignment></A>
+      <UL type=disc>
+        <LI><SPAN class=subheading>ALIGNMENT</SPAN> <BR><BR>You may choose to 
+        run a full alignment or using a stringent algorithm for generating the 
+        tree guide or a fast algorithm. </LI></UL>
+      <P><A name=cpumode></A>
+      <UL type=disc>
+        <LI><SPAN class=subheading>CPU MODE</SPAN> <BR><BR>The multiple CPU 
+        option run a special version of clustalw using several linux pc nodes in 
+        a parallel fashion to increase the speed of the job without compromising 
+        the quality of the results. This option is to be chosen when the user 
+        has a large number of sequences (50+ but less than 500) to align. 
+        However, care should be taken not to overestimate the quantification of 
+        the results. A very large alignment is difficult to read and handle by 
+        other software. </LI></UL>
+      <P><A name=output></A>
+      <UL type=disc>
+        <LI><SPAN class=subheading>OUTPUT </SPAN><BR><BR>Here you decide which 
+        output format you want your multiple sequence alignment in. The options 
+        are <A href="http://www.ebi.ac.uk/help/formats.html#aln">ALN</A>, <A 
+        href="http://www.ebi.ac.uk/help/formats.html#MSF">GCG</A>, <A 
+        href="http://www.ebi.ac.uk/help/formats.html#Phylip">PHYLIP</A>, <A 
+        href="http://www.ebi.ac.uk/help/formats.html#pir">PIR</A> and <A 
+        href="http://www.ebi.ac.uk/help/formats.html#gde">GDE</A>. The output 
+        results are stored in a ".aln" file which contains your results in <A 
+        href="http://www.ebi.ac.uk/help/formats.html#aln">ALN</A> format. 
+        <P>You can configure your browser to automatically load the results 
+        files from clustalw into an suitable application of your choice. Here is 
+        a small list of URL's for obtaining such applications for Win95, Macs 
+        and UNIX boxes: 
+        <P>
+        <UL type=disc>
+          <LI><SPAN class=greenboldsmall>belvu - UNIX Multiple sequence 
+          alignment viewer - </SPAN><A 
+          href="http://www.cgr.ki.se/cgr/groups/sonnhammer/Belvu.html" 
+          target=_mainwindow>http://www.cgr.ki.se/cgr/groups/sonnhammer/Belvu.html</A> 
+
+          <LI><SPAN class=greenboldsmall>njplot - UNIX, Mac &amp; PC - Tree 
+          viewer -</SPAN><BR><A 
+          href="http://pbil.univ-lyon1.fr/software/njplot.html" 
+          target=_mainwindow>http://pbil.univ-lyon1.fr/software/njplot.html</A> 
+          <LI>GeneDoc - GCG MSF file viewer -<BR><SPAN class=greenboldsmall>(NB 
+          - Use GCG format in the OUTPUT option) -<BR></SPAN><A 
+          href="http://www.psc.edu/biomed/genedoc/" 
+          target=_mainwindow>http://www.psc.edu/biomed/genedoc/</A> 
+          <LI><SPAN class=greenboldsmall>TreeView - Tree viewer for Macs and PC 
+          (running Windows) </SPAN><A 
+          href="http://taxonomy.zoology.gla.ac.uk/rod/treeview.html" 
+          target=_mainwindow>http://taxonomy.zoology.gla.ac.uk/rod/treeview.html</A> 
+
+          <LI><SPAN class=greenboldsmall>ClustalX - Graphical Interface 
+          X-Windows/Mac/Win9x based version of ClustalW</SPAN><BR><A 
+          href="ftp://ftp.ebi.ac.uk/pub/software/dos/clustalx/" 
+          target=_mainwindow>ftp://ftp.ebi.ac.uk/pub/software/dos/clustalx/</A><BR><A 
+          href="ftp://ftp.ebi.ac.uk/pub/software/mac/clustalx/" 
+          target=_mainwindow>ftp://ftp.ebi.ac.uk/pub/software/mac/clustalx/</A><BR><A 
+          href="ftp://ftp.ebi.ac.uk/pub/software/unix/clustalx/" 
+          target=_mainwindow>ftp://ftp.ebi.ac.uk/pub/software/unix/clustalx/</A> 
+
+          <LI><SPAN class=greenboldsmall>ClustalW - Command line 
+          version</SPAN><BR><A 
+          href="ftp://ftp.ebi.ac.uk/pub/software/dos/clustalw/" 
+          target=_mainwindow>ftp://ftp.ebi.ac.uk/pub/software/dos/clustalw/</A><BR><A 
+          href="ftp://ftp.ebi.ac.uk/pub/software/mac/clustalw/" 
+          target=_mainwindow>ftp://ftp.ebi.ac.uk/pub/software/mac/clustalw/</A><BR><A 
+          href="ftp://ftp.ebi.ac.uk/pub/software/unix/clustalw/" 
+          target=_mainwindow>ftp://ftp.ebi.ac.uk/pub/software/unix/clustalw/</A> 
+
+          <LI><SPAN class=greenboldsmall>CINEMA - </SPAN><BR>A Colour 
+          INteractive Editor for Multiple Alignments<BR><A 
+          href="http://www.bioinf.man.ac.uk/dbbrowser/CINEMA2.1/" 
+          target=_mainwindow>http://www.bioinf.man.ac.uk/dbbrowser/CINEMA2.1/</A> 
+
+          <LI><SPAN class=greenboldsmall>EMMA-</SPAN><BR>An EMBOSS interface to 
+          clustalw.<BR><A href="http://www.emboss.org/" 
+          target=_mainwindow>http://www.emboss.org/</A><BR>
+          <P></P></LI></UL>
+        <P class=pbold>To configure your browser you must tell it how to handle 
+        the following non-registered MIME types: 
+        <P>
+        <UL type=disc>
+          <UL type=disc>
+            <LI>application/x-tree njplot %s (or whatever application you choose 
+            to handle the MIME type) 
+            <LI>application/x-align belvu %s (or whatever application you choose 
+            to handle the MIME type) </LI></UL></UL>
+        <P><A href="http://www.ebi.ac.uk/jalview/" 
+        target=_mainwindow>JalView</A>: A new experimental option has been added 
+        to the results page which involved using a Java Applet called <A 
+        href="http://www.ebi.ac.uk/jalview/" target=_mainwindow>JalView</A>. 
+        This is a fully featured MSA editor which allows you not only to edit 
+        the alignment but also, to exchange the alignment formats. Please note 
+        that JalView is under development. For documentation please click on the 
+        <A href="http://www.ebi.ac.uk/jalview/" target=_mainwindow>JalView</A> 
+        Hyperlink or visit the official website at <A 
+        href="http://www.jalview.org/" 
+        target=_blank>http://www.jalview.org/</A>. </P></LI></UL>
+      <P><A name=outorder></A>
+      <UL type=disc>
+        <LI><SPAN class=subheading>OUTORDER</SPAN><BR><BR>Decide which order the 
+        sequences should be printed in the alignment. </LI></UL><BR><A 
+      name=color></A>
+      <UL type=disc>
+        <LI><SPAN class=subheading>COLOUR</SPAN> <BR>You can change this option 
+        in the output results, if you click the button, the alignment will be 
+        show in colour. <BR>NOTE: This option only works when you have chosen 
+        ALN or GCG as the output format. The colouring of residues takes place 
+        according to the following physiochemical criteria: 
+        <P>
+        <TABLE class=helpbody borderColor=#999999 cellSpacing=0 cellPadding=5 
+        width="80%" border=1>
+          <TBODY>
+          <TR>
+            <TD>AVFPMILW</TD>
+            <TD><FONT color=red>RED</FONT></TD>
+            <TD noWrap>Small (small+ hydrophobic (incl.aromatic -Y))</TD></TR>
+          <TR>
+            <TD>DE</TD>
+            <TD><FONT color=blue>BLUE</FONT></TD>
+            <TD>Acidic</TD></TR>
+          <TR>
+            <TD>RHK</TD>
+            <TD><FONT color=magenta>MAGENTA</FONT></TD>
+            <TD>Basic</TD></TR>
+          <TR>
+            <TD>STYHCNGQ</TD>
+            <TD><FONT color=green>GREEN</FONT></TD>
+            <TD>Hydroxyl + Amine + Basic - Q</TD></TR>
+          <TR>
+            <TD>Others</TD>
+            <TD><FONT color=gray>Gray</FONT></TD>
+            <TD>&nbsp;</TD></TR></TBODY></TABLE><BR><I>The default is not to colour 
+        the alignments.</I><BR><BR><A href="http://prowl.rockefeller.edu/" 
+        target=_blank><IMG height=350 
+        alt="Courtesy of http://prowl.rockefeller.edu" 
+        src="clustalw_help_files/aminoacid_chemprop.gif" width=300 
+        border=0></A><BR><BR><SPAN class=subheading><A name=con></A>CONSENSUS 
+        SYMBOLS:</SPAN> 
+        <P>An alignment will display by default the following symbols denoting 
+        the degree<BR>of conservation observed in each column:</P>
+        <P>"*" means that the residues or nucleotides in that column are 
+        identical in all<BR>sequences in the alignment.</P>
+        <P>":" means that conserved substitutions have been observed, according 
+        to the<BR>COLOUR table above.</P>
+        <P>"." means that semi-conserved substitutions are 
+        observed.<BR><BR><B>Example:</B><BR></P>
+        <TABLE borderColor=#336666 cellSpacing=0 cellPadding=8 width="80%" 
+        bgColor=#efefef border=1>
+          <TBODY>
+          <TR>
+            <TD><PRE>CLUSTAL W (1.82) multiple sequence alignment
+
+
+FOSB_MOUSE      <FONT color=red>MF</FONT><FONT color=green>Q</FONT><FONT color=red>AFP</FONT><FONT color=green>G</FONT><FONT color=blue>D</FONT><FONT color=green>Y</FONT><FONT color=blue>D</FONT><FONT color=green>SGS</FONT><FONT color=magenta>R</FONT><FONT color=green>CSSS</FONT><FONT color=red>P</FONT><FONT color=green>S</FONT><FONT color=red>A</FONT><FONT color=blue>E</FONT><FONT color=green>SQY</FONT><FONT color=red>L</FONT><FONT color=green>SS</FONT><FONT color=red>V</FONT><FONT color=blue>D</FONT><FONT color=green>S</FONT><FONT color=red>F</FONT><FONT color=green>GS</FONT><FONT color=red>PP</FONT><FONT color=green>T</FONT><FONT color=red>AAA</FONT><FONT color=green>SQ</FONT><FONT color=blue>E</FONT><FONT color=green>C</FONT><FONT color=red>A</FONT><FONT color=green>G</FONT><FONT color=red>L</FONT><FONT color=green>G</FONT><FONT color=blue>E</FONT><FONT color=red>MP</FONT><FONT color=green>GS</FONT><FONT color=red>FVP</FONT><FONT color=green>T</FONT><FONT color=red>V</FONT><FONT color=green>T</FONT><FONT color=red>A</FONT> 60
+FOSB_HUMAN      <FONT color=red>MF</FONT><FONT color=green>Q</FONT><FONT color=red>AFP</FONT><FONT color=green>G</FONT><FONT color=blue>D</FONT><FONT color=green>Y</FONT><FONT color=blue>D</FONT><FONT color=green>SGS</FONT><FONT color=magenta>R</FONT><FONT color=green>CSSS</FONT><FONT color=red>P</FONT><FONT color=green>S</FONT><FONT color=red>A</FONT><FONT color=blue>E</FONT><FONT color=green>SQY</FONT><FONT color=red>L</FONT><FONT color=green>SS</FONT><FONT color=red>V</FONT><FONT color=blue>D</FONT><FONT color=green>S</FONT><FONT color=red>F</FONT><FONT color=green>GS</FONT><FONT color=red>PP</FONT><FONT color=green>T</FONT><FONT color=red>AAA</FONT><FONT color=green>SQ</FONT><FONT color=blue>E</FONT><FONT color=green>C</FONT><FONT color=red>A</FONT><FONT color=green>G</FONT><FONT color=red>L</FONT><FONT color=green>G</FONT><FONT color=blue>E</FONT><FONT color=red>MP</FONT><FONT color=green>GS</FONT><FONT color=red>FVP</FONT><FONT color=green>T</FONT><FONT color=red>V</FONT><FONT color=green>T</FONT><FONT color=red>A</FONT> 60
+                <FONT color=gray>************************************************************</FONT>
+
+FOSB_MOUSE      <FONT color=red>I</FONT><FONT color=green>TTSQ</FONT><FONT color=blue>D</FONT><FONT color=red>L</FONT><FONT color=green>Q</FONT><FONT color=red>WLV</FONT><FONT color=green>Q</FONT><FONT color=red>P</FONT><FONT color=green>T</FONT><FONT color=red>LI</FONT><FONT color=green>SS</FONT><FONT color=red>MA</FONT><FONT color=green>QSQGQ</FONT><FONT color=red>PLA</FONT><FONT color=green>SQ</FONT><FONT color=red>PPAV</FONT><FONT color=blue>D</FONT><FONT color=red>P</FONT><FONT color=green>Y</FONT><FONT color=blue>D</FONT><FONT color=red>MP</FONT><FONT color=green>GTSYST</FONT><FONT color=red>P</FONT><FONT color=green>G</FONT><FONT color=red>L</FONT><FONT color=green>S</FONT><FONT color=red>A</FONT><FONT color=green>YSTGG</FONT><FONT color=red>A</FONT><FONT color=green>SGS</FONT> 120
+FOSB_HUMAN      <FONT color=red>I</FONT><FONT color=green>TTSQ</FONT><FONT color=blue>D</FONT><FONT color=red>L</FONT><FONT color=green>Q</FONT><FONT color=red>WLV</FONT><FONT color=green>Q</FONT><FONT color=red>P</FONT><FONT color=green>T</FONT><FONT color=red>LI</FONT><FONT color=green>SS</FONT><FONT color=red>MA</FONT><FONT color=green>QSQGQ</FONT><FONT color=red>PLA</FONT><FONT color=green>SQ</FONT><FONT color=red>PPVV</FONT><FONT color=blue>D</FONT><FONT color=red>P</FONT><FONT color=green>Y</FONT><FONT color=blue>D</FONT><FONT color=red>MP</FONT><FONT color=green>GTSYST</FONT><FONT color=red>P</FONT><FONT color=green>G</FONT><FONT color=red>M</FONT><FONT color=green>SGYSSGG</FONT><FONT color=red>A</FONT><FONT color=green>SGS</FONT> 120
+                <FONT color=gray>********************************.***************</FONT>:<FONT color=gray>*.**</FONT>:<FONT color=gray>******</FONT></PRE></TD></TR></TBODY></TABLE><SPAN 
+        class=heading><BR><A href="http://www.ebi.ac.uk/help/formats_frame.html" 
+        target=_top>More on sequence/alignment formats</A></SPAN> </LI></UL>
+      <UL type=disc>
+        <P class=subheading><SPAN class=heading>FAST PAIRWISE ALIGNMENT 
+        OPTIONS:</SPAN></P><A name=ktup></A>
+        <UL type=disc>
+          <LI><SPAN class=subheading>KTUP</SPAN><SPAN class=pbold> 
+          </SPAN><BR>This option allows you to choose which 'word-length' to use 
+          when calculating fast pairwise alignments.(note: make sure you have 
+          chosen 'fast' in the ALIGNMENT. </LI></UL><BR><A name=window></A>
+        <UL type=disc>
+          <LI><SPAN class=subheading>WINDOW</SPAN><SPAN class=pbold> 
+          </SPAN><BR>Use this option to set the window length when calculating 
+          fast pairwise alignments.(Note: make sure you have chosen 'fast' in 
+          the ALIGNMENT. </LI></UL><BR><A name=score></A>
+        <UL type=disc>
+          <LI><SPAN class=subheading>SCORE</SPAN><SPAN class=pbold> 
+          </SPAN><BR>This option allows you to decide which score to take into 
+          account when calculating a fast pairwise alignment. (Note: make sure 
+          you have chosen 'fast' in the ALIGNMENT. </LI></UL><BR><A 
+        name=topdiag></A>
+        <UL type=disc>
+          <LI><SPAN class=subheading>TOPDIAG</SPAN><SPAN class=pbold> 
+          </SPAN><BR>Select here how many top diagonals should be integrated 
+          when calculating a fast pairwise alignment.(Note: make sure you have 
+          chosen 'fast' in the ALIGNMENT. </LI></UL><BR><A name=pairgap></A>
+        <UL type=disc>
+          <LI><SPAN class=subheading>PAIRGAP </SPAN><BR>Select here to set the 
+          gap penalty when generating fast pairwise alignments. </LI></UL><SPAN 
+        class=subheading><BR></SPAN></UL>
+      <UL type=disc>
+        <H3 class=heading>MULTIPLE SEQUENCE ALIGNMENT OPTIONS:</H3><A 
+        name=matrix></A>
+        <UL type=disc>
+          <LI><SPAN class=subheading>MATRIX </SPAN><BR>This option allows you to 
+          choose which matrix series to use when generating the multiple 
+          sequence alignment. The program goes through the chosen matrix series, 
+          spanning the full range of amino acid distances. <BR>
+          <UL type=disc>
+            <LI><EM><A href="http://www.ebi.ac.uk/help/BLOSSUM_frame.html" 
+            target=_top>BLOSUM </A>(Henikoff).</EM> These matrices appear to be 
+            the best available for carrying out data base similarity searches. 
+            <BR>The matrix used is Blosum30.<BR>
+            <LI><EM><A href="http://www.ebi.ac.uk/help/PAM_frame.html" 
+            target=_top>PAM</A> (Dayhoff).</EM> These have been extremely widely 
+            used since the late '70s. We use the PAM 350 matrix.<BR>
+            <LI><EM><A href="http://www.ebi.ac.uk/help/GONNET_frame.html" 
+            target=_top>GONNET</A>.</EM> These matrices were derived using 
+            almost the same procedure as the Dayhoff one (above) but are much 
+            more up to date and are based on a far larger data set. They appear 
+            to be more sensitive than the Dayhoff series. We use the GONNET 250 
+            matrix. 
+            <P>We also supply an identity matrix which gives a score of 10 to 
+            two identical amino acids and a score of zero otherwise. </P>
+            <LI>Default values are: <BR>
+            <UL type=disc>
+              <LI><I><B>DNA:</B> DNA Identity matrix.</I> 
+              <LI><I><B>Protein: </B>Gonnet 
+        250.</I><BR><BR></LI></UL></LI></UL></LI></UL><A 
+        href="http://www.ebi.ac.uk/help/matrix_frame.html" target=_top>More on 
+        Matrices</A> <BR><BR><A name=gapopen></A>
+        <UL type=disc>
+          <LI><SPAN class=subheading>GAPOPEN </SPAN><BR>You can set here the 
+          penalty for opening a gap. The default value is 10. </LI></UL><BR><A 
+        name=endgaps></A>
+        <UL type=disc>
+          <LI><SPAN class=subheading>ENDGAP</SPAN> <BR>You can set here the 
+          penalty for closing a gap. </LI></UL><BR><A name=gapext></A>
+        <UL type=disc>
+          <LI><SPAN class=subheading>GAPEXT</SPAN> <BR>You can set here the 
+          penalty for extending a gap. The default value is 0.05. </LI></UL><BR><A 
+        name=gapdist></A>
+        <UL type=disc>
+          <LI><SPAN class=subheading>GAPDIST</SPAN> <BR>You can set here the gap 
+          separation penalty. The default value is 8. <BR><BR></LI></UL><A 
+        href="http://www.ebi.ac.uk/help/gaps_frame.html" target=_top>More about 
+        gaps</A>.<BR><BR><BR>
+        <LI><SPAN class=subheading>EXAMPLE<A name=ex></A><BR></SPAN><BR>e.g. A 
+        multiple sequence alignment was done with ClustalW. 5 sequences were 
+        input in the fasta format (<A 
+        href="http://www.ebi.ac.uk/clustalw/alignment.txt" 
+        target=_blank>Download</A>):<BR><BR></LI></UL></TD></TR></TBODY></TABLE>
+<TABLE cellPadding=5 width=550 border=0>
+  <TBODY>
+  <TR>
+    <TD>
+      <DL>
+        <DD>
+        <TABLE borderColor=#336666 cellSpacing=0 cellPadding=8 width="80%" 
+        bgColor=#efefef border=1>
+          <TBODY>
+          <TR>
+            <TD><PRE>&gt;FOSB_MOUSE Protein fosB
+     MFQAFPGDYD SGSRCSSSPS AESQYLSSVD SFGSPPTAAA SQECAGLGEM PGSFVPTVTA 
+     ITTSQDLQWL VQPTLISSMA QSQGQPLASQ PPAVDPYDMP GTSYSTPGLS AYSTGGASGS
+     GGPSTSTTTS GPVSARPARA RPRRPREETL TPEEEEKRRV RRERNKLAAA KCRNRRRELT
+     DRLQAETDQL EEEKAELESE IAELQKEKER LEFVLVAHKP GCKIPYEEGP GPGPLAEVRD
+     LPGSTSAKED GFGWLLPPPP PPPLPFQSSR DAPPNLTASL FTHSEVQVLG DPFPVVSPSY
+     TSSFVLTCPE VSAFAGAQRT SGSEQPSDPL NSPSLLAL  
+                     
+&gt;FOSB_HUMAN Protein fosB
+     MFQAFPGDYD SGSRCSSSPS AESQYLSSVD SFGSPPTAAA SQECAGLGEM PGSFVPTVTA
+     ITTSQDLQWL VQPTLISSMA QSQGQPLASQ PPVVDPYDMP GTSYSTPGMS GYSSGGASGS 
+     GGPSTSGTTS GPGPARPARA RPRRPREETL TPEEEEKRRV RRERNKLAAA KCRNRRRELT 
+     DRLQAETDQL EEEKAELESE IAELQKEKER LEFVLVAHKP GCKIPYEEGP GPGPLAEVRD
+     LPGSAPAKED GFSWLLPPPP PPPLPFQTSQ DAPPNLTASL FTHSEVQVLG DPFPVVNPSY
+     TSSFVLTCPE VSAFAGAQRT SGSDQPSDPL NSPSLLAL 
+                       
+&gt;FOS_CHICK Proto-oncogene protein c-fos 
+     MMYQGFAGEY EAPSSRCSSA SPAGDSLTYY PSPADSFSSM GSPVNSQDFC TDLAVSSANF 
+     VPTVTAISTS PDLQWLVQPT LISSVAPSQN RGHPYGVPAP APPAAYSRPA VLKAPGGRGQ 
+     SIGRRGKVEQ LSPEEEEKRR IRRERNKMAA AKCRNRRREL TDTLQAETDQ LEEEKSALQA  
+     EIANLLKEKE KLEFILAAHR PACKMPEELR FSEELAAATA LDLGAPSPAA AEEAFALPLM 
+     TEAPPAVPPK EPSGSGLELK AEPFDELLFS AGPREASRSV PDMDLPGASS FYASDWEPLG 
+     AGSGGELEPL CTPVVTCTPC PSTYTSTFVF TYPEADAFPS CAAAHRKGSS SNEPSSDSLS 
+     SPTLLAL  
+
+&gt;FOS_RAT Proto-oncogene protein c-fos 
+     MMFSGFNADY EASSSRCSSA SPAGDSLSYY HSPADSFSSM GSPVNTQDFC ADLSVSSANF  
+     IPTVTAISTS PDLQWLVQPT LVSSVAPSQT RAPHPYGLPT PSTGAYARAG VVKTMSGGRA  
+     QSIGRRGKVE QLSPEEEEKR RIRRERNKMA AAKCRNRRRE LTDTLQAETD QLEDEKSALQ  
+     TEIANLLKEK EKLEFILAAH RPACKIPNDL GFPEEMSVTS LDLTGGLPEA TTPESEEAFT 
+     LPLLNDPEPK PSLEPVKNIS NMELKAEPFD DFLFPASSRP SGSETARSVP DVDLSGSFYA
+     ADWEPLHSSS LGMGPMVTEL EPLCTPVVTC TPSCTTYTSS FVFTYPEADS FPSCAAAHRK
+     GSSSNEPSSD SLSSPTLLAL  
+
+&gt;FOS_MOUSE Proto-oncogene protein c-fos 
+     MMFSGFNADY EASSSRCSSA SPAGDSLSYY HSPADSFSSM GSPVNTQDFC ADLSVSSANF
+     IPTVTAISTS PDLQWLVQPT LVSSVAPSQT RAPHPYGLPT QSAGAYARAG MVKTVSGGRA
+     QSIGRRGKVE QLSPEEEEKR RIRRERNKMA AAKCRNRRRE LTDTLQAETD QLEDEKSALQ
+     TEIANLLKEK EKLEFILAAH RPACKIPDDL GFPEEMSVAS LDLTGGLPEA STPESEEAFT
+     LPLLNDPEPK PSLEPVKSIS NVELKAEPFD DFLFPASSRP SGSETSRSVP DVDLSGSFYA
+     ADWEPLHSNS LGMGPMVTEL EPLCTPVVTC TPGCTTYTSS FVFTYPEADS FPSCAAAHRK
+     GSSSNEPSSD SLSSPTLLAL
+		 </PRE></TD></TR></TBODY></TABLE><BR></DD></DL><SPAN class=pbold>Output 
+      was in the format:</SPAN><BR><BR>The sequences are aligned with each 
+      other, with the query sequence at the top and subsequent sequences below. 
+      Gaps are represented by the "<SPAN class=preformattedbold>-</SPAN>" 
+      symbol. The running total number of amino acids or nucleotides are shown 
+      on the right. The degree of similarity is illustrated underneath the 
+      alignments with a series of <A 
+      href="http://www.ebi.ac.uk/clustalw/clustalw_help.html#con">consensus 
+      symbols</A>. <BR>
+      <DL>
+        <DD>
+        <TABLE borderColor=#336666 cellSpacing=0 cellPadding=8 width="80%" 
+        bgColor=#efefef border=1>
+          <TBODY>
+          <TR>
+            <TD><PRE>
+FOS_RAT         MMFSGFNADYEASSSRCSSASPAGDSLSYYHSPADSFSSMGSPVNTQDFCADLSVSSANF 60
+FOS_MOUSE       MMFSGFNADYEASSSRCSSASPAGDSLSYYHSPADSFSSMGSPVNTQDFCADLSVSSANF 60
+FOS_CHICK       MMYQGFAGEYEAPSSRCSSASPAGDSLTYYPSPADSFSSMGSPVNSQDFCTDLAVSSANF 60
+FOSB_MOUSE      -MFQAFPGDYDS-GSRCSS-SPSAESQ--YLSSVDSFGSPPTAAASQE-CAGLGEMPGSF 54
+FOSB_HUMAN      -MFQAFPGDYDS-GSRCSS-SPSAESQ--YLSSVDSFGSPPTAAASQE-CAGLGEMPGSF 54
+                 *:..* .:*:: .***** **:.:*   * *..***.*  :.. :*: *:.*.  ...*
+
+FOS_RAT         IPTVTAISTSPDLQWLVQPTLVSSVAPSQ-------TRAPHPYGLPTPS-TGAYARAGVV 112
+FOS_MOUSE       IPTVTAISTSPDLQWLVQPTLVSSVAPSQ-------TRAPHPYGLPTQS-AGAYARAGMV 112
+FOS_CHICK       VPTVTAISTSPDLQWLVQPTLISSVAPSQ-------NRG-HPYGVPAPAPPAAYSRPAVL 112
+FOSB_MOUSE      VPTVTAITTSQDLQWLVQPTLISSMAQSQGQPLASQPPAVDPYDMPGTS----YSTPGLS 110
+FOSB_HUMAN      VPTVTAITTSQDLQWLVQPTLISSMAQSQGQPLASQPPVVDPYDMPGTS----YSTPGMS 110
+                :******:** **********:**:* **... ::.    .**.:*  :    *: ..: 
+
+FOS_RAT         KTMSGGRAQSIG--------------------RRGKVEQLSPEEEEKRRIRRERNKMAAA 152
+FOS_MOUSE       KTVSGGRAQSIG--------------------RRGKVEQLSPEEEEKRRIRRERNKMAAA 152
+FOS_CHICK       KAP-GGRGQSIG--------------------RRGKVEQLSPEEEEKRRIRRERNKMAAA 151
+FOSB_MOUSE      AYSTGGASGSGGPSTSTTTSGPVSARPARARPRRPREETLTPEEEEKRRVRRERNKLAAA 170
+FOSB_HUMAN      GYSSGGASGSGGPSTSGTTSGPGPARPARARPRRPREETLTPEEEEKRRVRRERNKLAAA 170
+                   :** . * *.::: :::.. .: .: : .** : * *:********:******:***
+
+FOS_RAT         KCRNRRRELTDTLQAETDQLEDEKSALQTEIANLLKEKEKLEFILAAHRPACKIPNDLGF 212
+FOS_MOUSE       KCRNRRRELTDTLQAETDQLEDEKSALQTEIANLLKEKEKLEFILAAHRPACKIPDDLGF 212
+FOS_CHICK       KCRNRRRELTDTLQAETDQLEEEKSALQAEIANLLKEKEKLEFILAAHRPACKMPEELRF 211
+FOSB_MOUSE      KCRNRRRELTDRLQAETDQLEEEKAELESEIAELQKEKERLEFVLVAHKPGCKIPYEEG- 229
+FOSB_HUMAN      KCRNRRRELTDRLQAETDQLEEEKAELESEIAELQKEKERLEFVLVAHKPGCKIPYEEG- 229
+                *********** *********:**: *::***:* ****:***:*.**:*.**:* :   
+
+FOS_RAT         PEEMSVTS-LDLTGGLPEATTPESEEAFTLPLLNDPEPK-PSLEPVKNISNMELKAEPFD 270
+FOS_MOUSE       PEEMSVAS-LDLTGGLPEASTPESEEAFTLPLLNDPEPK-PSLEPVKSISNVELKAEPFD 270
+FOS_CHICK       SEELAAATALDLG----APSPAAAEEAFALPLMTEAPPAVPPKEPSG--SGLELKAEPFD 265
+FOSB_MOUSE      PGPGPLAEVRDLPG-----STSAKEDGFGWLLPPPPPPP-----------------LPFQ 267
+FOSB_HUMAN      PGPGPLAEVRDLPG-----SAPAKEDGFSWLLPPPPPPP-----------------LPFQ 267
+                .   . :   ** .     :..  *:.*   *   . *                   **:
+
+FOS_RAT         DFLFPASSRPSGSETARSVPDVDLSG--SFYAADWEPLHSSSLGMGPMVTELEPLCTPVV 328
+FOS_MOUSE       DFLFPASSRPSGSETSRSVPDVDLSG--SFYAADWEPLHSNSLGMGPMVTELEPLCTPVV 328
+FOS_CHICK       ELLFSAGPR----EASRSVPDMDLPGASSFYASDWEPLGAGSGG------ELEPLCTPVV 315
+FOSB_MOUSE      --------------SSRDAP-PNLTA--SLFTHS----------------EVQVLGDPFP 294
+FOSB_HUMAN      --------------TSQDAP-PNLTA--SLFTHS----------------EVQVLGDPFP 294
+                              :::..*  :*..  *::: .                *:: *  *. 
+
+FOS_RAT         TCTPSCTTYTSSFVFTYPEADSFPSCAAAHRKGSSSNEPSSDSLSSPTLLAL 380
+FOS_MOUSE       TCTPGCTTYTSSFVFTYPEADSFPSCAAAHRKGSSSNEPSSDSLSSPTLLAL 380
+FOS_CHICK       TCTPCPSTYTSTFVFTYPEADAFPSCAAAHRKGSSSNEPSSDSLSSPTLLAL 367
+FOSB_MOUSE      VVSP---SYTSSFVLTCPEVSAF---AGAQR--TSGSEQPSDPLNSPSLLAL 338
+FOSB_HUMAN      VVNP---SYTSSFVLTCPEVSAF---AGAQR--TSGSDQPSDPLNSPSLLAL 338
+                . .*   :***:**:* **..:*   *.*:*  :*..: .**.*.**:****
+
+
+ </PRE></TD></TR></TBODY></TABLE></DD></DL>
+      <UL></UL></TD></TR></TBODY></TABLE>
+<TABLE cellPadding=5 width=550 border=0>
+  <TBODY>
+  <TR>
+    <TD><BR><BR>
+      <UL>
+        <LI><SPAN class=subheading>EDITING AN ALIGNMENT<A 
+        name=al></A><BR></SPAN><BR>You can edit the alignment using <A 
+        href="http://www.ebi.ac.uk/jalview/index.html" 
+        target=_mainwindow>jalview</A>. Click on the button below to view the 
+        above alignment.<BR><BR><APPLET height=35 
+        archive=http://www.ebi.ac.uk/jalview/jalview-1.8.jar width=150 
+        code=jalview.ButtonAlignApplet.class><PARAM NAME="input" VALUE="http://www.ebi.ac.uk/clustalw/al.aln"><PARAM NAME="type" VALUE="URL"><PARAM NAME="format" VALUE="CLUSTAL"><PARAM NAME="mailServer" VALUE="www.ebi.ac.uk"></APPLET> 
+  </LI></UL></TD></TR></TBODY></TABLE>
+<TABLE cellPadding=5 width=550 border=0>
+  <TBODY>
+  <TR>
+    <TD><A name=tree></A>
+      <UL type=disc>
+        <LI><SPAN class=subheading>PHYLOGENETIC TREE </SPAN><BR><BR>Phylogram is 
+        a branching diagram (tree) assumed to be an estimate of a phylogeny, 
+        branch lengths are proportional to the amount of inferred evolutionary 
+        change. A Cladogram is a branching diagram (tree) assumed to be an 
+        estimate of a phylogeny where the branches are of equal length, thus 
+        cladograms show common ancestry, but do not indicate the amount of 
+        evolutionary "time" separating taxa. Tree distances can be shown, just 
+        click on the diagram to get a menu of options. The ".dnd" file is a file 
+        that describes the phylogenetic tree.<BR><BR>These are now in controlled 
+        with new buttons in the output file as well as a pop up menu, that is 
+        available by right-clicking on the applet. The buttons on the page 
+        include "Show as Phylogram Tree", "Show as Cladogram Tree" and "Show 
+        Distances". <BR><BR><B><A name=print></A>IMPORTANT!</B><BR><BR><I>Please 
+        note applets are not printed out with html pages, You will need to: 
+        <BR><BR></I>
+        <UL type=disc>
+          <LI>Use the "Print Screen" button in the top right corner of your 
+          keyboard.
+          <LI>Open an imaging application like paint or photoshop.
+          <LI>Go "file&gt;new" from the menu or "control+N" from the keyboard to 
+          create a new image.
+          <LI>Go "edit&gt;paste from the menu or "control+V" from the keyboard 
+          to paste your screen capture.
+          <LI>The use the crop function to trim the image (e.g. 
+"image&gt;crop").
+          <LI>Then save or print the image. <BR><BR></LI></UL><SPAN 
+        class=pbold>example: </SPAN><BR><BR><I>Right-click in the area below for 
+        options! </I><BR></LI></UL></TD></TR></TBODY></TABLE>
+<TABLE cellPadding=5 width=550 border=0>
+  <TBODY>
+  <TR>
+    <TD>
+      <DL>
+        <DD>
+        <TABLE borderColor=#336666 cellSpacing=0 cellPadding=8 width="80%" 
+        bgColor=#efefef border=1>
+          <TBODY>
+          <TR>
+            <TD><APPLET codeBase=/clustalw/ height=144 width=900 
+              code=ClustalTree.class><PARAM NAME="formatting" VALUE="new"><PARAM NAME="showNumbers" VALUE="hide"><PARAM NAME="tree" VALUE="(&#10;(&#10;(&#10;FOSB_MOUSE:0.02318,&#10;FOSB_HUMAN:0.01824)&#10;:0.41596,&#10;FOS_CHICK:0.12694)&#10;:0.10523,&#10;FOS_RAT:0.02011,&#10;FOS_MOUSE:0.01147);&#10;"></APPLET></TD></TR></TBODY></TABLE></DD></DL></TD></TR></TBODY></TABLE>
+<TABLE cellPadding=5 width=550 border=0>
+  <TBODY>
+  <TR>
+    <TD>
+      <UL type=disc><BR><BR><SPAN class=pbold>IMPORTANT:</SPAN><BR>To use this 
+        option you will need to input a sequence alignment. Please make sure 
+        this alignment is in PIR or PHYLIP format. ALN and GCG MSF files are not 
+        supported so you will have to convert your MSF files to PIR format with, 
+        for example, GCG's ToPir: <PRE>topir pileup.msf{*} -outf=pileup.pir 
+</PRE>Please refer to the GCG documentation to find out how to use this 
+        program correctly. You may then use this file as input (cut and paste or 
+        upload) to this service. 
+        <P>The method used is the NJ (Neighbour Joining) method of Saitou and 
+        Nei. First you calculate distances (percent divergence) between all 
+        pairs of sequence from a multiple alignment; second you apply the NJ 
+        method to the distance matrix. 
+        <P>This option allows you to choose the following output formats for the 
+        tree:<BR>
+        <UL type=disc>
+          <UL type=disc>
+            <LI>Neighbour 
+            <LI>Phylip 
+            <LI>Distance <BR></LI></UL></UL>In order to view these trees you must 
+        have a program capable of displaying the data. Please refer to this 
+        pages section on <A 
+        href="http://www.ebi.ac.uk/clustalw/clustalw_help.html#output">OUTPUT</A> 
+        for more information. </UL>
+      <P><A name=kimura></A>
+      <UL type=disc>
+        <LI><SPAN class=pbold>Kimura Correction of distances</SPAN><BR>This 
+        options allows you to set on distances correction (correction for 
+        multiple substitutions). This is because, as sequences diverge, more 
+        than one substitution will happen at many sites. However, you only see 
+        one difference when you look at the present day sequences. Therefore, 
+        this option has the effect of stretching branch lengths in trees 
+        (especially long branches). The corrections used here (for DNA or 
+        proteins) are both due to Motoo Kimura. </LI></UL>
+      <P><A name=igngaps></A>
+      <UL type=disc>
+        <LI><SPAN class=pbold>Ignore Gaps in alignment</SPAN><BR>With this 
+        option, any alignment positions where ANY of the sequences have a gap 
+        will be ignored. This means that 'like' will be compared to 'like' in 
+        all distances. It also, automatically throws away the most ambiguous 
+        parts of the alignment, which are concentrated around gaps (usually). 
+        The disadvantage is that you may throw away much of the data if there 
+        are many gaps. </LI></UL>
+      <P><BR><A name=upload></A>
+      <UL type=disc>
+        <LI><SPAN class=subheading>UPLOAD A FILE </SPAN><BR><BR>You may upload a 
+        file from your computer which containing a valid <SPAN 
+        class=pbold>set</SPAN> of sequences in any format (<A 
+        href="http://www.ebi.ac.uk/help/formats/GCG_MSF.txt" 
+        target=_blank>GCG</A>, <A 
+        href="http://www.ebi.ac.uk/help/formats/Fasta.txt" 
+        target=_blank>FASTA</A>, <A 
+        href="http://www.ebi.ac.uk/help/formats/EMBL.txt" 
+        target=_blank>EMBL</A>, <A 
+        href="http://www.ebi.ac.uk/help/formats/Genebank.txt" 
+        target=_blank>GenBank</A>, <A 
+        href="http://www.ebi.ac.uk/help/formats/NBRF_PIR.txt" 
+        target=_blank>PIR</A>, <A 
+        href="http://www.ebi.ac.uk/help/formats/NBRF_PIR.txt" 
+        target=_blank>NBRF</A>,<A 
+        href="http://www.ebi.ac.uk/help/formats/Phylip.txt" target=_blank> 
+        Phylip</A> or <A href="http://www.ebi.ac.uk/help/formats/swiss.txt" 
+        target=_blank>UniProt/Swiss-Prot</A>) using this option. Please note 
+        that this option only works with Netscape Browsers or Internet Explorer 
+        version 5 or later. Some word processors may yield unpredictable results 
+        as hidden/control characters may be present in the files. It is best to 
+        save files with the Unix format option to avoid hidden windows 
+        characters. Some examples of common sequence formats may be seen <A 
+        href="http://www.ebi.ac.uk/help/formats_frame.html" 
+        target=_top>here</A>. </LI></UL>
+      <UL type=disc><A id=ScoresTable name=ScoresTable></A>
+        <LI><SPAN class=subheading>SCORES TABLE</SPAN><BR><BR>Scores Table is a 
+        new view to ClustalW output. Users can sort the scores by Alignment 
+        Score, Sequence Number, Sequence Name and Sequence Length. </LI></UL>
+      <P>
+      <UL type=disc><A name=reference></A>
+        <LI><SPAN class=subheading>REFERENCES </SPAN><BR><BR>Higgins D., 
+        Thompson J., Gibson T. Thompson J. D., Higgins D. G., Gibson T. 
+        J.(1994).<BR>CLUSTAL W: improving the sensitivity of progressive 
+        multiple sequence alignment through sequence weighting,position-specific 
+        gap penalties and weight matrix choice.<BR>Nucleic Acids Res. 
+        22:4673-4680. <A 
+        href="http://srs.ebi.ac.uk/srsbin/cgi-bin/wgetz?-e+[MEDLINE-pmid:'7984417']" 
+        target=_mainwindow><IMG height=11 src="clustalw_help_files/view.gif" 
+        width=47 border=0></A><BR><BR>ClustalW WWW Service at the European 
+        Bioinformatics Institute<BR><A href="http://www.ebi.ac.uk/clustalw" 
+        target=_mainwindow>http://www.ebi.ac.uk/clustalw</A><BR>Rodrigo Lopez, 
+        Services Program<BR><BR>Andrew Lloyd<BR>The Clustal W WW server at the 
+        EBI<BR>embnet.news volume 4.2 1997<BR><A 
+        href="http://www.ebi.ac.uk/embnet.news/vol4_3/clustalw1.html" 
+        target=_mainwindow>http://www.ebi.ac.uk/embnet.news/vol4_3/clustalw1.html</A><BR><BR>The 
+        program in use in this service can be obtained freely from:<BR><A 
+        href="http://www.sgi.com/chembio/resources/clustalw/parallel_clustalw.html" 
+        target=_mainwindow>http://www.sgi.com/chembio/resources/clustalw/parallel_clustalw.html</A> 
+        <BR><BR>Parry-Smith, D.J., Payne, A.WR, Michie, A.D. and Attwood, T. K. 
+        (1997)<BR>CINEMA - A novel Colour INteractive Editor for Multiple 
+        Alignments.<BR><I>Gene, 211(2), GC45-56.</I> <A 
+        href="http://srs.ebi.ac.uk/srsbin/cgi-bin/wgetz?-e+[MEDLINE-pmid:'9852962']" 
+        target=_mainwindow><IMG height=11 src="clustalw_help_files/view.gif" 
+        width=47 border=0></A><BR><A 
+        href="http://www.bioinf.man.ac.uk/dbbrowser/CINEMA2.1/" 
+        target=_mainwindow>http://www.bioinf.man.ac.uk/dbbrowser/CINEMA2.1/</A><BR><BR>Attwood, 
+        T. K., Payne, A. W.R., Michie, A.D. and Parry-Smith, D.J. (1997)<BR>A 
+        Colour INteractive Editor for Multiple Alignments - CINEMA,<BR><A 
+        href="http://www.ebi.ac.uk/embnet.news/vol3_3/software.html" 
+        target=_mainwindow>EMBnet.news, 3 (3). </A><BR><BR>Jalview - a java 
+        multiple alignment editor<BR><A href="http://www.jalview.org/" 
+        target=_blank>http://www.jalview.org <BR></A><BR>pfaat (Protein Family 
+        Alignment Annotation Tool)<BR><A href="http://pfaat.sourceforge.net/" 
+        target=_blank>http://pfaat.sourceforge.net/</A><BR><BR>
+        <LI><SPAN class=subheading>OTHER SERVICES:</SPAN><BR><BR>This services 
+        is also available as an application from the EBI's srs server: <A 
+        href="http://srs.ebi.ac.uk/" 
+        target=_mainwindow>http://srs.ebi.ac.uk/</A><BR><BR><SPAN 
+        class=pbold>N.B.</SPAN> <A 
+        href="http://www.ebi.ac.uk/blast2/DbClustal_frame.html" 
+        target=_top>DbClustal</A> can be launched from <A 
+        href="http://www.ebi.ac.uk/blast2/" target=_mainwindow>Wu-Blast2</A> and 
+        <A href="http://www.ebi.ac.uk/blastall/" 
+        target=_mainwindow>NCBI-Blast2</A> you can choose some of the sequences 
+        from your score list and align them with your query sequence. You may 
+        also then paste your .aln files back into ClustalW (bootstrapping) in 
+        order to <A 
+        href="http://www.ebi.ac.uk/clustalw/clustalw_help.html#color">colour</A> 
+        your alignments, view the <A 
+        href="http://www.ebi.ac.uk/clustalw/clustalw_help.html#tree">phylogenetic 
+        trees</A> or launch <A href="http://www.ebi.ac.uk/jalview/" 
+        target=_mainwindow>jalview</A>.<BR></LI></UL><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR><BR></TD></TR></TBODY></TABLE></BODY></HTML>

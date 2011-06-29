@@ -1,0 +1,270 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
+	<TITLE>Bilab quickstart guide</TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.1.3  (Win32)">
+	<META NAME="CREATED" CONTENT="20050204;262201">
+	<META NAME="CHANGEDBY" CONTENT="David Jung">
+	<META NAME="CHANGED" CONTENT="20050204;6250300">
+</HEAD>
+<BODY LANG="en-US" DIR="LTR">
+<H2>Bilab Quick-start</H2>
+<P>Bilab is an interactive tool with a user interface for biological applications
+and mathematical calculations using a console similar to Matlab.
+It allows a sequence of amino acids to be read in and manipulations done
+on the protein sequence to achieve desired results.
+<P>The Bilab main window is comprised of distinct <B>views</B>. To
+the left is the interactive <I>Console</I> view where scigol language
+expressions and commands can be entered. The view in the lower right
+is <I>Value</I> view (probably where you are reading this). It
+displays values that have been selected in the <I>Environemt</I> view
+above, or values evaluated using the <B>.show</B> console command. 
+<P>It has a Jmol viewer for viewing biomacromolecules in the pdb format
+wherein the xyz coordinates obtained from experimental methods are
+deposited in the Protein Data bank. It supports different resource types
+and one can view the different file types supported using
+<P>
+  >resourceTypes
+
+<H3>HTML viewer</H3> 
+<P> With the HTML viewer one can browse different websites and download the
+structures for different biomacromolecules. 
+<H3> Important websites for bioinformatics:</H3>
+<P>http://www.pdb.org // Protein data bank is a repository for protein, enzyme
+                         crystal structures obtained from various experimental methods.
+<P>http://www.clustal.org  // Multiple sequence allignment
+<P>http://emboss.sourceforge.net/
+</P>
+<P>The Environment view displays a hierarchical tree of the objects
+available, such as functions that can be called, values of any type -
+such as numbers, lists, molecules etc. Selecting an object in the
+Environment view will cause its value to be display in the Value view
+- invoking any special viewers that are available depending on the
+type of the object. 
+
+</P>
+<P><BR><BR>
+</P>
+<H3> Scigol</H3>
+<P>
+It has a Scigol intepreter to perform basic mathematical calculations
+involving matrices.
+<P>a) trignometric functions
+<P>b) simple matrix computations
+
+<H3>Entering Scigol expressions</H3>
+<P>Try out some simple Scigol expressions in the console view: 
+</P>
+<PRE STYLE="margin-bottom: 0.2in">3+(6*9)</PRE><P>
+You should see the value of the result displayed. You can call
+functions by enclusing their arguments (if any) within parenthesis
+after their name:</P>
+<PRE STYLE="margin-bottom: 0.2in">sqrt(5)</PRE><P>
+To see the type of the function (a <I>func</I> in Scigol parlance),
+type:</P>
+<PRE STYLE="margin-bottom: 0.2in">typeof(sqrt)</PRE><P>
+The result you see:</P>
+<PRE STYLE="margin-bottom: 0.2in">sqrt: func(r:real -&gt; real)</PRE><P>
+is called the function's <I>signature</I>. In this case it reads: a
+function taking a single parameter, named <B>r</B> &ndash; that is a
+<B>real</B> number, and giving a <B>real</B> number in return. More
+information about a function, or any object, may be obtained by
+typing (for exampel):</P>
+<PRE STYLE="margin-bottom: 0.2in">.help sqrt</PRE><P>
+You can also assign variables in the console as follows:</P>
+<PRE STYLE="margin-bottom: 0.2in">s3 = sin(3)</PRE><P>
+Notice that the value of the right-hand-side (RHS) expression was
+displayed in addition to being assigned to the variable <B>s3</B>. To
+suppress the display of expression evaluation, suffix the line with a
+semi-conol '<B>;</B>'.</P>
+<P>For example, suppose we want to assign the variable <B>z</B> to a
+3-dimensional vector of zeros. There is a function named <I>zero</I>
+that does just what we want:</P>
+<PRE STYLE="margin-bottom: 0.2in">z = zero(3);</PRE><P>
+The value of the expression (a <I>vector</I>) wasn't displayed. We
+can easily display it by typing the variable alone as an expression:</P>
+<PRE STYLE="margin-bottom: 0.2in">z</PRE><P>
+By default, there are some sample objects in the global environment.
+For example, there is a <B>list</B> of numbers named <I>gilist</I>
+that has been predefined. To see its value just enter:</P>
+<PRE STYLE="margin-bottom: 0.2in">gilist</PRE><P>
+All lists in Scigol are represented by round parenthesis with comma
+seperated elements. A <B>list</B> can contain any type of elements
+and thet need not be all the same. A list can be indexed by using the
+function call notation and passing the index as argument, like:</P>
+<PRE STYLE="margin-bottom: 0.2in">gilist(0)</PRE><P>
+You can also index ranges of list elements like this:</P>
+<PRE>gilist(0..2)
+gilist(0..-3)</PRE><P>
+(Negative indices are counted from the end of the list instead of the
+beginning)</P>
+<P>There are many other types, such as <B>vector</B>, <B>matrix</B>,
+<B>map</B>, <B>class</B> and others. Try some of these expressions:</P>
+<PRE>v = [1 2 3]
+v2 = [4 5 6]
+v3 = v*2+v2
+#v3
+|v3|
+zeromat = zero(2,2)
+m1 = [1 2; 3 4]
+m2 = [5 6; 7 8]
+m1*m2+m2
+mymap = [ 1 -&gt; 2; 2 -&gt; 4; 3 -&gt; &quot;thend&quot; ]
+mymap(3)</PRE><H3>
+Biological types</H3>
+<P>By default, there are some sample object in the global
+environment. For example, a DNA sequence named <B>d</B> has been
+pre-defined. To view it simply enter it as an expression:</P>
+<PRE STYLE="margin-bottom: 0.2in">d</PRE><P>
+The variable d is an object of type <B>DNA</B>. As there is a custom
+viewer available for DNA, the viewer has been displayed in-line in
+the console (in this case it is an Artemis based viewer). 
+</P>
+<P><I>[*<B>NB</B>: in the current implementation there is only a
+single viewer choice per type and there are no viewer menus or
+options implemented]</I></P>
+<P>There is also a pre-defined variable p containing a protein
+sequence:</P>
+<PRE>p
+avgisomass(p)</PRE><P>
+The <B>genbank</B> function takes a NCBI Genbank GI number, or list
+of GI numbers, and retrieves their sequences from the internet. Try
+this:</P>
+<PRE>d3 = genbank( gilist(3) )
+#d3</PRE><P>
+You can transcribe that into RNA thus:</P>
+<PRE STYLE="margin-bottom: 0.2in">r3 = transcribe(d3);</PRE><P>
+or directly into a protein (1<SUP>st</SUP> frame):</P>
+<PRE STYLE="margin-bottom: 0.2in">p3 = translate(d3)</PRE><P>
+While this protein has no structure information, a predefined sample
+protein with strucutre is declared as variable p2:</P>
+<PRE STYLE="margin-bottom: 0.2in">p2</PRE><P>
+As you can see, there is a custom viewer (based on JMol) for protein
+molecules.</P>
+<H3>Alignments</H3>
+<P>Suppose you have a set of protein sequences that you'd like to run
+through the <B>ClustalW</B> program to obtain an alignment. You can
+type the following to run ClustalW on proteins <B>p</B>, the
+translation of DNA <B>d2</B> and protein dequence <B>p3</B>; first
+put them into a list and then invoke the <B>clustalw</B> function <I>(or
+simply type the list directly as the argument to the function)</I>:</P>
+<PRE>slist = ( p, translate(d2), p3 )
+clustalw(slist)</PRE><P> doesnot work
+The result of the function is an <B>alignment</B> &ndash; another
+Bilab type. The result is also displayed in a custom viewer for
+alignments (JalView based).</P>
+<H3>Learning about the library</H3>
+<P>The easiest way to learn about the available functions and object
+in the Bilab library is to browse using the Environment view and to
+get help on functions using the .help command. Many functions has
+extensive help available. For example:</P>
+<PRE STYLE="margin-bottom: 0.2in">.help antigenic</PRE><P>
+<BR><BR>
+</P>
+<H3> [A] Walkthrough of simple operations in BiLab </H3>
+<L1><P><B> 1) Commands on the console for biological manipulations </B>
+<PRE STYLE="margin-bottom: 0.2in"> Ala</PRE><P>
+</P> The picture of Alanine amino acid appears in the Jmol viewer.
+     One can then measure the distances, angles and dihedrals between the atoms
+</P> Presently the version supports all 20 amino acids, the nucleotide bases
+     for DNA and RNA.
+</P> Added feature is the ability to look at the fundamental building
+     blocks for carbohydrates and lipids. For example: </P>
+<PRE STYLE="margin-bottom: 0.2in">bdglucose</PRE><P>
+</P> This will provide a Beta-D-glucose pyrannose carbohydrate molecule in Jmol
+     viewer.
+</P> Alternatively on the console one can type
+<PRE STYLE="margin-bottom: 0.2in">.show read ("molecules/Tyr.pdb")</PRE><P>
+</P> Jmol viewer would display a tyrosine amino-acid.
+
+<L1><P><B> 2) Adding protein sequences </B>
+<PRE STYLE="margin-bottom: 0.2in">  p1 = protein ("CGPY")</PRE><P>
+<PRE STYLE="margin-bottom: 0.2in">  p2 = protein ("TYR")</PRE><P>
+<PRE STYLE="margin-bottom: 0.2in">  seq1 = p1.get_rawsequence()</PRE><P>
+<PRE STYLE="margin-bottom: 0.2in">  seq2 = p2.get_rawsequence()</PRE><P>
+<PRE STYLE="margin-bottom: 0.2in">  y =protein(seq1+seq2)</PRE><P>
+</P>  y = CGPYTYR
+<PRE STYLE="margin-bottom: 0.2in">  y.seq.length()</PRE><P> 
+</P>The amino-acid length of the final protein
+</P>7
+</P>The range of the protein/peptide is [0-6]
+<PRE STYLE="margin-bottom: 0.2in">  y(0)</PRE><P> 
+</P>This will open up amino acid Cysteine in the Jmol viewer.
+<PRE STYLE="margin-bottom: 0.2in"> y.avgIsoMass </PRE><P> 
+</P> outputs the mass of the final protein
+</P> avgIsoMass=695.81828000000001
+
+
+<L1><P><B> 3) DNA, RNA manipulation </B>
+<PRE STYLE="margin-bottom: 0.2in"> dna1 = DNA("ACG") </PRE><P> 
+<PRE STYLE="margin-bottom: 0.2in"> r3 = transcribe (dna1)</PRE><P> 
+</P>  r3 = T ACG; TGC R
+<PRE STYLE="margin-bottom: 0.2in"> dna1.seq.length()</PRE><P> 
+</P> 3
+<PRE STYLE="margin-bottom: 0.2in"> dna1.get.Compliment()</PRE><P> 
+</P> R CGT; GCA T
+
+<L1><P><B> 4) Importing a file supported by BiLab </B>
+</P> Any file that needs to be viewed in BiLab needs to 
+    be put under the resources/molecules or resources/sequences directory
+    depending on the resource file type.
+</P> The permissions of the file needs to be changed to rwx
+<PRE STYLE="margin-bottom: 0.2in">chmod +rwx <filename></PRE><P> 
+<PRE STYLE="margin-bottom: 0.2in"> .show read ("molecules/<filename>.pdb")</PRE><P> 
+<PRE STYLE="margin-bottom: 0.2in"> .show read ("sequences/<filename>.msf")</PRE><P> 
+
+
+<H3> [B] Adding common molecules to the bilab resources so that they can instantly accessed. </H3>
+</P> Download the xyz coordinate file from protein data bank and place it under resources/molecules.
+</P> The permissions of the file needs to be changed to rwx: Use chmod +rwx <filename.xyz>
+</P> Under libs/bilab.sg  ADD:  @[bilab.Summary("BDGLUCOSE molecule")]     let bdglucose:molecule = MoleculeImpl.bdglucose;
+</P> In directory src and file MoleculeImpl.java: Declare under public static "the name of molecule"
+</P> Add in static declaration "bdglucose = fromResource("bdglucose.xyz", "BDGlucose");"
+
+
+<L1><P><B> Common Carbohydrates </B>
+</P> bdglucose, bdgalactose, bdmannose, sucrose,
+</P> dxylose, lglucose, bdallose, bdaltrose, bdgulose,
+</P> bdtalose, trehalose, cellobiose
+
+<L1><P><B> Common Lipids </B>
+</P> cholestrol, dppc,dlpe, dmpg, pdmpg,
+</P> arachidonic, linoleic, oleic. 
+</P>
+
+<H3> Viewing the QuickStart commands page on BiLab console </H3>
+<PRE STYLE="margin-bottom: 0.2in">quickstart = read("docs/quickstart.html")</PRE><P>
+<P><I>[*<B>NB</B>:  Under Construction.</I></P>
+
+<H2><BR><BR>
+</H2>
+<H2>TODO hit-list:</H2>
+<UL>
+	<LI><P><B>Finish uniform database query &amp; access layer</B> &ndash;
+	to allow transparent cross-queries &amp; access to local databases,
+	online web-based databases and organizational databases</P>
+	<LI><P><B>Integrate microarray tools</B> &ndash; TIGR TM4 suite</P>
+	<LI><P><B>Finish integratoin of EMBOSS &amp; NCBI tools</B>.</P>
+	<LI><P>System for user specification of a<B>utomatic wrapping of
+	external command-line tools, C/Fortran programs &amp; dlls</B>.</P>
+	<LI><P><B>More biological types</B> (pathways) <B>&amp;</B> <B>viewers</B>
+	&ndash; provide a selection of viewers for some types &amp; add more
+	control (menu options etc.) over existing viewers.</P>
+	<LI><P>Complete <B>bio-notebook</B> component</P>
+	<LI><P><B>Inteface polish </B>&ndash; better layout, finish menus &amp;
+	hook up to external tools; drag&amp;drop between view, notebook etc.
+	External filesystem viewer for easy resource loading and file
+	conversion; better web integration with web-portals</P>
+	<LI><P><B>Integrate interesting GTL specific tools</B>.</P>
+	<LI><P>Develop method for integration of <B>non-Java UI elements</B>
+	into interface as viewer.  e.g. Use background X11 server to render
+	windows off-screen and draw into SWT render surfaces.  Would allow
+	use of OpenRASMol, Cn3D, spotfinder etc.</P>
+	<LI><P>Integrate <B>Perl scripting &amp; finish exposing bio-python</B>.</P>
+	<LI><P>Consider integratoin of <B>Systems-Biology-Workbench</B>
+	(SBW).</P>
+	<LI><P><B>Documentation</B>: scigol &amp; bilab</P>
+</UL>
+</BODY>
+</HTML>

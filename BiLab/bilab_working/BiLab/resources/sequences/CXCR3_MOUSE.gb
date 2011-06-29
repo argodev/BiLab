@@ -1,0 +1,200 @@
+LOCUS       NM_009910               1608 bp    mRNA    linear   ROD 28-OCT-2004
+DEFINITION  Mus musculus chemokine (C-X-C motif) receptor 3 (Cxcr3), mRNA.
+ACCESSION   NM_009910
+VERSION     NM_009910.1  GI:6753457
+KEYWORDS    .
+SOURCE      Mus musculus (house mouse)
+  ORGANISM  Mus musculus
+            Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi;
+            Mammalia; Eutheria; Rodentia; Sciurognathi; Muridae; Murinae; Mus.
+REFERENCE   1  (bases 1 to 1608)
+  AUTHORS   Jiang,D., Liang,J., Hodge,J., Lu,B., Zhu,Z., Yu,S., Fan,J., Gao,Y.,
+            Yin,Z., Homer,R., Gerard,C. and Noble,P.W.
+  TITLE     Regulation of pulmonary fibrosis by chemokine receptor CXCR3
+  JOURNAL   J. Clin. Invest. 114 (2), 291-299 (2004)
+   PUBMED   15254596
+  REMARK    GeneRIF: Data demonstrate a nonredundant role for CXCR3 in limiting
+            tissue fibroproliferation and suggest that this effect may be
+            mediated, in part, by the innate production of IFN-gamma following
+            lung injury.
+REFERENCE   2  (bases 1 to 1608)
+  AUTHORS   Janis,K., Hoeltke,J., Nazareth,M., Fanti,P., Poppenberg,K. and
+            Aronica,S.M.
+  TITLE     Estrogen decreases expression of chemokine receptors, and
+            suppresses chemokine bioactivity in murine monocytes
+  JOURNAL   Am. J. Reprod. Immunol. 51 (1), 22-31 (2004)
+   PUBMED   14725563
+  REMARK    GeneRIF: Estrogen significantly decreased expression of CCR2 and,
+            to a lesser extent, CXCR3 on murine monocytes
+REFERENCE   3  (bases 1 to 1608)
+  AUTHORS   Christen,U., McGavern,D.B., Luster,A.D., von Herrath,M.G. and
+            Oldstone,M.B.
+  TITLE     Among CXCR3 chemokines, IFN-gamma-inducible protein of 10 kDa (CXC
+            chemokine ligand (CXCL) 10) but not monokine induced by IFN-gamma
+            (CXCL9) imprints a pattern for the subsequent development of
+            autoimmune disease
+  JOURNAL   J. Immunol. 171 (12), 6838-6845 (2003)
+   PUBMED   14662890
+  REMARK    GeneRIF: Infection with lymphocytic choriomeningitis virus causes
+            an immediate expression of CXCR3 family chemokines in the pancreas
+            of RIP-GP transgenic and wild-type C57BL/6 mice.
+REFERENCE   4  (bases 1 to 1608)
+  AUTHORS   Xanthou,G., Williams,T.J. and Pease,J.E.
+  TITLE     Molecular characterization of the chemokine receptor CXCR3:
+            evidence for the involvement of distinct extracellular domains in a
+            multi-step model of ligand binding and receptor activation
+  JOURNAL   Eur. J. Immunol. 33 (10), 2927-2936 (2003)
+   PUBMED   14515277
+  REMARK    GeneRIF: involvement of CXCR3 distinct extracellular domains in a
+            multi-step model of ligand binding and receptor activation.
+REFERENCE   5  (bases 1 to 1608)
+  AUTHORS   Xie,J.H., Nomura,N., Lu,M., Chen,S.L., Koch,G.E., Weng,Y., Rosa,R.,
+            Di Salvo,J., Mudgett,J., Peterson,L.B., Wicker,L.S. and
+            DeMartino,J.A.
+  TITLE     Antibody-mediated blockade of the CXCR3 chemokine receptor results
+            in diminished recruitment of T helper 1 cells into sites of
+            inflammation
+  JOURNAL   J. Leukoc. Biol. 73 (6), 771-780 (2003)
+   PUBMED   12773510
+  REMARK    GeneRIF: Blockade of the CXCR3 chemokine receptor results in
+            diminished recruitment of T helper 1 cells into sites of
+            inflammation.
+REFERENCE   6  (bases 1 to 1608)
+  AUTHORS   Jiankuo,M., Xingbing,W., Baojun,H., Xiongwin,W., Zhuoya,L.,
+            Ping,X., Yong,X., Anting,L., Chunsong,H., Feili,G. and Jinquan,T.
+  TITLE     Peptide nucleic acid antisense prolongs skin allograft survival by
+            means of blockade of CXCR3 expression directing T cells into graft
+  JOURNAL   J. Immunol. 170 (3), 1556-1565 (2003)
+   PUBMED   12538721
+  REMARK    GeneRIF: CXCR3 is a dominant factor directing T cells into skin
+            allografts; it is highly up-regulated in spleen T cells and
+            allografts from BALB/c recipients by day 7 of receiving
+            transplantation.
+REFERENCE   7  (bases 1 to 1608)
+  AUTHORS   Krug,A., Uppaluri,R., Facchetti,F., Dorner,B.G., Sheehan,K.C.,
+            Schreiber,R.D., Cella,M. and Colonna,M.
+  TITLE     IFN-producing cells respond to CXCR3 ligands in the presence of
+            CXCL12 and secrete inflammatory chemokines upon activation
+  JOURNAL   J. Immunol. 169 (11), 6079-6083 (2002)
+   PUBMED   12444109
+  REMARK    GeneRIF: migration of murine and human IFN-producing cells to CXCR3
+            ligands in vitro requires engagement of CXCR4 by CXCL12
+REFERENCE   8  (bases 1 to 1608)
+  AUTHORS   Belperio,J.A., Keane,M.P., Burdick,M.D., Lynch,J.P. III, Xue,Y.Y.,
+            Li,K., Ross,D.J. and Strieter,R.M.
+  TITLE     Critical role for CXCR3 chemokine biology in the pathogenesis of
+            bronchiolitis obliterans syndrome
+  JOURNAL   J. Immunol. 169 (2), 1037-1049 (2002)
+   PUBMED   12097412
+  REMARK    GeneRIF: In vivo neutralization of CXCR3 (or its ligands MIG or
+            IP-10) decreases intragraft recruitment of CXCR3-expressing
+            mononuclear cells during murine bronchiolitis obliterans syndrome.
+REFERENCE   9  (bases 1 to 1608)
+  AUTHORS   Rappert,A., Biber,K., Nolte,C., Lipp,M., Schubel,A., Lu,B.,
+            Gerard,N.P., Gerard,C., Boddeke,H.W. and Kettenmann,H.
+  TITLE     Secondary lymphoid tissue chemokine (CCL21) activates CXCR3 to
+            trigger a Cl- current and chemotaxis in murine microglia
+  JOURNAL   J. Immunol. 168 (7), 3221-3226 (2002)
+   PUBMED   11907075
+  REMARK    GeneRIF: When activated by secondary lymphoid organ chemokine
+            (CCL21), CXCR3 triggers chloride conductance and a chemotaxis
+            response in cultured microglia.
+REFERENCE   10 (sites)
+  AUTHORS   Tamaru,M., Tominaga,Y., Yatsunami,K. and Narumi,S.
+  TITLE     Cloning of the murine interferon-inducible protein 10 (IP-10)
+            receptor and its specific expression in lymphoid organs
+  JOURNAL   Biochem. Biophys. Res. Commun. 251 (1), 41-48 (1998)
+   PUBMED   9790904
+REFERENCE   11 (bases 1 to 1608)
+  AUTHORS   Soto,H., Wang,W., Strieter,R.M., Copeland,N.G., Gilbert,D.J.,
+            Jenkins,N.A., Hedrick,J. and Zlotnik,A.
+  TITLE     The CC chemokine 6Ckine binds the CXC chemokine receptor CXCR3
+  JOURNAL   Proc. Natl. Acad. Sci. U.S.A. 95 (14), 8205-8210 (1998)
+   PUBMED   9653165
+COMMENT     PROVISIONAL REFSEQ: This record has not yet been subject to final
+            NCBI review. The reference sequence was derived from AB003174.1.
+FEATURES             Location/Qualifiers
+     source          1..1608
+                     /organism="Mus musculus"
+                     /mol_type="mRNA"
+                     /db_xref="taxon:10090"
+                     /chromosome="X"
+                     /map="X 41.0 cM"
+     gene            1..1608
+                     /gene="Cxcr3"
+                     /note="synonyms: Cd183, Cmkar3"
+                     /db_xref="GeneID:12766"
+                     /db_xref="LocusID:12766"
+                     /db_xref="MGI:1277207"
+     CDS             90..1193
+                     /gene="Cxcr3"
+                     /note="chemokine (C-X-C) receptor 3;
+                     go_component: integral to membrane [goid 0016021]
+                     [evidence TAS] [pmid 12466851];
+                     go_function: receptor activity [goid 0004872] [evidence
+                     IEA];
+                     go_function: chemokine receptor activity [goid 0004950]
+                     [evidence IEA];
+                     go_function: C-C chemokine receptor activity [goid
+                     0016493] [evidence IEA];
+                     go_function: rhodopsin-like receptor activity [goid
+                     0001584] [evidence IEA];
+                     go_function: C-X-C chemokine receptor activity [goid
+                     0016494] [evidence IEA];
+                     go_function: G-protein coupled receptor activity [goid
+                     0004930] [evidence IEA];
+                     go_function: purinergic nucleotide receptor activity,
+                     G-protein coupled [goid 0045028] [evidence ISS] [pmid
+                     12466851];
+                     go_process: chemotaxis [goid 0006935] [evidence IEA];
+                     go_process: defense response [goid 0006952] [evidence
+                     IEA];
+                     go_process: G-protein coupled receptor protein signaling
+                     pathway [goid 0007186] [evidence IEA]"
+                     /codon_start=1
+                     /product="chemokine (C-X-C motif) receptor 3"
+                     /protein_id="NP_034040.1"
+                     /db_xref="GI:6753458"
+                     /db_xref="GeneID:12766"
+                     /db_xref="LocusID:12766"
+                     /db_xref="MGI:1277207"
+                     /translation="MYLEVSERQVLDASDFAFLLENSTSPYDYGENESDFSDSPPCPQ
+                     DFSLNFDRTFLPALYSLLFLLGLLGNGAVAAVLLSQRTALSSTDTFLLHLAVADVLLV
+                     LTLPLWAVDAAVQWVFGPGLCKVAGALFNINFYAGAFLLACISFDRYLSIVHATQIYR
+                     RDPRVRVALTCIVVWGLCLLFALPDFIYLSANYDQRLNATHCQYNFPQVGRTALRVLQ
+                     LVAGFLLPLLVMAYCYAHILAVLLVSRGQRRFRAMRLVVVVVAAFAVCWTPYHLVVLV
+                     DILMDVGVLARNCGRESHVDVAKSVTSGMGYMHCCLNPLLYAFVGVKFREQMWMLFTR
+                     LGRSDQRGPQRQPSSSRRESSWSETTEASYLGL"
+     polyA_site      1608
+                     /gene="Cxcr3"
+                     /note="51 a nucleotides"
+ORIGIN      
+        1 gcaagttccc aaccacaagt gccaaaggca gagaagcagg cagcacgaga cctgacccca
+       61 gcagccacag ccggagcacc agccaagcca tgtaccttga ggttagtgaa cgtcaagtgc
+      121 tagatgcctc ggactttgcc tttcttctgg aaaacagcac ctctccctac gattatgggg
+      181 aaaacgagag cgacttctct gactccccgc cctgcccaca ggatttcagc ctgaactttg
+      241 acagaacctt cctgccagcc ctctacagcc tcctcttctt gctggggctg ctaggcaatg
+      301 gggcggtggc tgctgtgcta ctgagtcagc gcactgccct gagcagcacg gacaccttcc
+      361 tgctccacct ggctgtagcc gatgttctgc tggtgttaac tcttccattg tgggcagtgg
+      421 atgctgctgt ccagtgggtt ttcggccctg gcctctgcaa agtggcaggc gccttgttca
+      481 acatcaactt ctatgcaggg gccttcctgc tggcttgtat aagcttcgac agatatctga
+      541 gcatagtgca cgccacccag atctaccgca gggacccccg ggtacgtgta gccctcacct
+      601 gcatagttgt atggggtctc tgtctgctct ttgccctccc agatttcatc tacctatcag
+      661 ccaactacga tcagcgcctc aatgccaccc attgccagta caacttccca caggtgggtc
+      721 gcactgctct gcgtgtactg cagctagtgg ctggtttcct gctgcccctt ctggtcatgg
+      781 cctactgcta tgcccatatc ctagctgttc tgctggtctc cagaggccag aggcgttttc
+      841 gagctatgag gctagtggta gtggtggtgg cagcctttgc tgtctgctgg accccctatc
+      901 acctggtggt gctagtggat atcctcatgg atgtgggagt tttggcccgc aactgtggtc
+      961 gagaaagcca cgtggatgtg gccaagtcag tcacctcggg catggggtac atgcactgct
+     1021 gcctcaatcc gctgctctat gcctttgtgg gagtgaagtt cagagagcaa atgtggatgt
+     1081 tgttcacgcg cctgggccgc tctgaccaga gagggcccca gcggcagccg tcatcttcac
+     1141 ggagagaatc atcctggtct gagacaactg aggcctccta cctgggcttg taattctgga
+     1201 ctggaactgt agcctgcgca gcccaagtcc taacacactc caagtgcttg tcctcctggt
+     1261 agttgggcta gctcgaactt acccgtaact ttgctgccag gatgcactga cagctcagca
+     1321 tatatccagc tctcctgaga atcaatctca gcaacaagga caacaccatt actgtgcctt
+     1381 agctgccatg ccctatcttg ctgttttaga actagctgcc tggagcccca ccgccctact
+     1441 aaattagcaa gtagaactca gccatccctg tgtgagaaga gggagaggca aatagcacag
+     1501 agggccaggc gttgtcagca ctgaatgtgc ccatctcagt atctcaatat ttgcccaatt
+     1561 ttatttctag aaacctcact taaactttca ataaacaagg taatgagg
+//
+

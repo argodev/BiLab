@@ -1,0 +1,38 @@
+{
+
+
+  let Complex = class 
+  {
+    func(->self) {};
+    func(r:real,i:real=0 -> self) { ~r=r;~i=i;};
+    
+    add = func(c:self->self) 
+    {
+      r = r + c.r;
+      i = i + c.i;
+      this;
+    };
+
+    static add = func(c1:self, c2:self -> self)
+    {
+      self(c1.r+c2.r, c1.i+c2.i);
+    };
+
+    protected r:real = 0;
+    protected i:real = 0;
+    
+  };
+  
+  let c1:Complex = Complex(1,2);
+  let c2 = Complex(3,4);
+  let c3 = c1.add(c2).add(Complex());
+  let c4 = c3.add(Complex()); // add 0
+  let c5 = Complex.add(c4, Complex(1,1) ); // use binary version to add 1+1i
+  let c6 = c1.add(c5, Complex()); // call static via instance
+  
+  logger("expect r=5 i=7 \ngot:r="+c6.r+" i="+c6.i);
+  
+}
+
+
+

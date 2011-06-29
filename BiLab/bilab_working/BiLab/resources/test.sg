@@ -1,0 +1,6 @@
+p1 = protein ("CGPY")
+p2 = protein ("TYR")
+seq1 = p1.get_rawsequence()
+seq2 = p2.get_rawsequence()
+y =protein(seq1+seq2)
+

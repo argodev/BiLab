@@ -1,0 +1,140 @@
+LOCUS       Q28269                   521 aa            linear   MAM 25-OCT-2004
+DEFINITION  Occludin.
+ACCESSION   Q28269
+VERSION     Q28269  GI:3914197
+DBSOURCE    swissprot: locus OCLN_CANFA, accession Q28269;
+            class: standard.
+            created: Dec 15, 1998.
+            sequence updated: Dec 15, 1998.
+            annotation updated: Oct 25, 2004.
+            xrefs: gi: 1276982, gi: 1276983
+            xrefs (non-sequence databases): InterProIPR008253,
+            InterProIPR002958, InterProIPR010844, PfamPF01284, PfamPF07303,
+            PRINTSPR01258
+KEYWORDS    Coiled coil; Phosphorylation; Tight junction; Transmembrane.
+SOURCE      Canis familiaris (dog)
+  ORGANISM  Canis familiaris
+            Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi;
+            Mammalia; Eutheria; Carnivora; Fissipedia; Canidae; Canis.
+REFERENCE   1  (residues 1 to 521)
+  AUTHORS   Ando-Akatsuka,Y., Saitou,M., Hirase,T., Kishi,M., Sakakibara,A.,
+            Itoh,M., Yonemura,S., Furuse,M. and Tsukita,S.
+  TITLE     Interspecies diversity of the occludin sequence: cDNA cloning of
+            human, mouse, dog, and rat-kangaroo homologues
+  JOURNAL   J. Cell Biol. 133 (1), 43-47 (1996)
+  MEDLINE   96181088
+   PUBMED   8601611
+  REMARK    SEQUENCE FROM N.A.
+            TISSUE=Kidney
+REFERENCE   2  (residues 1 to 521)
+  AUTHORS   Sakakibara,A., Furuse,M., Saitou,M., Ando-Akatsuka,Y. and
+            Tsukita,S.
+  TITLE     Possible involvement of phosphorylation of occludin in tight
+            junction formation
+  JOURNAL   J. Cell Biol. 137 (6), 1393-1401 (1997)
+  MEDLINE   97327764
+   PUBMED   9182670
+  REMARK    PHOSPHORYLATION.
+COMMENT     -------------------------------------------------------------------
+            This SWISS-PROT entry is copyright. It is produced through a
+            collaboration between the Swiss Institute of Bioinformatics and
+            the EMBL outstation - the European Bioinformatics Institute.
+            The original entry is available from http://www.expasy.ch/sprot
+            and http://www.ebi.ac.uk/sprot
+            ------------------------------------------------------------------.
+            [FUNCTION] May play a role in the formation and regulation of the
+            tight junction (TJ) paracellular permeability barrier. Interacts
+            with ZO-1.
+            [SUBUNIT] Interacts with VAPA (By similarity).
+            [SUBCELLULAR LOCATION] Integral membrane protein.
+            [TISSUE SPECIFICITY] Localized at tight junctions of both
+            epithelial and endothelial cells.
+            [DOMAIN] The C-terminal is cytoplasmic and is important for
+            interaction with ZO-1. Necessary for the tight junction
+            localization. Involved in the regulation of the permeability
+            barrier function of the tight junction (By similarity).
+            [PTM] Phosphorylated. Less-phosphorylated forms are found in
+            basolateral membrane, cytosol and tight junction. More-heavily
+            phosphorylated forms are concentrated exclusively in tight
+            junction.
+            [SIMILARITY] Belongs to the ELL / occludin family.
+FEATURES             Location/Qualifiers
+     source          1..521
+                     /organism="Canis familiaris"
+                     /db_xref="taxon:9615"
+     gene            1..521
+                     /gene="OCLN"
+     Protein         1..521
+                     /gene="OCLN"
+                     /product="Occludin"
+     Region          1..66
+                     /gene="OCLN"
+                     /region_name="Domain"
+                     /note="Cytoplasmic (Potential)."
+                     /evidence=experimental
+     Region          67..89
+                     /gene="OCLN"
+                     /region_name="Transmembrane region"
+                     /note="Potential."
+                     /evidence=experimental
+     Region          90..134
+                     /gene="OCLN"
+                     /region_name="Domain"
+                     /note="Extracellular (Potential)."
+                     /evidence=experimental
+     Region          92..130
+                     /gene="OCLN"
+                     /region_name="Domain"
+                     /note="Gly/Tyr-rich."
+                     /evidence=experimental
+     Region          135..159
+                     /gene="OCLN"
+                     /region_name="Transmembrane region"
+                     /note="Potential."
+                     /evidence=experimental
+     Region          160..169
+                     /gene="OCLN"
+                     /region_name="Domain"
+                     /note="Cytoplasmic (Potential)."
+                     /evidence=experimental
+     Region          170..194
+                     /gene="OCLN"
+                     /region_name="Transmembrane region"
+                     /note="Potential."
+                     /evidence=experimental
+     Region          195..242
+                     /gene="OCLN"
+                     /region_name="Domain"
+                     /note="Extracellular (Potential)."
+                     /evidence=experimental
+     Region          243..264
+                     /gene="OCLN"
+                     /region_name="Transmembrane region"
+                     /note="Potential."
+                     /evidence=experimental
+     Region          265..521
+                     /gene="OCLN"
+                     /region_name="Domain"
+                     /note="Cytoplasmic (Potential)."
+                     /evidence=experimental
+     Region          308..311
+                     /gene="OCLN"
+                     /region_name="Domain"
+                     /note="Poly-Pro."
+                     /evidence=experimental
+     Region          424..488
+                     /gene="OCLN"
+                     /region_name="Domain"
+                     /note="Coiled coil (Potential)."
+                     /evidence=experimental
+ORIGIN      
+        1 mssrpfespp pyrpdefkpn hyapsndvyg gdmhvrpmls qpaysfyped eilhfykwts
+       61 ppgvirilsm lvivmciaif gcvastlawd rgygtglmgg sigypygsgf gsygtgygyg
+      121 fgygygyggy tdpraakgfl lamvafcfia alvifvtsvi rsdisrtrry yltviilsaf
+      181 lgvmmfiati vyimgvnpta qasgslyssq iyamcnqfya statglymdq ylyhycvvdp
+      241 qeaiaivlgf mvivafalii ffavktrrkm drydksnilw dkehiydeqp pnveewvknv
+      301 sagtqdmppp psdyvervds pmayssngkv ndkrlypess ykstpvpevv qelpatspad
+      361 dfrqprysss ghleppskra pskgrtgrpk rleqdhyetd yttggescde leedwireyp
+      421 pitsdqqrql ykrnfdtglq eykslqaeld einkelsrld kelddyrees eeymaaadey
+      481 nrlkqvkgsp dyknkrnyck qlksklshik kmvgdydrqk t
+//

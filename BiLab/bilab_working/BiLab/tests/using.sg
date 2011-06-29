@@ -1,0 +1,38 @@
+{
+  let z = 5;
+  
+  namespace A {
+    let a:int = 1;
+  };
+  
+  
+  namespace B {
+    namespace C {
+      using A; // import all of A (i.e. a)
+      let x:int = 6;
+      let c:int = a; // c = A.a
+    };
+  };
+  
+  namespace D.E {
+    using B.C.c as d; // import c from B.C as d
+    using d as e;     // alias it to e
+    
+    let f:int = e;    // access e -> d -> B.C.c = A.a
+  };
+  
+  namespace F {
+    using D.E; // import all of D.E (i.e. d, e & f)
+  };
+  
+  
+  namespace G {
+    using System.Collections; // test access to CLI namespace types
+    
+    let l:ArrayList = ArrayList();
+    l.Add(F.f);
+    let b:bool = l.Contains(1); // i.e. F.f was 1
+
+    logger("expect: true \ngot: "+(if (b)"true"else"false"));
+  };
+}

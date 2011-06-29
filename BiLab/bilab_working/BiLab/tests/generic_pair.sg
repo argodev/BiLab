@@ -1,0 +1,18 @@
+{
+  
+  let Pair = func(First:type, Second:type -> type) {
+    class { 
+      func(first:First, second:Second->self) { ~first=first; ~second=second;};
+      first:First;
+      second:Second;
+    }
+  };
+  
+  
+  let IntRealPair = Pair(int, real);
+  
+  let p = IntRealPair(1,2.2);
+  
+  logger("expect 1 2.2 \ngot:"+p.first+" "+p.second);
+  
+}

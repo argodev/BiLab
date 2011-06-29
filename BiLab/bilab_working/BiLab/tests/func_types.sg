@@ -1,0 +1,21 @@
+{ 
+  // test 'type' type variables, func signature / literal distinction
+  //  and func type matching (e.g. assign a two arg func with one default value
+  //  to a one arg func type variable)
+  let WholeNumber:type = int;
+  let Integer = int;
+  let Real = real;
+  let Func:type = func(Real->Real);
+  
+  let a:WholeNumber = 5;  
+  let b:Integer = 4;
+  let p:Func = func(r:Real,p:Real=1->Real) {r+p};
+  
+  logger("expect:10\ngot:"+p(a+b));
+}
+
+
+
+ 
+
+

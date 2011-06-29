@@ -1,0 +1,14 @@
+{
+  using java.util;
+  using java.util.ArrayList as alist;
+  
+  let l1 = ArrayList();
+  let l2 = alist();
+  
+  l1.add(5);
+  l2 = l1;
+  logger("expect: 5 \ngot: "+l2(0));
+}
+
+
+
