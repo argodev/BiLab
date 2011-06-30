@@ -1,0 +1,137 @@
+Bilab is an interactive tool with a user interface for biological applications
+and mathematical calculations using a console similar to Matlab.
+It allows a sequence of amino acids to be read in and manipulations done
+on the protein sequence to achieve desired results.
+
+It has a Jmol viewer for viewing biomacromolecules in the pdb format
+wherein the xyz coordinates obtained from experimental methods are
+deposited in the Protein Data bank. It supports different resource types
+and one can view the different file types supported using
+  >resourceTypes
+
+With the HTML viewer one can browse different websites and download the
+structures for different biomacromolecules.
+ HTML viewer
+http://www.pdb.org // Protein data bank is a repository for proteins, enzymes
+                   // crystal structures obtained from various experimental methods.
+
+Bioinformatics websites of importance:
+http://www.clustal.org  // Multiple sequence allignment
+http://emboss.sourceforge.net/
+
+
+It has a Scigol intepreter to perform basic mathematical calculations
+involving matrices.
+a) trignometric functions
+b) simple matrix computations
+
+One can learn more of the function by typing on the command line in the console
+> .help <function>
+
+[A] Walkthrough of some simple operations in BiLab
+
+1) Commands on the console for biological manipulations
+   If one types in
+   > Ala
+   The picture of Alanine amino acid appears in the Jmol viewer
+   One can then measure the distances, angles and dihedrals between the atoms
+
+   Presently the version supports all 20 amino acids, the nucleotide bases
+   for DNA and RNA.
+   
+   Added feature is the ability to look at the fundamental building
+   blocks for carbohydrates and lipids.
+   for eg
+   > bdglucose
+   This will provide a Beta-D-glucose pyrannose carbohydrate molecule in Jmol
+   viewer.
+
+   Alternatively on the console one can type
+   > .show read ("molecules/Tyr.pdb") for viewing tyrosine amino-acid.
+
+2) Adding protein sequences
+   > p1 = protein ("CGPY")
+   > p2 = protein ("TYR")
+   > seq1 = p1.get_rawsequence()
+   > seq2 = p2.get_rawsequence()
+   > y =protein(seq1+seq2)
+     y = CGPYTYR
+   > y.seq.length() // the amino-acid length of the final protein
+     7
+     The range of the protein/peptide is [0-6]
+   > y(0)
+     This will open up amino acid Cysteine in the Jmol viewer.
+   > y.avgIsoMass  // outputs the mass of the final protein
+     avgIsoMass=695.81828000000001
+     
+   
+3) > dna1 = DNA("ACG")
+   > r3 = transcribe (dna1) converts the nucleotide bases to RNA type
+     r3 = T ACG; TGC R
+   > dna1.seq.length()
+     3
+   > dna1.get_Compliment()
+     R CGT; GCA T
+    
+
+4) Importing a file supported by BiLab. Any file that needs to be viewed in BiLab needs to 
+   be put under the resources/molecules or resources/sequences directory
+   depending on the resource file type.
+   The permissions of the file needs to be changed to rwx
+   chmod +rwx <filename>
+   One can then call this file using
+   > .show read ("molecules/<filename>.pdb")
+   or
+   > .show read ("sequences/<filename>.msf")
+   
+
+
+Additional commands from previous release also available in sample.sg, and bilab.sg under libs
+
+Drawbacks: Need for a better workflow.
+The Jmol viewer needs to be updated to accomadate for a better workflow
+For eg: 
+   -   Able to open a PDB or XYZ file on the console
+       Able to view the sequence of the amino acid residues of the protein on the console.
+       Export the sequence to the Jmol view to be able to view it and save the files as present 
+       version of Jal-view does. Better image rendering.
+       Import different pdbs of the same protein and do sequence allignment and create files
+       with fasta, embl and msf extensions. Presently the sequences are hard coded and these
+       files can be created but really buggy. They have to be imported from other programs.
+       Works some times and crashes some other times.
+
+   -   Ability to view a sequence of amino acids typed on the command line and not just y(0)
+       y(1).
+      
+      
+
+
+[B] How to add a new tool like Jal-view or Jmol: Trying to figure this out
+    How to add a new object:
+
+a) Adding common molecules to the bilab resources so that they can instantly accessed
+   Download the xyz coordinate file from protein data bank and place it under resources/molecules
+   The permissions of the file needs to be changed to rwx
+   chmod +rwx <filename>
+   
+   Under libs/bilab.sg
+   @[bilab.Summary("BDGLUCOSE molecule")]     let bdglucose:molecule = MoleculeImpl.bdglucose;
+   
+   In directory src and file MoleculeImpl.java
+     Declare under public static "the name of molecule"
+     add in static "bdglucose = fromResource("bdglucose.xyz", "BDGlucose");"
+
+
+b) Common carbohydrates:
+        bdglucose, bdgalactose, bdmannose, sucrose,
+        dxylose, lglucose, bdallose, bdaltrose, bdgulose,
+        bdtalose, trehalose, cellobiose, 
+	
+   Common lipids	
+	cholestrol, dppc,dlpe, dmpg, pdmpg, 
+	arachidonic, linoleic, oleic. 
+	
+
+[C] JUNIT Automated tests; Unit and functional
+
+2) and 3) from section A could be used as tests. 

@@ -1,0 +1,29 @@
+{
+  let i:int = 1;
+  
+  if (i==1) then i=2;
+  
+  if (i+2)>10 then i=4; else i=5;
+  
+  if (i==5) 
+    if (i==2) 
+      i=7;
+    else
+      i=8;
+  
+  let j:int = 10;
+  while j>1 do j=j-1;
+  if j==1 then while (j<12) j=j+1; // omit 'do'
+  
+  let k:int = 10;
+  do k=k-1 while k>1;
+  
+  let l:int = 0;
+
+  foreach(i:int in 0:13) l++;
+  
+  logger("expect: 8 12 1 14\ngot: "+i+" "+j+" "+k+" "+l);
+}
+
+
+

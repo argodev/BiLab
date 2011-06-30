@@ -1,0 +1,11 @@
+{
+let x1 = protein ("CGPY");
+let x2 = protein ("TYR");
+let seq1 = x1.get_rawsequence();
+let seq2 = x2.get_rawsequence();
+let y =protein(seq1+seq2);
+let z =y.seq.length();
+let m =y.avgIsoMass;
+}
+
+

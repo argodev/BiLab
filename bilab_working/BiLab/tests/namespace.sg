@@ -1,0 +1,31 @@
+{
+  let g:int = 6;
+  
+  namespace A {
+    let a:int = 100;
+    namespace B {
+      let b:int = 2;
+      namespace C {
+        let c:int=-100;
+        a = 200; // A.a = 200
+      };
+    };
+  };
+  
+  namespace A { 
+    namespace B {
+      let b2:int = 4; 
+    };
+    namespace B.C {
+      c=3; // A.B.C.c = 3 (was -100)
+      let a:int = 300;
+      ~a = 1; // escapes this(A.B.C) a to access a from A.B (which resolves to A.a)
+    };
+  };
+  
+  namespace A.B.C {
+    let c2:int = 5;
+  };
+  
+  logger("expect: 21 \ngot: "+(A.a + A.B.b + A.B.C.c + A.B.b2 + A.B.C.c2 + g));
+}

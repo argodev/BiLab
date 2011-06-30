@@ -1,0 +1,15 @@
+{
+
+  let sqr:func(real->real) = func(a:real->real) {a*a};
+  
+  let f = func(b:real->real) {b};
+  
+  let assignf:func() = func() { f = sqr };
+  
+  assignf();
+  
+  logger("expect:9 \ngot:"+f(3));
+}
+
+
+

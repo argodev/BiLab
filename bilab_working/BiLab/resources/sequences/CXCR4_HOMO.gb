@@ -1,0 +1,1309 @@
+LOCUS       NM_003467               1691 bp    mRNA    linear   PRI 26-JAN-2005
+DEFINITION  Homo sapiens chemokine (C-X-C motif) receptor 4 (CXCR4), transcript
+            variant 2, mRNA.
+ACCESSION   NM_003467
+VERSION     NM_003467.2  GI:56790928
+KEYWORDS    .
+SOURCE      Homo sapiens (human)
+  ORGANISM  Homo sapiens
+            Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi;
+            Mammalia; Eutheria; Primates; Catarrhini; Hominidae; Homo.
+REFERENCE   1  (bases 1 to 1691)
+  AUTHORS   Wynn,R.F., Hart,C.A., Corradi-Perini,C., O'Neill,L., Evans,C.A.,
+            Wraith,J.E., Fairbairn,L.J. and Bellantuono,I.
+  TITLE     A small proportion of mesenchymal stem cells strongly expresses
+            functionally active CXCR4 receptor capable of promoting migration
+            to bone marrow
+  JOURNAL   Blood 104 (9), 2643-2645 (2004)
+   PUBMED   15251986
+  REMARK    GeneRIF: show that CXCR4, although present at the surface of a
+            small subset of MSCs, is important for mediating specific migration
+            of these cells to bone marrow.
+REFERENCE   2  (bases 1 to 1691)
+  AUTHORS   Li,Y.M., Pan,Y., Wei,Y., Cheng,X., Zhou,B.P., Tan,M., Zhou,X.,
+            Xia,W., Hortobagyi,G.N., Yu,D. and Hung,M.C.
+  TITLE     Upregulation of CXCR4 is essential for HER2-mediated tumor
+            metastasis
+  JOURNAL   Cancer Cell 6 (5), 459-469 (2004)
+   PUBMED   15542430
+  REMARK    GeneRIF: These results provide a plausible mechanism for
+            HER2-mediated breast tumor metastasis and establish a functional
+            link between HER2 and CXCR4 signaling pathways.
+REFERENCE   3  (bases 1 to 1691)
+  AUTHORS   Samara,G.J., Lawrence,D.M., Chiarelli,C.J., Valentino,M.D.,
+            Lyubsky,S., Zucker,S. and Vaday,G.G.
+  TITLE     CXCR4-mediated adhesion and MMP-9 secretion in head and neck
+            squamous cell carcinoma
+  JOURNAL   Cancer Lett. 214 (2), 231-241 (2004)
+   PUBMED   15363550
+  REMARK    GeneRIF: CXCR4 may be a novel regulator of head and neck squamous
+            cell carcinoma metastatic processes
+REFERENCE   4  (bases 1 to 1691)
+  AUTHORS   Tomescu,O., Xia,S.J., Strezlecki,D., Bennicelli,J.L., Ginsberg,J.,
+            Pawel,B. and Barr,F.G.
+  TITLE     Inducible short-term and stable long-term cell culture systems
+            reveal that the PAX3-FKHR fusion oncoprotein regulates CXCR4, PAX3,
+            and PAX7 expression
+  JOURNAL   Lab. Invest. 84 (8), 1060-1070 (2004)
+   PUBMED   15184910
+  REMARK    GeneRIF: in the RD embryonal rhabdomyosarcoma cell line, PAX3-FKHR
+            upregulates expression of the gene encoding the chemokine receptor
+            CXCR4
+REFERENCE   5  (bases 1 to 1691)
+  AUTHORS   Rombouts,E.J., Pavic,B., L and Ploemacher,R.E.
+  TITLE     Relation between CXCR-4 expression, Flt3 mutations, and unfavorable
+            prognosis of adult acute myeloid leukemia
+  JOURNAL   Blood 104 (2), 550-557 (2004)
+   PUBMED   15054042
+  REMARK    GeneRIF: SDF-1/CXCR-4 interaction is required for the survival of
+            myeloid differentiating cells, and it also induces a block in
+            G-CSF-induced myeloid differentiation
+REFERENCE   6  (bases 1 to 1691)
+  AUTHORS   Fischer,A.M., Mercer,J.C., Iyer,A., Ragin,M.J. and August,A.
+  TITLE     Regulation of CXC chemokine receptor 4-mediated migration by the
+            Tec family tyrosine kinase ITK
+  JOURNAL   J. Biol. Chem. 279 (28), 29816-29820 (2004)
+   PUBMED   15123627
+  REMARK    GeneRIF: Data suggest that the Tec family kinase ITK may regulate
+            the ability of CXC chemokine receptor 4 to induce T cell migration.
+REFERENCE   7  (bases 1 to 1691)
+  AUTHORS   Tamamura,H., Fujisawa,M., Hiramatsu,K., Mizumoto,M., Nakashima,H.,
+            Yamamoto,N., Otaka,A. and Fujii,N.
+  TITLE     Identification of a CXCR4 antagonist, a T140 analog, as an
+            anti-rheumatoid arthritis agent
+  JOURNAL   FEBS Lett. 569 (1-3), 99-104 (2004)
+   PUBMED   15225616
+  REMARK    GeneRIF: T140 analog may act as an anti-rheumatoid arthritis agent
+            by antagonizing CXCR4.
+REFERENCE   8  (bases 1 to 1691)
+  AUTHORS   Kimura,T., Boehmler,A.M., Seitz,G., Ku, Wiesner,T., Brinkmann,V.,
+            Kanz,L. and M.
+  TITLE     The sphingosine 1-phosphate receptor agonist FTY720 supports
+            CXCR4-dependent migration and bone marrow homing of human CD34+
+            progenitor cells
+  JOURNAL   Blood 103 (12), 4478-4486 (2004)
+   PUBMED   14988150
+  REMARK    GeneRIF: FTY720 increases CXCR4 function in hematopoietic stem
+            cells both in vitro and in vivo
+REFERENCE   9  (bases 1 to 1691)
+  AUTHORS   Lee,B.C., Lee,T.H., Avraham,S. and Avraham,H.K.
+  TITLE     Involvement of the chemokine receptor CXCR4 and its ligand stromal
+            cell-derived factor 1alpha in breast cancer cell migration through
+            human brain microvascular endothelial cells
+  JOURNAL   Mol. Cancer Res. 2 (6), 327-338 (2004)
+   PUBMED   15235108
+  REMARK    GeneRIF: CXCR4 and its ligand stromal cell-derived factor 1alpha
+            (SDF-1alpha) induced transendothelial breast cancer cell migration
+            through activation of the PI-3K/AKT pathway and Ca(2+)-mediated
+            signaling.
+REFERENCE   10 (bases 1 to 1691)
+  AUTHORS   Wu,X., Li,D.J., Yuan,M.M., Zhu,Y. and Wang,M.Y.
+  TITLE     The expression of CXCR4/CXCL12 in first-trimester human trophoblast
+            cells
+  JOURNAL   Biol. Reprod. 70 (6), 1877-1885 (2004)
+   PUBMED   14973260
+  REMARK    GeneRIF: first-trimester trophoblast cells express functional
+            CXCR4/CXCL12, which may play an important role in early pregnancy
+            such as stimulating trophoblast cell proliferation or
+            differentiation in an autocrine manner
+REFERENCE   11 (bases 1 to 1691)
+  AUTHORS   Heidemann,J., Ogawa,H., Rafiee,P., L, Maaser,C., Domschke,W.,
+            Binion,D.G. and Dwinell,M.B.
+  TITLE     Mucosal angiogenesis regulation by CXCR4 and its ligand CXCL12
+            expressed by human intestinal microvascular endothelial cells
+  JOURNAL   Am. J. Physiol. Gastrointest. Liver Physiol. 286 (6), G1059-G1068
+            (2004)
+   PUBMED   14764445
+  REMARK    GeneRIF: Important mechanistic role for CXCR4 and SDF-1/CXCL12 in
+            regulating angiogenesis within the human intestinal mucosa.
+REFERENCE   12 (bases 1 to 1691)
+  AUTHORS   Hoshino,Y., Tse,D.B., Rochford,G., Prabhakar,S., Hoshino,S.,
+            Chitkara,N., Kuwabara,K., Ching,E., Raju,B., Gold,J.A.,
+            Borkowsky,W., Rom,W.N., Pine,R. and Weiden,M.
+  TITLE     Mycobacterium tuberculosis-induced CXCR4 and chemokine expression
+            leads to preferential X4 HIV-1 replication in human macrophages
+  JOURNAL   J. Immunol. 172 (10), 6251-6258 (2004)
+   PUBMED   15128813
+  REMARK    GeneRIF: Pulmonary tuberculosis is associated with high level
+            expression of CXCR4 on alveolar macrophages, which allows for entry
+            of T cell-tropic X4 HIV-1 into alveolar macrophages.
+REFERENCE   13 (bases 1 to 1691)
+  AUTHORS   Dwinell,M.B., Ogawa,H., Barrett,K.E. and Kagnoff,M.F.
+  TITLE     SDF-1/CXCL12 regulates cAMP production and ion transport in
+            intestinal epithelial cells via CXCR4
+  JOURNAL   Am. J. Physiol. Gastrointest. Liver Physiol. 286 (5), G844-G850
+            (2004)
+   PUBMED   14684377
+  REMARK    GeneRIF: Epithelial CXCR4 can transduce functional signals in human
+            intestinal epithelial cells that modulate important cAMP-mediated
+            cellular functions.
+REFERENCE   14 (bases 1 to 1691)
+  AUTHORS   Oonakahara,K., Matsuyama,W., Higashimoto,I., Kawabata,M.,
+            Arimura,K. and Osame,M.
+  TITLE     Stromal-derived factor-1alpha/CXCL12-CXCR 4 axis is involved in the
+            dissemination of NSCLC cells into pleural space
+  JOURNAL   Am. J. Respir. Cell Mol. Biol. 30 (5), 671-677 (2004)
+   PUBMED   14672915
+  REMARK    GeneRIF: Results show that the stromal-derived factor-1alpha/CXCR4
+            axis is involved in the dissemination of non-small cell lung cancer
+            cells into pleural space.
+REFERENCE   15 (bases 1 to 1691)
+  AUTHORS   Peng,H., Huang,Y., Rose,J., Erichsen,D., Herek,S., Fujii,N.,
+            Tamamura,H. and Zheng,J.
+  TITLE     Stromal cell-derived factor 1-mediated CXCR4 signaling in rat and
+            human cortical neural progenitor cells
+  JOURNAL   J. Neurosci. Res. 76 (1), 35-50 (2004)
+   PUBMED   15048928
+  REMARK    GeneRIF: this study suggested that stromal cell-derived factor 1
+            can influence neural progenitor cells function through CXCR4 and
+            that CXCR4 is functional on neural progenitor cells
+REFERENCE   16 (bases 1 to 1691)
+  AUTHORS   Hamon,M., Mbemba,E., Charnaux,N., Slimani,H., Brule,S., Saffar,L.,
+            Vassy,R., Prost,C., Lievre,N., Starzec,A. and Gattegno,L.
+  TITLE     A syndecan-4/CXCR4 complex expressed on human primary lymphocytes
+            and macrophages and HeLa cell line binds the CXC chemokine stromal
+            cell-derived factor-1 (SDF-1)
+  JOURNAL   Glycobiology 14 (4), 311-323 (2004)
+   PUBMED   15033938
+  REMARK    GeneRIF: syndecan-4/CXCR4 complex is likely a functional unit
+            involved in SDF-1 binding
+REFERENCE   17 (bases 1 to 1691)
+  AUTHORS   Spano,J.P., Andre,F., Morat,L., Sabatier,L., Besse,B.,
+            Combadiere,C., Deterre,P., Martin,A., Azorin,J., Valeyre,D.,
+            Khayat,D., Le Chevalier,T. and Soria,J.C.
+  TITLE     Chemokine receptor CXCR4 and early-stage non-small cell lung
+            cancer: pattern of expression and correlation with outcome
+  JOURNAL   Ann. Oncol. 15 (4), 613-617 (2004)
+   PUBMED   15033669
+  REMARK    GeneRIF: Strong CXCR4-positive nuclear staining was associated with
+            a significantly better outcome in early-stage non-small-cell lung
+            cancer (NSCLC).
+REFERENCE   18 (bases 1 to 1691)
+  AUTHORS   Schmid,B.C., Rudas,M., Rezniczek,G.A., Leodolter,S. and
+            Zeillinger,R.
+  TITLE     CXCR4 is expressed in ductal carcinoma in situ of the breast and in
+            atypical ductal hyperplasia
+  JOURNAL   Breast Cancer Res. Treat. 84 (3), 247-250 (2004)
+   PUBMED   15026622
+  REMARK    GeneRIF: CXCR4 is expressed in human ductal carcinoma in situ as
+            well as in atypical ductal hyperplasia; expression at this early
+            step of tumor development suggests CXCR4 role in providing
+            selective advantage to such cells on their way to metastasizing
+            carcinomas
+REFERENCE   19 (bases 1 to 1691)
+  AUTHORS   De Paepe,B., Schr, Martin,J.J., Racz,G.Z. and De Bleecker,J.L.
+  TITLE     Localization of the alpha-chemokine SDF-1 and its receptor CXCR4 in
+            idiopathic inflammatory myopathies
+  JOURNAL   Neuromuscul. Disord. 14 (4), 265-273 (2004)
+   PUBMED   15019705
+  REMARK    GeneRIF: A significant increase of stromal cell-derived
+            factor-1alpha and CXCR4 was observed in protein extracts of
+            idiopathic inflammatory myopathies in comparison with normal
+            controls.
+REFERENCE   20 (bases 1 to 1691)
+  AUTHORS   Poggi,A., Carosio,R., Fenoglio,D., Brenci,S., Murdaca,G., Setti,M.,
+            Indiveri,F., Scabini,S., Ferrero,E. and Zocchi,M.R.
+  TITLE     Migration of V delta 1 and V delta 2 T cells in response to CXCR3
+            and CXCR4 ligands in healthy donors and HIV-1-infected patients:
+            competition by HIV-1 Tat
+  JOURNAL   Blood 103 (6), 2205-2213 (2004)
+   PUBMED   14630801
+REFERENCE   21 (bases 1 to 1691)
+  AUTHORS   Tuttle,D.L., Coberley,C.R., Xie,X., Kou,Z.C., Sleasman,J.W. and
+            Goodenow,M.M.
+  TITLE     Effects of human immunodeficiency virus type 1 infection on CCR5
+            and CXCR4 coreceptor expression on CD4 T lymphocyte subsets in
+            infants and adolescents
+  JOURNAL   AIDS Res. Hum. Retroviruses 20 (3), 305-313 (2004)
+   PUBMED   15117454
+  REMARK    GeneRIF: expression significantly increased on CD4 CD45RO T cells
+            and significantly diminished in CD4 CD45RA subset in HIV-infected
+            adolescents; in infants no impact on expression in CD454RA CD4
+            subset while CXCR4 was diminished in the CD4 CD45RA subset.
+REFERENCE   22 (bases 1 to 1691)
+  AUTHORS   James,C.O., Huang,M.B., Khan,M., Garcia-Barrio,M., Powell,M.D. and
+            Bond,V.C.
+  TITLE     Extracellular Nef protein targets CD4+ T cells for apoptosis by
+            interacting with CXCR4 surface receptors
+  JOURNAL   J. Virol. 78 (6), 3099-3109 (2004)
+   PUBMED   14990729
+  REMARK    GeneRIF: interacts with Nef protein which targets CD4+ T cells for
+            apoptosis
+REFERENCE   23 (bases 1 to 1691)
+  AUTHORS   Wang,J., Marschner,S. and Finkel,T.H.
+  TITLE     CXCR4 engagement is required for HIV-1-induced L-selectin shedding
+  JOURNAL   Blood 103 (4), 1218-1221 (2004)
+   PUBMED   14576059
+  REMARK    GeneRIF: engagement of both CD4 and CXCR4 is required for
+            HIV-induced shedding of L-selectin on primary resting CD4(+) T
+            cells.
+REFERENCE   24 (bases 1 to 1691)
+  AUTHORS   Shalekoff,S., Gray,G.E. and Tiemessen,C.T.
+  TITLE     Age-related changes in expression of CXCR4 and CCR5 on peripheral
+            blood leukocytes from uninfected infants born to human
+            immunodeficiency virus type 1-infected mothers
+  JOURNAL   Clin. Diagn. Lab. Immunol. 11 (1), 229-234 (2004)
+   PUBMED   14715575
+  REMARK    GeneRIF: Cross-sectional analysis of HIV-exposed, uninfected
+            infants revealed high proportions of CXCR4-expressing cells in
+            their cord blood, which declined at 4.5 months and increased
+            between 9 and 15 months to levels approaching those of uninfected
+            adults.
+REFERENCE   25 (bases 1 to 1691)
+  AUTHORS   Yi,Y., Lee,C., Liu,Q.H., Freedman,B.D. and Collman,R.G.
+  TITLE     Chemokine receptor utilization and macrophage signaling by human
+            immunodeficiency virus type 1 gp120: Implications for
+            neuropathogenesis
+  JOURNAL   J. Neurovirol. 10 Suppl 1, 91-96 (2004)
+   PUBMED   14982745
+  REMARK    GeneRIF: both HIV strains R5 and X4 gp120 activate intracellular
+            signals in macrophages through CCR5 and CXCR4
+REFERENCE   26 (bases 1 to 1691)
+  AUTHORS   Gazitt,Y. and Akay,C.
+  TITLE     Mobilization of myeloma cells involves SDF-1/CXCR4 signaling and
+            downregulation of VLA-4
+  JOURNAL   Stem Cells 22 (1), 65-73 (2004)
+   PUBMED   14688392
+  REMARK    GeneRIF: We observed a statistically significant decrease in the
+            levels of surface expression of CXCR4 on myeloma cells in four
+            consecutive apheresis collections compared with premobilization
+            bone marrow specimens.
+REFERENCE   27 (bases 1 to 1691)
+  AUTHORS   Rubin,J.B., Kung,A.L., Klein,R.S., Chan,J.A., Sun,Y., Schmidt,K.,
+            Kieran,M.W., Luster,A.D. and Segal,R.A.
+  TITLE     A small-molecule antagonist of CXCR4 inhibits intracranial growth
+            of primary brain tumors
+  JOURNAL   Proc. Natl. Acad. Sci. U.S.A. 100 (23), 13513-13518 (2003)
+  MEDLINE   22975220
+   PUBMED   14595012
+  REMARK    GeneRIF: CXCR4 is critical to the progression of diverse brain
+            malignancies
+REFERENCE   28 (bases 1 to 1691)
+  AUTHORS   Schioppa,T., Uranchimeg,B., Saccani,A., Biswas,S.K., Doni,A.,
+            Rapisarda,A., Bernasconi,S., Saccani,S., Nebuloni,M., Vago,L.,
+            Mantovani,A., Melillo,G. and Sica,A.
+  TITLE     Regulation of the chemokine receptor CXCR4 by hypoxia
+  JOURNAL   J. Exp. Med. 198 (9), 1391-1402 (2003)
+  MEDLINE   22959933
+   PUBMED   14597738
+  REMARK    GeneRIF: Low oxygen concentration induces high expression of the
+            CXCL12 receptor, CXC receptor 4 in different cell types
+REFERENCE   29 (bases 1 to 1691)
+  AUTHORS   Uchida,D., Begum,N.M., Almofti,A., Nakashiro,K., Kawamata,H.,
+            Tateishi,Y., Hamakawa,H., Yoshida,H. and Sato,M.
+  TITLE     Possible role of stromal-cell-derived factor-1/CXCR4 signaling on
+            lymph node metastasis of oral squamous cell carcinoma
+  JOURNAL   Exp. Cell Res. 290 (2), 289-302 (2003)
+  MEDLINE   22930193
+   PUBMED   14567988
+  REMARK    GeneRIF: stromal-cell-derived factor-1alpha /CXCR4 signaling may be
+            involved in the establishment of lymph node metastasis in oral
+            squamous cell carcinoma via activation of both Extracellular
+            Signal-Regulated Kinases and Akt induced by src-Family Kinases
+REFERENCE   30 (bases 1 to 1691)
+  AUTHORS   Marchese,A., Raiborg,C., Santini,F., Keen,J.H., Stenmark,H. and
+            Benovic,J.L.
+  TITLE     The E3 ubiquitin ligase AIP4 mediates ubiquitination and sorting of
+            the G protein-coupled receptor CXCR4
+  JOURNAL   Dev. Cell 5 (5), 709-722 (2003)
+  MEDLINE   22964547
+   PUBMED   14602072
+  REMARK    GeneRIF: Data show that the Nedd4-like E3 ubiquitin ligase AIP4
+            mediates ubiquitination of CXCR4 at the plasma membrane, and of the
+            ubiquitin binding protein Hrs on endosomes.
+REFERENCE   31 (bases 1 to 1691)
+  AUTHORS   Lee,C., Liu,Q.H., Tomkowicz,B., Yi,Y., Freedman,B.D. and
+            Collman,R.G.
+  TITLE     Macrophage activation through CCR5- and CXCR4-mediated
+            gp120-elicited signaling pathways
+  JOURNAL   J. Leukoc. Biol. 74 (5), 676-682 (2003)
+  MEDLINE   22957420
+   PUBMED   12960231
+  REMARK    GeneRIF: Macrophages are activated through CCR5- and CXCR4-mediated
+            HIV gp120-elicited signaling pathways.
+REFERENCE   32 (bases 1 to 1691)
+  AUTHORS   Maldonado-Estrada,J., Menu,E., Roques,P., Vaslin,B.,
+            Dautry-Varsat,A., Barr and Chaouat,G.
+  TITLE     Predominant intracellular expression of CXCR4 and CCR5 in purified
+            primary trophoblast cells from first trimester and term human
+            placentae
+  JOURNAL   Am. J. Reprod. Immunol. 50 (4), 291-301 (2003)
+  MEDLINE   23033743
+   PUBMED   14672331
+  REMARK    GeneRIF: expression of CXCR4 and CCR5 on non-cultured
+            non-stimulated primary human trophoblast cells
+REFERENCE   33 (bases 1 to 1691)
+  AUTHORS   Yun,H.J. and Jo,D.Y.
+  TITLE     Production of stromal cell-derived factor-1 (SDF-1)and expression
+            of CXCR4 in human bone marrow endothelial cells
+  JOURNAL   J. Korean Med. Sci. 18 (5), 679-685 (2003)
+  MEDLINE   22917669
+   PUBMED   14555820
+  REMARK    GeneRIF: BMECs produce and release small amounts of SDF-1 and
+            express CXCR4 in vivo only
+REFERENCE   34 (bases 1 to 1691)
+  AUTHORS   Staller,P., Sulitkova,J., Lisztwan,J., Moch,H., Oakeley,E.J. and
+            Krek,W.
+  TITLE     Chemokine receptor CXCR4 downregulated by von Hippel-Lindau tumour
+            suppressor pVHL
+  JOURNAL   Nature 425 (6955), 307-311 (2003)
+  MEDLINE   22860416
+   PUBMED   13679920
+  REMARK    GeneRIF: The von Hippel-Lindau tumour suppressor protein pVHL
+            negatively regulates CXCR4 expression owing to its capacity to
+            target hypoxia-inducible factor (HIF) for degradation under
+            normoxic conditions
+REFERENCE   35 (bases 1 to 1691)
+  AUTHORS   Salcedo,R., Zhang,X., Young,H.A., Michael,N., Wasserman,K.,
+            Ma,W.H., Martins-Green,M., Murphy,W.J. and Oppenheim,J.J.
+  TITLE     Angiogenic effects of prostaglandin E2 are mediated by
+            up-regulation of CXCR4 on human microvascular endothelial cells
+  JOURNAL   Blood 102 (6), 1966-1977 (2003)
+  MEDLINE   22840683
+   PUBMED   12791666
+  REMARK    GeneRIF: PGE2 is a mediator of VEGF- and bFGF-induced
+            CXCR4-dependent neovessel assembly in vivo and show that angiogenic
+            effects of PGE2 require CXCR4 expression.
+REFERENCE   36 (bases 1 to 1691)
+  AUTHORS   van Buul,J.D., Voermans,C., van Gelderen,J., Anthony,E.C., van der
+            Schoot,C.E. and Hordijk,P.L.
+  TITLE     Leukocyte-endothelium interaction promotes SDF-1-dependent
+            polarization of CXCR4
+  JOURNAL   J. Biol. Chem. 278 (32), 30302-30310 (2003)
+  MEDLINE   22778167
+   PUBMED   12766157
+  REMARK    GeneRIF: SDF-1-dependent polarization of CXCR4 is promoted by
+            leukocyte-endothelium interaction
+REFERENCE   37 (bases 1 to 1691)
+  AUTHORS   Barretina,J., Junc, Llano,A., Guti, Flores,A., Blanco,J., Clotet,B.
+            and Est.
+  TITLE     CXCR4 and SDF-1 expression in B-cell chronic lymphocytic leukemia
+            and stage of the disease
+  JOURNAL   Ann. Hematol. 82 (8), 500-505 (2003)
+  MEDLINE   22790639
+   PUBMED   12783211
+  REMARK    GeneRIF: Factors other than alteration in SDF-1/CXCR4 chemokine
+            system must account for marrow infiltration of neoplastic cells in
+            B-cell chronic lymphocytic leukemia.
+REFERENCE   38 (bases 1 to 1691)
+  AUTHORS   Hatse,S., Princen,K., Vermeire,K., Gerlach,L.O., Rosenkilde,M.M.,
+            Schwartz,T.W., Bridger,G., De Clercq,E. and Schols,D.
+  TITLE     Mutations at the CXCR4 interaction sites for AMD3100 influence
+            anti-CXCR4 antibody binding and HIV-1 entry
+  JOURNAL   FEBS Lett. 546 (2-3), 300-306 (2003)
+  MEDLINE   22715918
+   PUBMED   12832058
+  REMARK    GeneRIF: mutation at interaction site for AMD3100 influences
+            anti-CXCR4 antibody binding and HIV-1 entry
+REFERENCE   39 (bases 1 to 1691)
+  AUTHORS   Yang,H., Lan,C., Xiao,Y. and Chen,Y.H.
+  TITLE     Antibody to CD14 like CXCR4-specific antibody 12G5 could inhibit
+            CXCR4-dependent chemotaxis and HIV Env-mediated cell fusion
+  JOURNAL   Immunol. Lett. 88 (1), 27-30 (2003)
+  MEDLINE   22737583
+   PUBMED   12853157
+  REMARK    GeneRIF: results provided experimental evidence for existence of
+            close association between CD14 and HIV coreceptor CXCR4 on human
+            monocytic cells
+REFERENCE   40 (bases 1 to 1691)
+  AUTHORS   Hirayama,F., Yamaguchi,M., Yano,M., Yasui,K., Horie,Y.,
+            Matsumoto,K., Nagao,N., Ikebuchi,K., Azuma,H., Ikeda,H. and Tani,Y.
+  TITLE     Spontaneous and rapid reexpression of functional CXCR4 by human
+            steady-state peripheral blood CD34+ cells
+  JOURNAL   Int. J. Hematol. 78 (1), 48-55 (2003)
+  MEDLINE   22776473
+   PUBMED   12894851
+  REMARK    GeneRIF: reexpressed CXCR4 following SDF-1 removal was able to
+            elicit integrin-dependent migration of hematopoietic progenitor
+            cells
+REFERENCE   41 (bases 1 to 1691)
+  AUTHORS   Helbig,G., Christopherson,K.W. II, Bhat-Nakshatri,P., Kumar,S.,
+            Kishimoto,H., Miller,K.D., Broxmeyer,H.E. and Nakshatri,H.
+  TITLE     NF-kappaB promotes breast cancer cell migration and metastasis by
+            inducing the expression of the chemokine receptor CXCR4
+  JOURNAL   J. Biol. Chem. 278 (24), 21631-21638 (2003)
+  MEDLINE   22679214
+   PUBMED   12690099
+  REMARK    GeneRIF: CXCR4 is induced by NF-kappa B and has a role in breast
+            cancer cell migration and metastasis
+REFERENCE   42 (bases 1 to 1691)
+  AUTHORS   Sun,Y.X., Wang,J., Shelburne,C.E., Lopatin,D.E., Chinnaiyan,A.M.,
+            Rubin,M.A., Pienta,K.J. and Taichman,R.S.
+  TITLE     Expression of CXCR4 and CXCL12 (SDF-1) in human prostate cancers
+            (PCa) in vivo
+  JOURNAL   J. Cell. Biochem. 89 (3), 462-473 (2003)
+  MEDLINE   22646275
+   PUBMED   12761880
+  REMARK    GeneRIF: examination of expression in prostate cancer
+REFERENCE   43 (bases 1 to 1691)
+  AUTHORS   Ding,Z., Issekutz,T.B., Downey,G.P. and Waddell,T.K.
+  TITLE     L-selectin stimulation enhances functional expression of surface
+            CXCR4 in lymphocytes: implications for cellular activation during
+            adhesion and migration
+  JOURNAL   Blood 101 (11), 4245-4252 (2003)
+  MEDLINE   22640674
+   PUBMED   12609846
+  REMARK    GeneRIF: L-selectin mobilized intracellular CXCR4 to significantly
+            increase surface CXCR4 stimulation, inhibited SDF-1 induced CXCR4
+            internalization, increased SDF-1-induced lymphocyte adhesion and
+            transendothelial migration.
+REFERENCE   44 (bases 1 to 1691)
+  AUTHORS   Shalekoff,S. and Tiemessen,C.T.
+  TITLE     CCR5 delta32 heterozygosity is associated with an increase in CXCR4
+            cell surface expression
+  JOURNAL   AIDS Res. Hum. Retroviruses 19 (6), 531-533 (2003)
+  MEDLINE   22764711
+   PUBMED   12882661
+  REMARK    GeneRIF: expression increased in individuals heterozygous for CCR5
+            delta 32 mutations
+REFERENCE   45 (bases 1 to 1691)
+  AUTHORS   Shalekoff,S. and Tiemessen,C.T.
+  TITLE     Circulating levels of stromal cell-derived factor 1alpha and
+            interleukin 7 in HIV type 1 infection and pulmonary tuberculosis
+            are reciprocally related to CXCR4 expression on peripheral blood
+            leukocytes
+  JOURNAL   AIDS Res. Hum. Retroviruses 19 (6), 461-468 (2003)
+  MEDLINE   22764705
+   PUBMED   12882655
+  REMARK    GeneRIF: results confirm a role for SDF-1alpha and IL-7 in HIV-1
+            disease progression, and suggest that these cytokines play a role
+            in the modulation of CXCR4
+REFERENCE   46 (bases 1 to 1691)
+  AUTHORS   Khan,M.Z., Brandimarti,R., Musser,B.J., Resue,D.M., Fatatis,A. and
+            Meucci,O.
+  TITLE     The chemokine receptor CXCR4 regulates cell-cycle proteins in
+            neurons
+  JOURNAL   J. Neurovirol. 9 (3), 300-314 (2003)
+  MEDLINE   22660430
+   PUBMED   12775414
+  REMARK    GeneRIF: Changes in expression, localization, &
+            phosphorylation/activation of Rb & E2F-1 induced by SDF-1alpha &
+            gp120(IIIB) were analyzed in cultured rat neurons & in a human cell
+            line expressing recombinant CXCR4. CXCR4 affects cell-cycle
+            proteins in neurons.
+REFERENCE   47 (bases 1 to 1691)
+  AUTHORS   Hernandez,P.A., Gorlin,R.J., Lukens,J.N., Taniuchi,S., Bohinjec,J.,
+            Francois,F., Klotman,M.E. and Diaz,G.A.
+  TITLE     Mutations in the chemokine receptor gene CXCR4 are associated with
+            WHIM syndrome, a combined immunodeficiency disease
+  JOURNAL   Nat. Genet. 34 (1), 70-74 (2003)
+  MEDLINE   22608348
+   PUBMED   12692554
+  REMARK    GeneRIF: The identification of mutations in CXCR4 in individuals
+            with WHIM syndrome represents the first example of aberrant
+            chemokine receptor function causing human disease.
+REFERENCE   48 (bases 1 to 1691)
+  AUTHORS   Steele,A.D., Henderson,E.E. and Rogers,T.J.
+  TITLE     Mu-opioid modulation of HIV-1 coreceptor expression and HIV-1
+            replication
+  JOURNAL   Virology 309 (1), 99-107 (2003)
+  MEDLINE   22614041
+   PUBMED   12726730
+  REMARK    GeneRIF: Mu-opioid modulates HIV-1 coreceptor expression and HIV-1
+            replication.
+REFERENCE   49 (bases 1 to 1691)
+  AUTHORS   Dominguez,F., Galan,A., Martin,J.J., Remohi,J., Pellicer,A. and
+            Sim.
+  TITLE     Hormonal and embryonic regulation of chemokine receptors CXCR1,
+            CXCR4, CCR5 and CCR2B in the human endometrium and the human
+            blastocyst
+  JOURNAL   Mol. Hum. Reprod. 9 (4), 189-198 (2003)
+  MEDLINE   22538887
+   PUBMED   12651900
+  REMARK    GeneRIF: The specific distribution and regulation of chemokine
+            receptors CXCR1, CXCR4, CCR5, and CCR2b in endometrial epithelium
+            and blastocyst suggest a role for these receptors in the apposition
+            and adhesion phases of human implantation.
+REFERENCE   50 (bases 1 to 1691)
+  AUTHORS   Cilliers,T., Nhlapo,J., Coetzer,M., Orlovic,D., Ketas,T.,
+            Olson,W.C., Moore,J.P., Trkola,A. and Morris,L.
+  TITLE     The CCR5 and CXCR4 coreceptors are both used by human
+            immunodeficiency virus type 1 primary isolates from subtype C
+  JOURNAL   J. Virol. 77 (7), 4449-4456 (2003)
+  MEDLINE   22521442
+   PUBMED   12634405
+  REMARK    GeneRIF: some HIV-1 subtype C viruses, isolated from 29 South
+            African patients with advanced AIDS, are able to use CCR5, CXCR4,
+            or both CXCR4 and CCR5 for entry
+REFERENCE   51 (bases 1 to 1691)
+  AUTHORS   Fernandis,A.Z., Cherla,R.P. and Ganju,R.K.
+  TITLE     Differential regulation of CXCR4-mediated T-cell chemotaxis and
+            mitogen-activated protein kinase activation by the membrane
+            tyrosine phosphatase, CD45
+  JOURNAL   J. Biol. Chem. 278 (11), 9536-9543 (2003)
+  MEDLINE   22513934
+   PUBMED   12519755
+  REMARK    GeneRIF: CD45 differentially regulates CXCR4-mediated chemotactic
+            activity and MAPK activation by modulating the activities of focal
+            adhesion components
+REFERENCE   52 (bases 1 to 1691)
+  AUTHORS   Gibellini,D., Re,M.C., Vitone,F., Rizzo,N., Maldini,C., La Placa,M.
+            and Zauli,G.
+  TITLE     Selective up-regulation of functional CXCR4 expression in erythroid
+            cells by HIV-1 Tat protein
+  JOURNAL   Clin. Exp. Immunol. 131 (3), 428-435 (2003)
+  MEDLINE   22494437
+   PUBMED   12605695
+REFERENCE   53 (bases 1 to 1691)
+  AUTHORS   Croitoru-Lamoury,J., Guillemin,G.J., Boussin,F.D., Mognetti,B.,
+            Gigout,L.I., Ch, Vaslin,B., Le Grand,R., Brew,B.J. and Dormont,D.
+  TITLE     Expression of chemokines and their receptors in human and simian
+            astrocytes: evidence for a central role of TNF alpha and IFN gamma
+            in CXCR4 and CCR5 modulation
+  JOURNAL   Glia 41 (4), 354-370 (2003)
+  MEDLINE   22442011
+   PUBMED   12555203
+  REMARK    GeneRIF: In the absence of any stimulation, human fetal astrocytes
+            express mRNA for receptor CXCR4.
+REFERENCE   54 (bases 1 to 1691)
+  AUTHORS   Babcock,G.J., Farzan,M. and Sodroski,J.
+  TITLE     Ligand-independent dimerization of CXCR4, a principal HIV-1
+            coreceptor
+  JOURNAL   J. Biol. Chem. 278 (5), 3378-3385 (2003)
+  MEDLINE   22439776
+   PUBMED   12433920
+  REMARK    GeneRIF: ligand-independent dimerization of this principal HIV-1
+            coreceptor
+REFERENCE   55 (bases 1 to 1691)
+  AUTHORS   Barbouche,R., Miquelis,R., Jones,I.M. and Fenouillet,E.
+  TITLE     Protein-disulfide isomerase-mediated reduction of two disulfide
+            bonds of HIV envelope glycoprotein 120 occurs post-CXCR4 binding
+            and is required for fusion
+  JOURNAL   J. Biol. Chem. 278 (5), 3131-3136 (2003)
+  MEDLINE   22439738
+   PUBMED   12218052
+  REMARK    GeneRIF: Protein-disulfide isomerase-mediated reduction of two
+            disulfide bonds of HIV envelope glycoprotein 120 occurs
+            post-binding to this protein and is required for fusion
+REFERENCE   56 (bases 1 to 1691)
+  AUTHORS   Roland,J., Murphy,B.J., Ahr,B., Robert-Hebmann,V., Delauzun,V.,
+            Nye,K.E., Devaux,C. and Biard-Piechaczyk,M.
+  TITLE     Role of the intracellular domains of CXCR4 in SDF-1-mediated
+            signaling
+  JOURNAL   Blood 101 (2), 399-406 (2003)
+  MEDLINE   22397475
+   PUBMED   12393663
+  REMARK    GeneRIF: Role of the intracellular domains of CXCR4 in
+            SDF-1-mediated signaling
+REFERENCE   57 (bases 1 to 1691)
+  AUTHORS   Hwang,J.H., Hwang,J.H., Chung,H.K., Kim,D.W., Hwang,E.S., Suh,J.M.,
+            Kim,H., You,K.H., Kwon,O.Y., Ro,H.K., Jo,D.Y. and Shong,M.
+  TITLE     CXC chemokine receptor 4 expression and function in human
+            anaplastic thyroid cancer cells
+  JOURNAL   J. Clin. Endocrinol. Metab. 88 (1), 408-416 (2003)
+  MEDLINE   22407917
+   PUBMED   12519884
+  REMARK    GeneRIF: findings suggest that a subset of anaplastic thyroid
+            carcinoma cells expresses functional CXCR4, which may be important
+            in tumor cell migration and local tumor invasion
+REFERENCE   58 (bases 1 to 1691)
+  AUTHORS   Hatse,S., Bridger,G., de Clercq,E. and Schols,D.
+  TITLE     X4 HIV-1 induces neuroblastoma cell death by interference with
+            CXCL12/CXCR4 interaction
+  JOURNAL   Cell. Mol. Biol. (Noisy-le-grand) 49 ONLINE PUB, OL443-OL452 (2003)
+  MEDLINE   23167936
+   PUBMED   14995074
+  REMARK    GeneRIF: the endogenous chemokine (C-X-C motif) ligand 12 /CXCR4
+            signaling axis is critical for neuroblastoma cell survival and
+            proliferation
+REFERENCE   59 (bases 1 to 1691)
+  AUTHORS   Kato,M., Kitayama,J., Kazama,S. and Nagawa,H.
+  TITLE     Expression pattern of CXC chemokine receptor-4 is correlated with
+            lymph node metastasis in human invasive ductal carcinoma
+  JOURNAL   Breast Cancer Res. 5 (5), R144-R150 (2003)
+  MEDLINE   22808287
+   PUBMED   12927045
+  REMARK    GeneRIF: Tumors with high CXCR4 expression showed more extensive
+            lymphatic spread than those with low CXCR4 expression, because the
+            range and number of metastatic nodes were significantly larger in
+            cases of high CXCR4 expression than in those with low expression.
+REFERENCE   60 (bases 1 to 1691)
+  AUTHORS   Pituch-Noworolska,A., Majka,M., Janowska-Wieczorek,A.,
+            Baj-Krzyworzeka,M., Urbanowicz,B., Malec,E. and Ratajczak,M.Z.
+  TITLE     Circulating CXCR4-positive stem/progenitor cells compete for
+            SDF-1-positive niches in bone marrow, muscle and neural tissues: an
+            alternative hypothesis to stem cell plasticity
+  JOURNAL   Folia Histochem. Cytobiol. 41 (1), 13-21 (2003)
+  MEDLINE   22591046
+   PUBMED   12705474
+  REMARK    GeneRIF: CXCR4 is highly expressed on muscle satellite cells.
+REFERENCE   61 (bases 1 to 1691)
+  AUTHORS   Zhou,Y., Larsen,P.H., Hao,C. and Yong,V.W.
+  TITLE     CXCR4 is a major chemokine receptor on glioma cells and mediates
+            their survival
+  JOURNAL   J. Biol. Chem. 277 (51), 49481-49487 (2002)
+  MEDLINE   22371024
+   PUBMED   12388552
+  REMARK    GeneRIF: glioma cells express CXCR4, which functions to regulate
+            survival in part through activating pathways such as Akt
+REFERENCE   62 (bases 1 to 1691)
+  AUTHORS   Sun,Y., Cheng,Z., Ma,L. and Pei,G.
+  TITLE     Beta-arrestin2 is critically involved in CXCR4-mediated chemotaxis,
+            and this is mediated by its enhancement of p38 MAPK activation
+  JOURNAL   J. Biol. Chem. 277 (51), 49212-49219 (2002)
+  MEDLINE   22370960
+   PUBMED   12370187
+  REMARK    GeneRIF: CXCR4 signaling is mediated by beta-arrestin 2
+REFERENCE   63 (bases 1 to 1691)
+  AUTHORS   Bachelder,R.E., Wendt,M.A. and Mercurio,A.M.
+  TITLE     Vascular endothelial growth factor promotes breast carcinoma
+            invasion in an autocrine manner by regulating the chemokine
+            receptor CXCR4
+  JOURNAL   Cancer Res. 62 (24), 7203-7206 (2002)
+  MEDLINE   22387068
+   PUBMED   12499259
+  REMARK    GeneRIF: Vascular endothelial growth factor promotes breast
+            carcinoma invasion in an autocrine manner by regulating the
+            chemokine receptor CXCR4.
+REFERENCE   64 (bases 1 to 1691)
+  AUTHORS   Alvarez Losada,S., Cant and Mu.
+  TITLE     A new possible mechanism of human immunodeficiency virus type 1
+            infection of neural cells
+  JOURNAL   Neurobiol. Dis. 11 (3), 469-478 (2002)
+  MEDLINE   22474730
+   PUBMED   12586555
+  REMARK    GeneRIF: HIV-1 infection of neuronal cells may involve CCR5/CXCR4
+            receptor
+REFERENCE   65 (bases 1 to 1691)
+  AUTHORS   Lapham,C.K., Romantseva,T., Petricoin,E., King,L.R.,
+            Manischewitz,J., Zaitseva,M.B. and Golding,H.
+  TITLE     CXCR4 heterogeneity in primary cells: possible role of
+            ubiquitination
+  JOURNAL   J. Leukoc. Biol. 72 (6), 1206-1214 (2002)
+  MEDLINE   22376483
+   PUBMED   12488503
+  REMARK    GeneRIF: ubiquitination may contribute to finding of multiple MW
+            isoforms of CXCR4
+REFERENCE   66 (bases 1 to 1691)
+  AUTHORS   Rey,M., Vicente-Manzanares,M., Viedma,F., Y, Urzainqui,A.,
+            Barreiro,O., V and S.
+  TITLE     Cutting edge: association of the motor protein nonmuscle myosin
+            heavy chain-IIA with the C terminus of the chemokine receptor CXCR4
+            in T lymphocytes
+  JOURNAL   J. Immunol. 169 (10), 5410-5414 (2002)
+  MEDLINE   22309087
+   PUBMED   12421915
+  REMARK    GeneRIF: CXCR4 and motor protein nonmuscle myosin heavy chain-IIA
+            colocalize at the leading edge of migrating T lymphocytes, together
+            with filamentous actin and myosin light chain.
+REFERENCE   67 (bases 1 to 1691)
+  AUTHORS   Barbero,S., Bajetto,A., Bonavia,R., Porcile,C., Piccioli,P.,
+            Pirani,P., Ravetti,J.L., Zona,G., Spaziante,R., Florio,T. and
+            Schettini,G.
+  TITLE     Expression of the chemokine receptor CXCR4 and its ligand stromal
+            cell-derived factor 1 in human brain tumors and their involvement
+            in glial proliferation in vitro
+  JOURNAL   Ann. N. Y. Acad. Sci. 973, 60-69 (2002)
+  MEDLINE   22372935
+   PUBMED   12485835
+  REMARK    GeneRIF: expressed in human brain tumors and is involved in glial
+            proliferation in vitro
+REFERENCE   68 (bases 1 to 1691)
+  AUTHORS   Basmaciogullari,S., Babcock,G.J., Van Ryk,D., Wojtowicz,W. and
+            Sodroski,J.
+  TITLE     Identification of conserved and variable structures in the human
+            immunodeficiency virus gp120 glycoprotein of importance for CXCR4
+            binding
+  JOURNAL   J. Virol. 76 (21), 10791-10800 (2002)
+  MEDLINE   22255409
+   PUBMED   12368322
+  REMARK    GeneRIF: the importance of the V3 loop and the beta19 strand of an
+            X4 gp120 glycoprotein in binding CXCR4
+REFERENCE   69 (bases 1 to 1691)
+  AUTHORS   K, Flory,E., Steidl,S., Neumann,J., Coulibaly,C., Holznagel,E.,
+            Holzammer,S., Norley,S. and Cichutek,K.
+  TITLE     Engineered CD4- and CXCR4-using simian immunodeficiency virus from
+            African green monkeys is neutralization sensitive and replicates in
+            nonstimulated lymphocytes
+  JOURNAL   J. Virol. 76 (21), 10627-10636 (2002)
+  MEDLINE   22255392
+   PUBMED   12368305
+  REMARK    GeneRIF: coreceptor binding domain, the V3 region of the surface
+            envelope (SU) glycoprotein, was replaced by the V3 loop of a CD4-
+            and CXCR4-tropic HIV-1 strain; the resulting virus, termed
+            SIVagm3-X4mc, exclusively used CD4 and CXCR4 for cell entry
+REFERENCE   70 (bases 1 to 1691)
+  AUTHORS   Odemis,V., Moepps,B., Gierschik,P. and Engele,J.
+  TITLE     Interleukin-6 and cAMP induce stromal cell-derived factor-1
+            chemotaxis in astroglia by up-regulating CXCR4 cell surface
+            expression. Implications for brain inflammation
+  JOURNAL   J. Biol. Chem. 277 (42), 39801-39808 (2002)
+  MEDLINE   22267277
+   PUBMED   12171912
+  REMARK    GeneRIF: CXCR4 expression is regulated by IL-6 or factors
+            positively coupled to cAMP and results in SDF-1-dependent
+            chemotaxis in central nervous system astrocytes
+REFERENCE   71 (bases 1 to 1691)
+  AUTHORS   Moriuchi,M., Moriuchi,H., Mon,H.M. and Kanbara,H.
+  TITLE     Dichotomous effects of Plasmodium falciparum antigens on expression
+            of human immunodeficiency virus (HIV) coreceptors and on
+            infectability of CD4 cells by HIV
+  JOURNAL   J. Infect. Dis. 186 (8), 1194-1197 (2002)
+  MEDLINE   22242187
+   PUBMED   12355376
+  REMARK    GeneRIF: P. falciparum antigens (PF-Ags) variably regulate the
+            expression of HIV-1 coreceptors and modulate the infectability of
+            CD4 cells by HIV-1
+REFERENCE   72 (bases 1 to 1691)
+  AUTHORS   Kollet,O., Petit,I., Kahn,J., Samira,S., Dar,A., Peled,A.,
+            Deutsch,V., Gunetti,M., Piacibello,W., Nagler,A. and Lapidot,T.
+  TITLE     Human CD34(+)CXCR4(-) sorted cells harbor intracellular CXCR4,
+            which can be functionally expressed and provide NOD/SCID
+            repopulation
+  JOURNAL   Blood 100 (8), 2778-2786 (2002)
+  MEDLINE   22238313
+   PUBMED   12351385
+  REMARK    GeneRIF: results suggest dynamic CXCR4 expression on CD34(+) stem
+            and progenitor cells, regulating their motility and repopulation
+            capacities
+REFERENCE   73 (bases 1 to 1691)
+  AUTHORS   Libura,J., Drukala,J., Majka,M., Tomescu,O., Navenot,J.M.,
+            Kucia,M., Marquez,L., Peiper,S.C., Barr,F.G., Janowska-Wieczorek,A.
+            and Ratajczak,M.Z.
+  TITLE     CXCR4-SDF-1 signaling is active in rhabdomyosarcoma cells and
+            regulates locomotion, chemotaxis, and adhesion
+  JOURNAL   Blood 100 (7), 2597-2606 (2002)
+  MEDLINE   22224392
+   PUBMED   12239174
+  REMARK    GeneRIF: signaling is active in rhabdomyosarcoma cells and
+            regulates locomotion, chemotaxis, and adhesion
+REFERENCE   74 (bases 1 to 1691)
+  AUTHORS   Honczarenko,M., Le,Y., Glodek,A.M., Majka,M., Campbell,J.J.,
+            Ratajczak,M.Z. and Silberstein,L.E.
+  TITLE     CCR5-binding chemokines modulate CXCL12 (SDF-1)-induced responses
+            of progenitor B cells in human bone marrow through heterologous
+            desensitization of the CXCR4 chemokine receptor
+  JOURNAL   Blood 100 (7), 2321-2329 (2002)
+  MEDLINE   22224357
+   PUBMED   12239139
+  REMARK    GeneRIF: CCR5-binding chemokines modulate CXCL12 (SDF-1)-induced
+            responses of progenitor B cells in human bone marrow through
+            heterologous desensitization of the chemokine receptor.
+REFERENCE   75 (bases 1 to 1691)
+  AUTHORS   Mart, Espejo,C., Brieva,L., Pericot,I., Tintor, S and Montalban,X.
+  TITLE     Expression of chemokine receptors in the different clinical forms
+            of multiple sclerosis
+  JOURNAL   J. Leukoc. Biol. 8 (5), 390-395 (2002)
+  MEDLINE   22243018
+   PUBMED   12356205
+  REMARK    GeneRIF: Significant increase in surface CCR5 in CD4+, CD8+, CD19+
+            and CD14+ cells as well as an increased percentage of CXCR3 and
+            CXCR4 in CD14+ cells in MS patients.
+REFERENCE   76 (bases 1 to 1691)
+  AUTHORS   Ptasznik,A., Urbanowska,E., Chinta,S., Costa,M.A., Katz,B.A.,
+            Stanislaus,M.A., Demir,G., Linnekin,D., Pan,Z.K. and Gewirtz,A.M.
+  TITLE     Crosstalk between BCR/ABL oncoprotein and CXCR4 signaling through a
+            Src family kinase in human leukemia cells
+  JOURNAL   J. Exp. Med. 196 (5), 667-678 (2002)
+  MEDLINE   22198900
+   PUBMED   12208881
+  REMARK    GeneRIF: Crosstalk between BCR/ABL oncoprotein and CXCR4 signaling
+            through a Src family kinase in human leukemia cells.
+REFERENCE   77 (bases 1 to 1691)
+  AUTHORS   Estes,J.D., Keele,B.F., Tenner-Racz,K., Racz,P., Redd,M.A.,
+            Thacker,T.C., Jiang,Y., Lloyd,M.J., Gartner,S. and Burton,G.F.
+  TITLE     Follicular dendritic cell-mediated up-regulation of CXCR4
+            expression on CD4 T cells and HIV pathogenesis
+  JOURNAL   J. Immunol. 169 (5), 2313-2322 (2002)
+  MEDLINE   22181492
+   PUBMED   12193696
+  REMARK    GeneRIF: Follicular dendritic cell-mediated up-regulation of CXCR4
+            expression on CD4 T cells in coculture correlates with augmented
+            HIV-1 binding and entry into these cells and increases
+            susceptibility of germinal center CD4 T cells to HIV infection.
+REFERENCE   78 (bases 1 to 1691)
+  AUTHORS   Farzan,M., Babcock,G.J., Vasilieva,N., Wright,P.L., Kiprilov,E.,
+            Mirzabekov,T. and Choe,H.
+  TITLE     The role of post-translational modifications of the CXCR4 amino
+            terminus in stromal-derived factor 1 alpha association and HIV-1
+            entry
+  JOURNAL   J. Biol. Chem. 277 (33), 29484-29489 (2002)
+  MEDLINE   22162452
+   PUBMED   12034737
+  REMARK    GeneRIF: role of post-translational modifications of amino terminus
+            in stromal-derived factor 1 alpha association and HIV-1 entry
+REFERENCE   79 (bases 1 to 1691)
+  AUTHORS   Fotopoulos,G., Harari,A., Michetti,P., Trono,D., Pantaleo,G. and
+            Kraehenbuhl,J.P.
+  TITLE     Transepithelial transport of HIV-1 by M cells is receptor-mediated
+  JOURNAL   Proc. Natl. Acad. Sci. U.S.A. 99 (14), 9410-9414 (2002)
+  MEDLINE   22103700
+   PUBMED   12093918
+  REMARK    GeneRIF: HIV-1 crosses M cell monolayers and infects underlying
+            CD4(+) target cells. Transport requires both lactosyl cerebroside
+            and CXCR4 receptors.
+REFERENCE   80 (bases 1 to 1691)
+  AUTHORS   Zhou,N., Luo,Z., Luo,J., Fan,X., Cayabyab,M., Hiraoka,M., Liu,D.,
+            Han,X., Pesavento,J., Dong,C.Z., Wang,Y., An,J., Kaji,H.,
+            Sodroski,J.G. and Huang,Z.
+  TITLE     Exploring the stereochemistry of CXCR4-peptide recognition and
+            inhibiting HIV-1 entry with D-peptides derived from chemokines
+  JOURNAL   J. Biol. Chem. 277 (20), 17476-17485 (2002)
+  MEDLINE   22001332
+   PUBMED   11880384
+  REMARK    GeneRIF: mechanism of ligand recognition
+REFERENCE   81 (bases 1 to 1691)
+  AUTHORS   Lu,M., Grove,E.A. and Miller,R.J.
+  TITLE     Abnormal development of the hippocampal dentate gyrus in mice
+            lacking the CXCR4 chemokine receptor
+  JOURNAL   Proc. Natl. Acad. Sci. U.S.A. 99 (10), 7090-7095 (2002)
+  MEDLINE   22008001
+   PUBMED   11983855
+  REMARK    GeneRIF: without functional CXCR4, morphogenesis of the hippocampal
+            DG fails.
+REFERENCE   82 (bases 1 to 1691)
+  AUTHORS   Valenzuela-Fern, Planchenault,T., Baleux,F., Staropoli,I.,
+            Le-Barillec,K., Leduc,D., Delaunay,T., Lazarini,F.,
+            Virelizier,J.L., Chignard,M., Pidard,D. and Arenzana-Seisdedos,F.
+  TITLE     Leukocyte elastase negatively regulates Stromal cell-derived
+            factor-1 (SDF-1)/CXCR4 binding and functions by amino-terminal
+            processing of SDF-1 and CXCR4
+  JOURNAL   J. Biol. Chem. 277 (18), 15677-15689 (2002)
+  MEDLINE   21975271
+   PUBMED   11867624
+  REMARK    GeneRIF: elastase-mediated proteolysis of SDF-1/CXCR4 is part of a
+            mechanism regulating their biological functions in both homeostatic
+            and pathologic processes
+REFERENCE   83 (bases 1 to 1691)
+  AUTHORS   Habasque,C., Aubry,F., J and Samson,M.
+  TITLE     Study of the HIV-1 receptors CD4, CXCR4, CCR5 and CCR3 in the human
+            and rat testis
+  JOURNAL   Mol. Hum. Reprod. 8 (5), 419-425 (2002)
+  MEDLINE   21990404
+   PUBMED   11994538
+  REMARK    GeneRIF: CXCR4 is present on the resident testicular macrophages in
+            the interstitial space but not in the germ cell line
+REFERENCE   84 (bases 1 to 1691)
+  AUTHORS   Schrader,A.J., Lechner,O., Templin,M., Dittmar,K.E., Machtens,S.,
+            Mengel,M., Probst-Kepper,M., Franzke,A., Wollensak,T., Gatzlaff,P.,
+            Atzpodien,J., Buer,J. and Lauber,J.
+  TITLE     CXCR4/CXCL12 expression and signalling in kidney cancer
+  JOURNAL   Br. J. Cancer 86 (8), 1250-1256 (2002)
+  MEDLINE   21949796
+   PUBMED   11953881
+  REMARK    GeneRIF: CXCR4/CXCL12 expression and signalling in kidney cancer
+REFERENCE   85 (bases 1 to 1691)
+  AUTHORS   Nguyen,D.H. and Taub,D.
+  TITLE     CXCR4 function requires membrane cholesterol: implications for HIV
+            infection
+  JOURNAL   J. Immunol. 168 (8), 4121-4126 (2002)
+  MEDLINE   21935526
+   PUBMED   11937572
+  REMARK    GeneRIF: Membrane cholesterol is essential for CXCR4 conformation
+            and binding to SDF-1 alpha on T cells and is required by HIV on
+            target cell membranes for infection.
+REFERENCE   86 (bases 1 to 1691)
+  AUTHORS   Salvucci,O., Yao,L., Villalba,S., Sajewicz,A., Pittaluga,S. and
+            Tosato,G.
+  TITLE     Regulation of endothelial cell branching morphogenesis by
+            endogenous chemokine stromal-derived factor-1
+  JOURNAL   Blood 99 (8), 2703-2711 (2002)
+  MEDLINE   21926814
+   PUBMED   11929756
+  REMARK    GeneRIF: SDF-1/CXCR-4 identifies VEGF- and bFGF-regulated autocrine
+            signaling systems that are essential regulators of endothelial cell
+            morphogenesis and angiogenesis.
+REFERENCE   87 (bases 1 to 1691)
+  AUTHORS   Juffermans,N.P., Weijer,S., Verbon,A., Speelman,P. and van der
+            Poll,T.
+  TITLE     Expression of human immunodeficiency virus coreceptors CXC
+            chemokine receptor 4 and CC chemokine receptor 5 on monocytes is
+            down-regulated during human endotoxemia
+  JOURNAL   J. Infect. Dis. 185 (7), 986-989 (2002)
+  MEDLINE   21918056
+   PUBMED   11920324
+  REMARK    GeneRIF: Lipopolysaccharide, lipoarabinomannan and lipoteichoic
+            acid down-regulated the expression of CXCR4 and CCR5 on monocytes
+REFERENCE   88 (bases 1 to 1691)
+  AUTHORS   Taichman,R.S., Cooper,C., Keller,E.T., Pienta,K.J., Taichman,N.S.
+            and McCauley,L.K.
+  TITLE     Use of the stromal cell-derived factor-1/CXCR4 pathway in prostate
+            cancer metastasis to bone
+  JOURNAL   Cancer Res. 62 (6), 1832-1837 (2002)
+  MEDLINE   21909320
+   PUBMED   11912162
+  REMARK    GeneRIF: Use of the stromal cell-derived factor-1/CXCR4 pathway in
+            prostate cancer metastasis to bone.
+REFERENCE   89 (bases 1 to 1691)
+  AUTHORS   Zamarchi,R., Allavena,P., Borsetti,A., Stievano,L., Tosello,V.,
+            Marcato,N., Esposito,G., Roni,V., Paganin,C., Bianchi,G., Titti,F.,
+            Verani,P., Gerosa,G. and Amadori,A.
+  TITLE     Expression and functional activity of CXCR-4 and CCR-5 chemokine
+            receptors in human thymocytes
+  JOURNAL   Clin. Exp. Immunol. 127 (2), 321-330 (2002)
+  MEDLINE   21866411
+   PUBMED   11876757
+  REMARK    GeneRIF: CCR-5 expression in thymocytes was significantly lower
+            than that of CXCR-4 and there was no functional response. A modest
+            increase in expression was associated with in vitro thymocyte
+            stimulation.
+REFERENCE   90 (bases 1 to 1691)
+  AUTHORS   Arthos,J., Cicala,C., Selig,S.M., White,A.A., Ravindranath,H.M.,
+            Van Ryk,D., Steenbeke,T.D., Machado,E., Khazanie,P., Hanback,M.S.,
+            Hanback,D.B., Rabin,R.L. and Fauci,A.S.
+  TITLE     The role of the CD4 receptor versus HIV coreceptors in
+            envelope-mediated apoptosis in peripheral blood mononuclear cells
+  JOURNAL   Virology 292 (1), 98-106 (2002)
+  MEDLINE   21874840
+   PUBMED   11878912
+  REMARK    GeneRIF: the role of CD4, CXCR4, and CCR5 in HIV envelope-mediated
+            apoptosis was examined in peripheral blood mononuclear cells
+REFERENCE   91 (bases 1 to 1691)
+  AUTHORS   Peled,A., Hardan,I., Trakhtenbrot,L., Gur,E., Magid,M.,
+            Darash-Yahana,M., Cohen,N., Grabovsky,V., Franitza,S., Kollet,O.,
+            Lider,O., Alon,R., Rechavi,G. and Lapidot,T.
+  TITLE     Immature leukemic CD34+CXCR4+ cells from CML patients have lower
+            integrin-dependent migration and adhesion in response to the
+            chemokine SDF-1
+  JOURNAL   Stem Cells 20 (3), 259-266 (2002)
+  MEDLINE   21999594
+   PUBMED   12004084
+  REMARK    GeneRIF: leukemic Philadelphia chromosome-positive (Ph+)CD34+ cells
+            from newly diagnosed CML patients that express the chemokine
+            receptor CXCR4 migrate in response to stromal-derived factor-1
+            (SDF-1)
+REFERENCE   92 (bases 1 to 1691)
+  AUTHORS   Ferraro,G.A., Mello,M.A., Sutm, Van Weyenbergh,J., Shindo,N., Galv
+            and Bou-Habib,D.C.
+  TITLE     Biological characterization and chemokine receptor usage of HIV
+            type 1 isolates prevalent in Brazil
+  JOURNAL   AIDS Res. Hum. Retroviruses 17 (13), 1241-1247 (2001)
+  MEDLINE   21443120
+   PUBMED   11559423
+  REMARK    GeneRIF: Biological characterization and chemokine receptor usage
+            of HIV type 1 isolates prevalent in Brazil.
+REFERENCE   93 (bases 1 to 1691)
+  AUTHORS   Xiao,H., Neuveut,C., Tiffany,H.L., Benkirane,M., Rich,E.A.,
+            Murphy,P.M. and Jeang,K.T.
+  TITLE     Selective CXCR4 antagonism by Tat: implications for in vivo
+            expansion of coreceptor use by HIV-1
+  JOURNAL   Proc. Natl. Acad. Sci. U.S.A. 97 (21), 11466-11471 (2000)
+  MEDLINE   20481931
+   PUBMED   11027346
+REFERENCE   94 (bases 1 to 1691)
+  AUTHORS   Ullrich,C.K., Groopman,J.E. and Ganju,R.K.
+  TITLE     HIV-1 gp120- and gp160-induced apoptosis in cultured endothelial
+            cells is mediated by caspases
+  JOURNAL   Blood 96 (4), 1438-1442 (2000)
+  MEDLINE   20400004
+   PUBMED   10942389
+REFERENCE   95 (bases 1 to 1691)
+  AUTHORS   Poznansky,M.C., Olszak,I.T., Foxall,R., Evans,R.H., Luster,A.D. and
+            Scadden,D.T.
+  TITLE     Active movement of T cells away from a chemokine
+  JOURNAL   Nat. Med. 6 (5), 543-548 (2000)
+  MEDLINE   20264563
+   PUBMED   10802710
+REFERENCE   96 (bases 1 to 1691)
+  AUTHORS   Ghezzi,S., Noonan,D.M., Aluigi,M.G., Vallanti,G., Cota,M.,
+            Benelli,R., Morini,M., Reeves,J.D., Vicenzi,E., Poli,G. and
+            Albini,A.
+  TITLE     Inhibition of CXCR4-dependent HIV-1 infection by extracellular
+            HIV-1 Tat
+  JOURNAL   Biochem. Biophys. Res. Commun. 270 (3), 992-996 (2000)
+  MEDLINE   20237116
+   PUBMED   10772939
+REFERENCE   97 (bases 1 to 1691)
+  AUTHORS   Secchiero,P., Zella,D., Curreli,S., Mirandola,P., Capitani,S.,
+            Gallo,R.C. and Zauli,G.
+  TITLE     Engagement of CD28 modulates CXC chemokine receptor 4 surface
+            expression in both resting and CD3-stimulated CD4+ T cells
+  JOURNAL   J. Immunol. 164 (8), 4018-4024 (2000)
+  MEDLINE   20219234
+   PUBMED   10754293
+REFERENCE   98 (bases 1 to 1691)
+  AUTHORS   Cheng,Z.J., Zhao,J., Sun,Y., Hu,W., Wu,Y.L., Cen,B., Wu,G.X. and
+            Pei,G.
+  TITLE     beta-arrestin differentially regulates the chemokine receptor
+            CXCR4-mediated signaling and receptor internalization, and this
+            implicates multiple interaction sites between beta-arrestin and
+            CXCR4
+  JOURNAL   J. Biol. Chem. 275 (4), 2479-2485 (2000)
+  MEDLINE   20112807
+   PUBMED   10644702
+REFERENCE   99 (bases 1 to 1691)
+  AUTHORS   Lalani,A.S., Masters,J., Zeng,W., Barrett,J., Pannu,R., Everett,H.,
+            Arendt,C.W. and McFadden,G.
+  TITLE     Use of chemokine receptors by poxviruses
+  JOURNAL   Science 286 (5446), 1968-1971 (1999)
+  MEDLINE   20050961
+   PUBMED   10583963
+REFERENCE   100 (bases 1 to 1691)
+  AUTHORS   Sotsios,Y., Whittaker,G.C., Westwick,J. and Ward,S.G.
+  TITLE     The CXC chemokine stromal cell-derived factor activates a
+            Gi-coupled phosphoinositide 3-kinase in T lymphocytes
+  JOURNAL   J. Immunol. 163 (11), 5954-5963 (1999)
+  MEDLINE   20040387
+   PUBMED   10570282
+REFERENCE   101 (bases 1 to 1691)
+  AUTHORS   Gupta,S.K. and Pillarisetti,K.
+  TITLE     Cutting edge: CXCR4-Lo: molecular cloning and functional expression
+            of a novel human CXCR4 splice variant
+  JOURNAL   J. Immunol. 163 (5), 2368-2372 (1999)
+  MEDLINE   99384048
+   PUBMED   10452968
+REFERENCE   102 (bases 1 to 1691)
+  AUTHORS   Klein,R.S., Williams,K.C., Alvarez-Hernandez,X., Westmoreland,S.,
+            Force,T., Lackner,A.A. and Luster,A.D.
+  TITLE     Chemokine receptor expression and signaling in macaque and human
+            fetal neurons and astrocytes: implications for the
+            neuropathogenesis of AIDS
+  JOURNAL   J. Immunol. 163 (3), 1636-1646 (1999)
+  MEDLINE   99343779
+   PUBMED   10415069
+REFERENCE   103 (bases 1 to 1691)
+  AUTHORS   Ling,K., Wang,P., Zhao,J., Wu,Y.L., Cheng,Z.J., Wu,G.X., Hu,W.,
+            Ma,L. and Pei,G.
+  TITLE     Five-transmembrane domains appear sufficient for a G
+            protein-coupled receptor: functional five-transmembrane domain
+            chemokine receptors
+  JOURNAL   Proc. Natl. Acad. Sci. U.S.A. 96 (14), 7922-7927 (1999)
+  MEDLINE   99324164
+   PUBMED   10393923
+REFERENCE   104 (bases 1 to 1691)
+  AUTHORS   Yasukawa,M., Hasegawa,A., Sakai,I., Ohminami,H., Arai,J.,
+            Kaneko,S., Yakushijin,Y., Maeyama,K., Nakashima,H., Arakaki,R. and
+            Fujita,S.
+  TITLE     Down-regulation of CXCR4 by human herpesvirus 6 (HHV-6) and HHV-7
+  JOURNAL   J. Immunol. 162 (9), 5417-5422 (1999)
+  MEDLINE   99244909
+   PUBMED   10228019
+REFERENCE   105 (bases 1 to 1691)
+  AUTHORS   Secchiero,P., Zella,D., Capitani,S., Gallo,R.C. and Zauli,G.
+  TITLE     Extracellular HIV-1 tat protein up-regulates the expression of
+            surface CXC-chemokine receptor 4 in resting CD4+ T cells
+  JOURNAL   J. Immunol. 162 (4), 2427-2431 (1999)
+  MEDLINE   99138948
+   PUBMED   9973525
+REFERENCE   106 (bases 1 to 1691)
+  AUTHORS   Huang,L., Bosch,I., Hofmann,W., Sodroski,J. and Pardee,A.B.
+  TITLE     Tat protein induces human immunodeficiency virus type 1 (HIV-1)
+            coreceptors and promotes infection with both macrophage-tropic and
+            T-lymphotropic HIV-1 strains
+  JOURNAL   J. Virol. 72 (11), 8952-8960 (1998)
+  MEDLINE   98440559
+   PUBMED   9765440
+REFERENCE   107 (bases 1 to 1691)
+  AUTHORS   Frodl,R., Gierschik,P. and Moepps,B.
+  TITLE     Genomic organization and expression of the CXCR4 gene in mouse and
+            man: absence of a splice variant corresponding to mouse CXCR4-B in
+            human tissues
+  JOURNAL   J. Recept. Signal Transduct. Res. 18 (4-6), 321-344 (1998)
+  MEDLINE   99095114
+   PUBMED   9879064
+REFERENCE   108 (bases 1 to 1691)
+  AUTHORS   Zou,Y.R., Kottmann,A.H., Kuroda,M., Taniuchi,I. and Littman,D.R.
+  TITLE     Function of the chemokine receptor CXCR4 in haematopoiesis and in
+            cerebellar development
+  JOURNAL   Nature 393 (6685), 595-599 (1998)
+  MEDLINE   98295995
+   PUBMED   9634238
+REFERENCE   109 (bases 1 to 1691)
+  AUTHORS   Tachibana,K., Hirota,S., Iizasa,H., Yoshida,H., Kawabata,K.,
+            Kataoka,Y., Kitamura,Y., Matsushima,K., Yoshida,N., Nishikawa,S.,
+            Kishimoto,T. and Nagasawa,T.
+  TITLE     The chemokine receptor CXCR4 is essential for vascularization of
+            the gastrointestinal tract
+  JOURNAL   Nature 393 (6685), 591-594 (1998)
+  MEDLINE   98295994
+   PUBMED   9634237
+REFERENCE   110 (bases 1 to 1691)
+  AUTHORS   Caruz,A., Samsom,M., Alonso,J.M., Alcami,J., Baleux,F.,
+            Virelizier,J.L., Parmentier,M. and Arenzana-Seisdedos,F.
+  TITLE     Genomic organization and promoter characterization of human CXCR4
+            gene
+  JOURNAL   FEBS Lett. 426 (2), 271-278 (1998)
+  MEDLINE   98258970
+   PUBMED   9599023
+REFERENCE   111 (bases 1 to 1691)
+  AUTHORS   Wegner,S.A., Ehrenberg,P.K., Chang,G., Dayhoff,D.E., Sleeker,A.L.
+            and Michael,N.L.
+  TITLE     Genomic organization and functional characterization of the
+            chemokine receptor CXCR4, a major entry co-receptor for human
+            immunodeficiency virus type 1
+  JOURNAL   J. Biol. Chem. 273 (8), 4754-4760 (1998)
+  MEDLINE   98136183
+   PUBMED   9468539
+REFERENCE   112 (bases 1 to 1691)
+  AUTHORS   Moriuchi,M., Moriuchi,H., Turner,W. and Fauci,A.S.
+  TITLE     Cloning and analysis of the promoter region of CXCR4, a coreceptor
+            for HIV-1 entry
+  JOURNAL   J. Immunol. 159 (9), 4322-4329 (1997)
+  MEDLINE   98026150
+   PUBMED   9379028
+REFERENCE   113 (bases 1 to 1691)
+  AUTHORS   Bleul,C.C., Farzan,M., Choe,H., Parolin,C., Clark-Lewis,I.,
+            Sodroski,J. and Springer,T.A.
+  TITLE     The lymphocyte chemoattractant SDF-1 is a ligand for LESTR/fusin
+            and blocks HIV-1 entry
+  JOURNAL   Nature 382 (6594), 829-833 (1996)
+  MEDLINE   96351077
+   PUBMED   8752280
+REFERENCE   114 (bases 1 to 1691)
+  AUTHORS   Choe,H., Farzan,M., Sun,Y., Sullivan,N., Rollins,B., Ponath,P.D.,
+            Wu,L., Mackay,C.R., LaRosa,G., Newman,W., Gerard,N., Gerard,C. and
+            Sodroski,J.
+  TITLE     The beta-chemokine receptors CCR3 and CCR5 facilitate infection by
+            primary HIV-1 isolates
+  JOURNAL   Cell 85 (7), 1135-1148 (1996)
+  MEDLINE   96270515
+   PUBMED   8674119
+REFERENCE   115 (bases 1 to 1691)
+  AUTHORS   Feng,Y., Broder,C.C., Kennedy,P.E. and Berger,E.A.
+  TITLE     HIV-1 entry cofactor: functional cDNA cloning of a
+            seven-transmembrane, G protein-coupled receptor
+  JOURNAL   Science 272 (5263), 872-877 (1996)
+  MEDLINE   96217947
+   PUBMED   8629022
+REFERENCE   116 (bases 1 to 1691)
+  AUTHORS   Lu,Z.H., Wang,Z.X., Horuk,R., Hesselgesser,J., Lou,Y.C.,
+            Hadley,T.J. and Peiper,S.C.
+  TITLE     The promiscuous chemokine binding profile of the Duffy
+            antigen/receptor for chemokines is primarily localized to sequences
+            in the amino-terminal domain
+  JOURNAL   J. Biol. Chem. 270 (44), 26239-26245 (1995)
+  MEDLINE   96064693
+   PUBMED   7592830
+REFERENCE   117 (bases 1 to 1691)
+  AUTHORS   Loetscher,M., Geiser,T., O'Reilly,T., Zwahlen,R., Baggiolini,M. and
+            Moser,B.
+  TITLE     Cloning of a human seven-transmembrane domain receptor, LESTR, that
+            is highly expressed in leukocytes
+  JOURNAL   J. Biol. Chem. 269 (1), 232-237 (1994)
+  MEDLINE   94103215
+   PUBMED   8276799
+REFERENCE   118 (bases 1 to 1691)
+  AUTHORS   Nomura,H., Nielsen,B.W. and Matsushima,K.
+  TITLE     Molecular cloning of cDNAs encoding a LD78 receptor and putative
+            leukocyte chemotactic peptide receptors
+  JOURNAL   Int. Immunol. 5 (10), 1239-1249 (1993)
+  MEDLINE   94092629
+   PUBMED   7505609
+REFERENCE   119 (bases 1 to 1691)
+  AUTHORS   Jazin,E.E., Yoo,H., Blomqvist,A.G., Yee,F., Weng,G., Walker,M.W.,
+            Salon,J., Larhammar,D. and Wahlestedt,C.
+  TITLE     A proposed bovine neuropeptide Y (NPY) receptor cDNA clone, or its
+            human homologue, confers neither NPY binding sites nor NPY
+            responsiveness on transfected cells
+  JOURNAL   Regul. Pept. 47 (3), 247-258 (1993)
+  MEDLINE   94052833
+   PUBMED   8234909
+REFERENCE   120 (bases 1 to 1691)
+  AUTHORS   Herzog,H., Hort,Y.J., Shine,J. and Selbie,L.A.
+  TITLE     Molecular cloning, characterization, and localization of the human
+            homolog to the reported bovine NPY Y3 receptor: lack of NPY binding
+            and activation
+  JOURNAL   DNA Cell Biol. 12 (6), 465-471 (1993)
+  MEDLINE   93319629
+   PUBMED   8329116
+REFERENCE   121 (bases 1 to 1691)
+  AUTHORS   Federsppiel,B., Melhado,I.G., Duncan,A.M., Delaney,A.,
+            Schappert,K., Clark-Lewis,I. and Jirik,F.R.
+  TITLE     Molecular cloning of the cDNA and chromosomal localization of the
+            gene for a putative seven-transmembrane segment (7-TMS) receptor
+            isolated from human spleen
+  JOURNAL   Genomics 16 (3), 707-712 (1993)
+  MEDLINE   93315164
+   PUBMED   8325644
+COMMENT     REVIEWED REFSEQ: This record has been curated by NCBI staff. The
+            reference sequence was derived from CR614663.1, D10924.1 and
+            AF147204.1.
+            On Dec 23, 2004 this sequence version replaced gi:4503174.
+            
+            Summary: This gene encodes a CXC chemokine receptor specific for
+            stromal cell-derived factor-1. The protein has 7 transmembrane
+            regions and is located on the cell surface. It acts with the CD4
+            protein to support HIV entry into cells and is also highly
+            expressed in breast cancer cells. Mutations in this gene have been
+            associated with WHIM (warts, hypogammaglobulinemia, infections, and
+            myelokathexis) syndrome. Alternate transcriptional splice variants,
+            encoding different isoforms, have been characterized.
+            
+            Transcript Variant: This variant (2) contains a distinct 5' UTR and
+            lacks an in-frame portion of the 5' coding region, compared to
+            variant 1. The resulting isoform (b) has a shorter N-terminus when
+            compared to isoform a.
+            COMPLETENESS: complete on the 3' end.
+FEATURES             Location/Qualifiers
+     source          1..1691
+                     /organism="Homo sapiens"
+                     /mol_type="mRNA"
+                     /db_xref="taxon:9606"
+                     /chromosome="2"
+                     /map="2q21"
+     gene            1..1691
+                     /gene="CXCR4"
+                     /note="synonyms: FB22, HM89, LAP3, LCR1, NPYR, WHIM,
+                     LESTR, NPY3R, NPYRL, HSY3RR, NPYY3R, D2S201E"
+                     /db_xref="GeneID:7852"
+                     /db_xref="LocusID:7852"
+                     /db_xref="MIM:162643"
+     CDS             96..1154
+                     /gene="CXCR4"
+                     /note="isoform b is encoded by transcript variant 2;
+                     neuropeptide Y receptor Y3; fusin; leukocyte-derived
+                     seven-transmembrane-domain receptor;
+                     seven-transmembrane-segment receptor, spleen; stromal
+                     cell-derived factor 1 receptor; CD184 antigen; C-X-C
+                     chemokine receptor type 4; lipopolysaccharide-associated
+                     protein 3; seven transmembrane helix receptor;
+                     go_component: integral to membrane [goid 0016021]
+                     [evidence IEA];
+                     go_function: C-C chemokine receptor activity [goid
+                     0016493] [evidence IEA];
+                     go_function: rhodopsin-like receptor activity [goid
+                     0001584] [evidence IEA];
+                     go_function: C-X-C chemokine receptor activity [goid
+                     0016494] [evidence NAS] [pmid 9468539];
+                     go_process: G-protein coupled receptor protein signaling
+                     pathway [goid 0007186] [evidence IEA]"
+                     /codon_start=1
+                     /product="chemokine (C-X-C motif) receptor 4 isoform b"
+                     /protein_id="NP_003458.1"
+                     /db_xref="GI:4503175"
+                     /db_xref="GeneID:7852"
+                     /db_xref="LocusID:7852"
+                     /db_xref="MIM:162643"
+                     /translation="MEGISIYTSDNYTEEMGSGDYDSMKEPCFREENANFNKIFLPTI
+                     YSIIFLTGIVGNGLVILVMGYQKKLRSMTDKYRLHLSVADLLFVITLPFWAVDAVANW
+                     YFGNFLCKAVHVIYTVNLYSSVLILAFISLDRYLAIVHATNSQRPRKLLAEKVVYVGV
+                     WIPALLLTIPDFIFANVSEADDRYICDRFYPNDLWVVVFQFQHIMVGLILPGIVILSC
+                     YCIIISKLSHSKGHQKRKALKTTVILILAFFACWLPYYIGISIDSFILLEIIKQGCEF
+                     ENTVHKWISITEALAFFHCCLNPILYAFLGAKFKTSAQHALTSVSRGSSLKILSKGKR
+                     GGHSSVSTESESSSFHSS"
+     polyA_signal    1652..1657
+                     /gene="CXCR4"
+     polyA_site      1674
+                     /gene="CXCR4"
+ORIGIN      
+        1 aacttcagtt tgttggctgc ggcagcaggt agcaaagtga cgccgagggc ctgagtgctc
+       61 cagtagccac cgcatctgga gaaccagcgg ttaccatgga ggggatcagt atatacactt
+      121 cagataacta caccgaggaa atgggctcag gggactatga ctccatgaag gaaccctgtt
+      181 tccgtgaaga aaatgctaat ttcaataaaa tcttcctgcc caccatctac tccatcatct
+      241 tcttaactgg cattgtgggc aatggattgg tcatcctggt catgggttac cagaagaaac
+      301 tgagaagcat gacggacaag tacaggctgc acctgtcagt ggccgacctc ctctttgtca
+      361 tcacgcttcc cttctgggca gttgatgccg tggcaaactg gtactttggg aacttcctat
+      421 gcaaggcagt ccatgtcatc tacacagtca acctctacag cagtgtcctc atcctggcct
+      481 tcatcagtct ggaccgctac ctggccatcg tccacgccac caacagtcag aggccaagga
+      541 agctgttggc tgaaaaggtg gtctatgttg gcgtctggat ccctgccctc ctgctgacta
+      601 ttcccgactt catctttgcc aacgtcagtg aggcagatga cagatatatc tgtgaccgct
+      661 tctaccccaa tgacttgtgg gtggttgtgt tccagtttca gcacatcatg gttggcctta
+      721 tcctgcctgg tattgtcatc ctgtcctgct attgcattat catctccaag ctgtcacact
+      781 ccaagggcca ccagaagcgc aaggccctca agaccacagt catcctcatc ctggctttct
+      841 tcgcctgttg gctgccttac tacattggga tcagcatcga ctccttcatc ctcctggaaa
+      901 tcatcaagca agggtgtgag tttgagaaca ctgtgcacaa gtggatttcc atcaccgagg
+      961 ccctagcttt cttccactgt tgtctgaacc ccatcctcta tgctttcctt ggagccaaat
+     1021 ttaaaacctc tgcccagcac gcactcacct ctgtgagcag agggtccagc ctcaagatcc
+     1081 tctccaaagg aaagcgaggt ggacattcat ctgtttccac tgagtctgag tcttcaagtt
+     1141 ttcactccag ctaacacaga tgtaaaagac ttttttttat acgataaata actttttttt
+     1201 aagttacaca tttttcagat ataaaagact gaccaatatt gtacagtttt tattgcttgt
+     1261 tggatttttg tcttgtgttt ctttagtttt tgtgaagttt aattgactta tttatataaa
+     1321 ttttttttgt ttcatattga tgtgtgtcta ggcaggacct gtggccaagt tcttagttgc
+     1381 tgtatgtctc gtggtaggac tgtagaaaag ggaactgaac attccagagc gtgtagtgaa
+     1441 tcacgtaaag ctagaaatga tccccagctg tttatgcata gataatctct ccattcccgt
+     1501 ggaacgtttt tcctgttctt aagacgtgat tttgctgtag aagatggcac ttataaccaa
+     1561 agcccaaagt ggtatagaaa tgctggtttt tcagttttca ggagtgggtt gatttcagca
+     1621 cctacagtgt acagtcttgt attaagttgt taataaaagt acatgttaaa cttaaaaaaa
+     1681 aaaaaaaaaa a
+//
+

@@ -1,0 +1,115 @@
+LOCUS       P00686                   122 aa            linear   MAM 25-JAN-2005
+DEFINITION  Ribonuclease pancreatic (RNase 1) (RNase A).
+ACCESSION   P00686
+VERSION     P00686  GI:133219
+DBSOURCE    swissprot: locus RNP_MACRU, accession P00686;
+            class: standard.
+            created: Jul 21, 1986.
+            sequence updated: Jul 21, 1986.
+            annotation updated: Jan 25, 2005.
+            xrefs: gi: 67361
+            xrefs (non-sequence databases): HSSPP00656, InterProIPR001427,
+            PfamPF00074, PRINTSPR00794, ProDomPD000535, SMARTSM00092,
+            PROSITEPS00127
+KEYWORDS    Direct protein sequencing; Endonuclease; Hydrolase; Nuclease.
+SOURCE      Macropus rufus (red kangaroo)
+  ORGANISM  Macropus rufus
+            Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi;
+            Mammalia; Metatheria; Diprotodontia; Macropodidae; Macropus.
+REFERENCE   1  (residues 1 to 122)
+  AUTHORS   Gaastra,W., Welling,G.W. and Beintema,J.J.
+  TITLE     The amino-acid sequence of kangaroo pancreatic ribonuclease
+  JOURNAL   Eur. J. Biochem. 86 (1), 209-217 (1978)
+   PUBMED   658039
+  REMARK    PROTEIN SEQUENCE.
+COMMENT     [FUNCTION] Endonuclease that catalyzes the cleavage of RNA on the
+            3' side of pyrimidine nucleotides. Acts on single stranded and
+            double stranded RNA (By similarity).
+            [CATALYTIC ACTIVITY] Endonucleolytic cleavage to nucleoside
+            3'-phosphates and 3'-phosphooligonucleotides ending in C-P or U-P
+            with 2',3'-cyclic phosphate intermediates.
+            [SUBUNIT] Monomer (By similarity).
+            [SUBCELLULAR LOCATION] Secreted.
+            [TISSUE SPECIFICITY] Pancreas.
+            [PTM] Not glycosylated although the sequence N-V-T, a recognition
+            site for carbohydrate attachment, is present.
+            [SIMILARITY] Belongs to the pancreatic ribonuclease family.
+            -------------------------------------------------------------------
+            -------This Swiss-Prot entry is copyright. It is produced through a
+            collaboration between  the Swiss Institute of Bioinformatics  and
+            the  EMBL outstation -the European Bioinformatics Institute.  There
+            are no  restrictions on  its use as long as its content is in no
+            way modified and this statement is not removed.
+            -------------------------------------------------------------------
+            -------.
+FEATURES             Location/Qualifiers
+     source          1..122
+                     /organism="Macropus rufus"
+                     /db_xref="taxon:9321"
+     gene            1..122
+                     /gene="RNASE1"
+                     /note="synonym: RNS1"
+     Protein         1..122
+                     /gene="RNASE1"
+                     /product="Ribonuclease pancreatic"
+                     /EC_number="3.1.27.5"
+     Site            6
+                     /gene="RNASE1"
+                     /site_type="binding"
+                     /note="Substrate phosphate group (By similarity)."
+                     /evidence=experimental
+     Site            9
+                     /gene="RNASE1"
+                     /site_type="binding"
+                     /note="Substrate phosphate group (By similarity)."
+                     /evidence=experimental
+     Site            11
+                     /gene="RNASE1"
+                     /site_type="active"
+                     /note="Proton acceptor (By similarity)."
+                     /evidence=experimental
+     Bond            bond(25,83)
+                     /gene="RNASE1"
+                     /bond_type="disulfide"
+                     /note="By similarity."
+                     /evidence=experimental
+     Bond            bond(39,94)
+                     /gene="RNASE1"
+                     /bond_type="disulfide"
+                     /note="By similarity."
+                     /evidence=experimental
+     Site            40..44
+                     /gene="RNASE1"
+                     /site_type="unclassified"
+                     /note="Substrate binding (By similarity)."
+                     /evidence=experimental
+     Bond            bond(57,109)
+                     /gene="RNASE1"
+                     /bond_type="disulfide"
+                     /note="By similarity."
+                     /evidence=experimental
+     Bond            bond(64,71)
+                     /gene="RNASE1"
+                     /bond_type="disulfide"
+                     /note="By similarity."
+                     /evidence=experimental
+     Site            65
+                     /gene="RNASE1"
+                     /site_type="binding"
+                     /note="Substrate phosphate group (By similarity)."
+                     /evidence=experimental
+     Site            84
+                     /gene="RNASE1"
+                     /site_type="binding"
+                     /note="Substrate phosphate group (By similarity)."
+                     /evidence=experimental
+     Site            117
+                     /gene="RNASE1"
+                     /site_type="active"
+                     /note="Proton donor (By similarity)."
+                     /evidence=experimental
+ORIGIN      
+        1 etpaekfqrq hmdtehstas ssnycnlmmk ardmtsgrck plntfihepk svvdavchqe
+       61 nvtckngrtn cyksnsrlsi tncrqtgask ypncqyetsn lnkqiivace gqyvpvhfda
+      121 yv
+//

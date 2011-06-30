@@ -1,0 +1,9 @@
+{
+  let s:string = ``
+  ""''` `\n``;
+  
+  logger("expected:\n  \"\"''` `\\n \ngot:"+s);
+}
+
+
+

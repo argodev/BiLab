@@ -1,0 +1,21 @@
+{
+  // simple scoping test
+  
+  let a = 1;
+  let b = 2;
+  
+  let f = func(->real)
+  {
+    let a = 2;
+    a+b  // local a (=2) + b (=2)  = 4
+  };
+  
+  let c = f()+a;  // 4 + outer a(=1)  = 5
+  logger("expect: 5\ngot:"+c);
+}
+
+
+
+ 
+
+

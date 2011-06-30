@@ -1,0 +1,76 @@
+LOCUS       RNU71089                1383 bp    DNA     linear   ROD 20-DEC-1996
+DEFINITION  Rattus norvegicus CXC chemokine receptor1-like protein (CXCR1)
+            gene, complete cds.
+ACCESSION   U71089
+VERSION     U71089.1  GI:1589930
+KEYWORDS    .
+SOURCE      Rattus norvegicus (Norway rat)
+  ORGANISM  Rattus norvegicus
+            Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi;
+            Mammalia; Eutheria; Rodentia; Sciurognathi; Muridae; Murinae;
+            Rattus.
+REFERENCE   1  (bases 1 to 1383)
+  AUTHORS   Dunstan,C.A., Salafranca,M.N., Adhikari,S., Xia,Y., Feng,L. and
+            Harrison,J.K.
+  TITLE     Identification of two rat genes orthologous to the human
+            interleukin-8 receptors
+  JOURNAL   J. Biol. Chem. 271 (51), 32770-32776 (1996)
+  MEDLINE   97115810
+   PUBMED   8955112
+REFERENCE   2  (bases 1 to 1383)
+  AUTHORS   Dunstan,C.-A.N., Salafranca,M.N., Adhikari,S., Xia,Y., Feng,L. and
+            Harrison,J.K.
+  TITLE     Direct Submission
+  JOURNAL   Submitted (17-SEP-1996) Pharmacology and Therapeutics, University
+            of Florida, 1600 SW Archer Road, Gainesville, FL 32610-0267, USA
+FEATURES             Location/Qualifiers
+     source          1..1383
+                     /organism="Rattus norvegicus"
+                     /mol_type="genomic DNA"
+                     /strain="Wistar"
+                     /db_xref="taxon:10116"
+                     /cell_type="macrophage"
+                     /tissue_type="lung"
+     gene            162..1211
+                     /gene="CXCR1"
+     CDS             162..1211
+                     /gene="CXCR1"
+                     /note="G-protein coupled receptor, rhodopsin family"
+                     /codon_start=1
+                     /product="CXC chemokine receptor1-like protein"
+                     /protein_id="AAC52962.1"
+                     /db_xref="GI:1589931"
+                     /translation="MAEAEYFIWIAPEGDFEEEFGNITRMLPTGEYFSPCKRVPMTNR
+                     QAVVVFYALVFLLSLLGNSLVMLVILYRRRTRSVTDVYVLNLAIADLLFSLTLPFLAV
+                     SKWKGWIFGTPLCKMVSLLKEVNFFSGILLLACISVDRYLAIVHATRTLTRKRYLVKF
+                     VCMGTWGLSLVLSLPFAIFRQAYKPYRSGTVCYEVLGEATADLRITLRGLSHIFGFLL
+                     PLFIMLVCYGLTLRTLFKAHMRQKRRAMWVIFAVVLVFLLCCLPYNLVLLSDTLLGAH
+                     LIQDTCERRNNIDQALYITEILGFSHSCLNPVIYAFVGQSFRHEFLKILANLVHKEVL
+                     THHSASFRTSLTTIY"
+ORIGIN      
+        1 attaggaagc taacattgat agaagttcaa gttgaagcca aaggagtgaa ctccgggttg
+       61 tcaaggcaac agaggccaat actatcccac aatatccact tgaatttggt tactgaattc
+      121 tatttctctc cttctaacct tgcacataga tcaaacaaac aatggccgag gctgagtatt
+      181 tcatctggat tgctcctgag ggtgactttg aggaagaatt tggaaatatc acccgaatgc
+      241 tgcccactgg agagtatttc agcccctgta agagggttcc aatgaccaac aggcaggctg
+      301 tagttgtctt ctatgcactg gtgttccttc ttagcttgct gggaaactcg ctggtgatgc
+      361 tggtcatctt atacaggcga aggacccgat ccgtcaccga tgtctacgtg ctgaacctag
+      421 ccattgctga tctactcttt tcattgactc tgcccttctt ggctgtctcc aaatggaagg
+      481 gctggatttt tggcacaccc ctgtgcaaga tggtctcact cctgaaggaa gtcaacttct
+      541 tcagtggtat cttgctgctg gcctgcatca gtgtggatcg atacctggcc atcgtccatg
+      601 ccacccgcac actgacccga aagcgctact tggttaaatt cgtatgcatg ggcacctggg
+      661 gtctatcctt ggttctgtct ctgccttttg ccatcttccg ccaggcatat aaaccatacc
+      721 gttctggaac agtctgctat gaggtcctgg gtgaagccac agcagatctt aggataacat
+      781 tgcgtggtct gtcccacata tttggcttcc tcttgccgct gttcatcatg ctggtctgct
+      841 acgggctcac actgcgcacg ctctttaagg cccacatgag acagaaacgc cgggccatgt
+      901 gggtgatctt tgctgttgtg ttggtcttcc tgctctgttg tctgccctac aatctggttc
+      961 tgctctcgga cactctctta ggagcccact tgattcaaga tacttgcgag cgccgcaata
+     1021 acattgacca ggccttgtat attaccgaga tcctgggctt ttctcacagt tgtcttaacc
+     1081 ccgtcatcta tgcctttgtt ggccaaagtt ttcgccatga attcctcaag atccttgcta
+     1141 acctggttca caaggaggtt ttgacacacc actctgcttc ctttcgcacg tctctcacca
+     1201 ctatctatta aacttctgag aattaccaga gagtgatcgc tctccctcaa agggaaggat
+     1261 aactattgtg ccaatgtgtt gtgtgagtgt gtgtgtgtgt gtgtgtgtgt gtgtgtgtgg
+     1321 tgtgtgttgt gtatgtgcgt gcatgtatgt gtgctgtgtg tatgtatgat ggatgcatgt
+     1381 gtg
+//
+

@@ -1,0 +1,11 @@
+{ 
+  let factorial = func(n:real->real) { if n<=1 then 1 else n*factorial(n-1) };
+  
+  logger("expect: 120\ngot:"+factorial(5));
+}
+
+
+
+ 
+
+

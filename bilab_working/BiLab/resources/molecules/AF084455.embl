@@ -1,0 +1,56 @@
+ID   AF084455   standard; RNA; VRT; 201 BP.
+XX
+AC   AF084455;
+XX
+SV   AF084455.1
+XX
+DT   10-MAY-1999 (Rel. 59, Created)
+DT   10-MAY-1999 (Rel. 59, Last updated, Version 1)
+XX
+DE   Bufo marinus prodynorphin mRNA, partial cds.
+XX
+KW   .
+XX
+OS   Bufo marinus (giant toad)
+OC   Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi; Amphibia;
+OC   Batrachia; Anura; Neobatrachia; Bufonoidea; Bufonidae; Bufo.
+XX
+RN   [1]
+RP   1-201
+RA   Danielson P.B., Walker D.L., Dores R.M.;
+RT   "Isolation of a cDNA encoding prodynorphin from the marine toad, Bufo
+RT   marinus";
+RL   Unpublished.
+XX
+RN   [2]
+RP   1-201
+RA   Danielson P.B., Walker D.L., Dores R.M.;
+RT   ;
+RL   Submitted (13-AUG-1998) to the EMBL/GenBank/DDBJ databases.
+RL   Department of Biological Sciences, University of Denver, 2101 E. Wesley
+RL   Avenue, Denver, CO 80208, USA
+XX
+DR   SPTREMBL; Q9W688; Q9W688.
+XX
+FH   Key             Location/Qualifiers
+FH
+FT   source          1..201
+FT                   /db_xref="taxon:8386"
+FT                   /organism="Bufo marinus"
+FT                   /tissue_type="brain"
+FT   CDS             <1..132
+FT                   /codon_start=1
+FT                   /db_xref="SPTREMBL:Q9W688"
+FT                   /note="inhibitory neuropeptide precursor;
+FT                   post-translational processing results in biologically
+FT                   active end-products Dynorphin A and Dynorphin B"
+FT                   /product="prodynorphin"
+FT                   /protein_id="AAD29128.1"
+FT                   /translation="RRIRPKLKWDNQKRYGGFLRRQFKVTTRSEEDPSTFSGELSNL"
+XX
+SQ   Sequence 201 BP; 64 A; 36 C; 54 G; 47 T; 0 other;
+     cgcaggattc ggcccaaatt gaagtgggac aatcagaaaa gatatggggg attccttcgg        60
+     cgtcagttca aggtcactac aaggtcagaa gaagatccca gcaccttttc tggagagttg       120
+     tctaaccttt aagaagcatt agtgtctgta gtagttggag agaaggtggt ggaatagtaa       180
+     aggctcaaat ctaacaaaca c                                                 201
+//

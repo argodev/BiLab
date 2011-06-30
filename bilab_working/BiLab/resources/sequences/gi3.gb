@@ -1,0 +1,47 @@
+LOCUS       BI391025                  684 bp   mRNA    linear   EST 06-AUG-2001
+ACCESSION   BI391025
+VERSION     BI391025.1  GI:15084307
+DEFINITION  pgp1n.pk003.b14 Normalized Chicken Pituitary/Hypothalamus/Pineal   
+            Library Gallus gallus cDNA clone pgp1n.pk003.b14 5' similar to     
+            emb|CAB93148.1 (AJ277242) HDJ2 protein [Homo sapiens], mRNA
+            sequence.
+KEYWORDS    EST.
+SOURCE      Gallus gallus (chicken)
+  ORGANISM  Gallus gallus Eukaryota; Metazoa; Chordata; Craniata; Vertebrata;  
+            Euteleostomi; Archosauria; Aves; Neognathae; Galliformes;          
+            Phasianidae; Phasianinae; Gallus.
+COMMENT     Contact: Larry A. Cogburn University of Delaware Townsend Hall,    
+            Newark, DE 19717, USA Tel: 302-831-1335 Fax: 302-831-2822 Email:   
+            cogburn@udel.edu, www.chickest.udel.edu.
+FEATURES             Location/Qualifiers
+     source          1..684
+                     /clone="pgp1n.pk003.b14"
+                     /clone_lib="Normalized Chicken
+                     Pituitary/Hypothalamus/Pineal Library"
+                     /db_xref="taxon:9031"
+                     /dev_stage="Embryonic (d12,d14,d19); post-hatch
+                     (w1,w3,w5,w7,w9)"
+                     /lab_host="E. Coli EMDH10B"
+                     /mol_type="mRNA"
+                     /note="Vector: pCMVSPORT6; Library made from equivalent
+                     pools of total RNA isolated from each tissue at different
+                     ages. Single pass sequencing from 5'-end"
+                     /organism="Gallus gallus"
+                     /sex="Male and Female"
+                     /strain="Commercial broiler chicken"
+                     /tissue_type="Pituitary Gland/Hypothalamus/Pineal Gland"
+BASE COUNT    177 a   135 c   142 g   227 t    3 others
+ORIGIN
+        1 ggatactgtt ccctaatgct tccttgagct gttgatttaa tactcaatac tactttaatt     
+       61 gtccaggctt ctctctatta aaattatttt cattagtaag ttgactaatg aaggtgggct     
+      121 tgatcctttt attgcttccc tttttctatc actgtttttg atgggttcta ctgtagacga     
+      181 gacgaagacc ttcttctgtc tatggatata caactggttg aagcactgtg tggctttcaa     
+      241 aagcctatca caacgctgga taataggact atcattatta cctcccatcc tggtaagtgc     
+      301 atgctaaaag tctgctaaaa gtccaagcat aggtaagctg taaacttacg ggagcagaag     
+      361 cagtccctct tgttgtacag cgggtgtaca ttagtaccag gctttttctt cccagtcttt     
+      421 gcagtatcaa tcttgaaaca agaagggatt tttggatagc agtcagcagt aattatctct     
+      481 ttatgtgatg tggtaacaca ccttccctca tggacacttg aaggccacgg gtctctgaaa     
+      541 actgcttttt cagtactgga actgatgggg catttagcat acttgtaagt gtgcttcctt     
+      601 gggaagcata acaaggttag aagaatgtaa tgtggatgtc agtcaacttt cttacttgga     
+      661 agttagcnnn catcaagtcc ctgt                                            
+//

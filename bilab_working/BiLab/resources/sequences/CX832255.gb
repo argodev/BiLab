@@ -1,0 +1,70 @@
+LOCUS       CX832255                 457 bp    mRNA    linear   EST 02-FEB-2005
+DEFINITION  ACAC-aaa17a12.g1 Hydra EST UCI 7 Hydra magnipapillata cDNA 5'
+            similar to sp|P81021|VGLN_CHICK Vigilin >pir||S23464 vigilin -
+            chicken >emb|CAA46387.1| vigilin [Gallus gallus], mRNA sequence.
+ACCESSION   CX832255
+VERSION     CX832255.1  GI:58479713
+KEYWORDS    EST.
+SOURCE      Hydra magnipapillata
+  ORGANISM  Hydra magnipapillata
+            Eukaryota; Metazoa; Cnidaria; Hydrozoa; Hydroida; Anthomedusae;
+            Hydridae; Hydra.
+REFERENCE   1  (bases 1 to 457)
+  AUTHORS   Bode,H., Blumberg,B., Steele,R., Wigge,P., Gee,L., Nguyen,Q.,
+            Martinez,D., Kibler,D., Hampson,S., Clifton,S., Pape,D., Marra,M.,
+            Hillier,L., Martin,J., Wylie,T., Dante,M., Theising,B., Bowers,Y.,
+            Gibbons,M., Ritter,E., Bennett,J., Ronko,I., Tsagareishvili,R.,
+            Maguire,L., Kennedy,S., Waterston,R. and Wilson,R.
+  TITLE     WashU Hydra EST Project
+  JOURNAL   Unpublished (2002)
+COMMENT     Contact: Hans Bode
+            WashU Hydra EST Project
+            Washington University School of Medicine
+            4444 Forest Park Parkway, Box 8501, St. Louis, MO 63108, USA
+            Tel: 314 286 1800
+            Fax: 314 286 1810
+            Email: est@watson.wustl.edu
+            Library material provided by Hans Bode & Dirk Lindgens, Univ. of
+            Calif., Irvine Library constructed by Dirk Lindgens, Univ. of
+            Calif. Irvine Library sequenced by Washington University Genome
+            Sequencing Center For information on obtaining a clone please
+            contact: Hans Bode (hrbode@uci.edu)
+            Seq primer: -40RP from Gibco.
+FEATURES             Location/Qualifiers
+     source          1..457
+                     /organism="Hydra magnipapillata"
+                     /mol_type="mRNA"
+                     /strain="105"
+                     /db_xref="taxon:6085"
+                     /lab_host="DH10B"
+                     /clone_lib="Hydra EST UCI 7"
+                     /note="Vector: pSPORT1; Site_1: Not I; Site_2: Sal I; a.
+                     1st strand cDNA was primed with a Not I primer-adapter
+                     (5'-pGACTAGTTCTAGATCGCGAGCGGCCGCCC(T)15-3') b.
+                     Double-stranded cDNA was ligated to Sal I adapter,
+                     digested with Not I and cloned into the pSPORT 1-vector
+                     pre-cut with Not I and Sal I. c. The ligation mix was
+                     transformed into DH10B cells. d. The cells were grown in
+                     SOC = 5g yeast, 20g tryptone, 0.5 g NaCl, 10 mM MgSO4, 10
+                     mM MgCl, 0.2% glucose / Liter, (no antibiotic). e. DMSO
+                     was added to a final conc. of 10% as a cryoprotectant.and
+                     frozen. f. The titre before freezing was determined as ~
+                     6000/ 100 ul. Assuming a 10% loss upon freezing, the titre
+                     is probably ~ 5400/ 100 ul. g. 6 tubes each containing ~
+                     5400 clones/ul [ = total of ~ 32,400] are enclosed. h.
+                     The frequency of vectors containing inserts is 95% as
+                     determined by digestion check after picking 20 clones,
+                     miniprep and subsequent digestion with Not I and Sal I. i.
+                     A low level of 32P was used in the cDNA synthesis
+                     procedure. The level measured by holding a Geiger Counter
+                     next to a tube was background."
+ORIGIN      
+        1 cccagtcgtt cgcacaaact aaaataacta ttcctcgaga ctctaaaata atcaggattg
+       61 tttgtactaa agaaggtatt gatcgagcca aacatgaaat acaactaata tcagatgagc
+      121 aagctaaact tgcattttaa cgtctaactg ttcccaagat ttatcaccca tttatccaag
+      181 gcccagataa tgaaaaaatg aaagaaatag cattgagtac tggtgctcga attaacattc
+      241 cacccccttc agttaataaa gatgaaatta ctgttgcggg agataaggaa tctgttcaaa
+      301 aagctgtcaa gtttataatt gatatttaca aacgaagaga aaaacttagt aaaacagttg
+      361 ctatttgagt taaaaaaaat caacctcgct atgttttttg accaaaagga tcaggaattt
+      421 ccagataatt tgcgtgctac tggagtttct gtggaaa
+//

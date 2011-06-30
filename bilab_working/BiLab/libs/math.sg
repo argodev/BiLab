@@ -1,0 +1,50 @@
+namespace math {
+
+  // complex numbers
+  //  (this will be moved out into CLI sometime - i.e. precompiled)
+  
+  let Complex = func(N:type=real->type) {
+    let Complex = class {
+    
+      func(->self) {};
+      func(c:self ->self) { r=c.r; i=c.i };
+      func(r:N, i:N ->self) { ~r=r; ~i=i; };
+      func(r:N ->self) { ~r=r; i=0; };
+      
+      // an indexer (index 0 is r, index 1 is i)
+      operator():N property(index:int) {
+        get = pre {index>=0 and index<=1}; {if(index==0) r else i};
+        set = pre {index>=0 and index<=1}; {if(index==0) r=value else i=value}
+      };
+      
+      // explicit conversion to vector
+      static operator-> = func(c:self -> vector) {[c.r c.i]};
+      
+      static operator+ = func(c1:self, c2:self -> self) { self(c1.r+c2.r, c1.i+c2.i) };
+      static operator- = func(c1:self, c2:self -> self) { self(c1.r-c2.r, c1.i-c2.i) };
+      static operator+ = func(c:self -> self) { self(c) }; // unary +
+      static operator- = func(c:self -> self) { self(-c.r,-c.i); }; // unary -
+  
+      static operator* = func(c1:self, c2:self -> self) { self(c1.r*c2.r-c1.i*c2.i, c1.r*c2.i+c1.i*c2.r) };
+      
+      static operator|| = func(c:self -> N) { N((c.r^2 + c.i^2)^0.5) };  // complex norm
+      
+      static operator== = func(c1:self, c2:self -> bool) { (c1.r==c2.r) and (c1.i==c2.i) };
+      static operator!= = func(c1:self, c2:self -> bool) { !(c1==c2) };
+      
+      conjugate:self property {
+        get = {self(r,-i)}
+      };
+      
+      override toString = func(->string) { ""+r+(if(i>=0)"+"else"")+(if(|i|!=1)""+i else(if(i==-1)"-"else""))+"i" };
+      
+      r:N = 0;
+      i:N = 0;
+    };
+    Complex
+  };
+  
+  let complex = Complex();
+  
+  
+}
