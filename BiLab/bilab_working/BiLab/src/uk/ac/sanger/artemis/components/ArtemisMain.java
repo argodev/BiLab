@@ -20,15 +20,18 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Header: /cvsroot/pathsoft/artemis/uk/ac/sanger/artemis/components/ArtemisMain.java,v 1.2 2004/06/29 08:29:15 tjc Exp $
+ * $Header: /cvsroot/pathsoft/artemis/uk/ac/sanger/artemis/components/ArtemisMain.java,v 1.20 2006/01/04 14:25:09 tjc Exp $
  */
 
 package uk.ac.sanger.artemis.components;
 
+import uk.ac.sanger.artemis.components.FileManager;
+import uk.ac.sanger.artemis.components.LocalAndRemoteFileManager;
 import uk.ac.sanger.artemis.*;
 import uk.ac.sanger.artemis.sequence.NoSequenceException;
 import uk.ac.sanger.artemis.sequence.Bases;
 import uk.ac.sanger.artemis.util.Document;
+import uk.ac.sanger.artemis.util.TextDocument;
 import uk.ac.sanger.artemis.util.DocumentFactory;
 import uk.ac.sanger.artemis.util.OutOfRangeException;
 import uk.ac.sanger.artemis.util.InputStreamProgressListener;
@@ -36,21 +39,22 @@ import uk.ac.sanger.artemis.io.EntryInformation;
 
 import org.biojava.bio.seq.io.SequenceFormat;
 
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import java.awt.event.*;
+import java.awt.Toolkit;
 import java.io.*;
+import java.awt.datatransfer.*;
 
 /**
  *  The main window for the Artemis sequence editor.
  *
  *  @author Kim Rutherford <kmr@sanger.ac.uk>
- *  @version $Id: ArtemisMain.java,v 1.2 2004/06/29 08:29:15 tjc Exp $
+ *  @version $Id: ArtemisMain.java,v 1.20 2006/01/04 14:25:09 tjc Exp $
  **/
 
 public class ArtemisMain extends Splash 
 {
   /** Version String use for banner messages and title bars. */
-  public static final String version = "Release 6 (Java2)";
+  public static final String version = "Release 8";
 
   /** A vector containing all EntryEdit object we have created. */
   private EntryEditVector entry_edit_objects = new EntryEditVector();
@@ -75,6 +79,21 @@ public class ArtemisMain extends Splash
       }
     };
     makeMenuItem(file_menu, "Open File Manager ...", menu_listener);
+
+
+    ActionListener menu_listener_ssh = new ActionListener()
+    {
+      private LocalAndRemoteFileManager fm;
+      public void actionPerformed(ActionEvent event)
+      {
+        if(fm == null)
+          fm = new LocalAndRemoteFileManager(ArtemisMain.this);
+        else
+          fm.setVisible(true);
+      }
+    };
+    makeMenuItem(file_menu, "Open SSH File Manager ...", menu_listener_ssh);
+
 
     final EntrySourceVector entry_sources = getEntrySources(this);
 
@@ -102,6 +121,24 @@ public class ArtemisMain extends Splash
       makeMenuItem(file_menu, menu_name, menu_listener);
     }
 
+    menu_listener = new ActionListener()
+    {
+      public void actionPerformed(ActionEvent event)
+      {
+        launchDatabaseJFrame(true);
+      }
+    };
+
+    final boolean sanger_options =
+      Options.getOptions().getPropertyTruthValue("sanger_options");
+
+    if(sanger_options)
+    {
+      makeMenuItem(file_menu, "Database Entry ...", menu_listener);
+      if(System.getProperty("chado") != null)
+        launchDatabaseJFrame(false);
+    }
+
     menu_listener = new ActionListener() 
     {
       public void actionPerformed(ActionEvent event)
@@ -111,15 +148,17 @@ public class ArtemisMain extends Splash
     };
     makeMenuItem(file_menu, "Quit", menu_listener);
 
-//      getCanvas().addMouseListener(new MouseAdapter() {
-//        /**
-//         *  Listen for mouse press events so that we can do popup menus and
-//         *  selection.
-//         **/
-//        public void mousePressed(MouseEvent event) {
-//          handleCanvasMousePress(event);
-//        }
-//      });
+    getCanvas().addMouseListener(new MouseAdapter() 
+    {
+      /**
+       *  Listen for mouse press events so that we can do popup menus and
+       *  selection.
+       **/
+      public void mousePressed(MouseEvent event)  
+      {
+        handleCanvasMousePress(event);
+      }
+    });
 
 //  java.util.Properties props = System.getProperties();
 //  java.util.Enumeration en = props.propertyNames();
@@ -132,27 +171,106 @@ public class ArtemisMain extends Splash
   }
 
 
-// XXX add pasteClipboard() one day
+  /**
+   *  Handle a mouse press event on the drawing canvas - select on click,
+   *  select and broadcast it on double click.
+   **/
+  private void handleCanvasMousePress(MouseEvent event) 
+  {
+    if(event.getID() != MouseEvent.MOUSE_PRESSED)
+      return;
 
-//    /**
-//     *  Handle a mouse press event on the drawing canvas - select on click,
-//     *  select and broadcast it on double click.
-//     **/
-//    private void handleCanvasMousePress(MouseEvent event) {
-//      if(event.getID() != MouseEvent.MOUSE_PRESSED) {
-//        return;
-//      }
+    if((event.getModifiers() & InputEvent.BUTTON2_MASK) != 0)
+    {
+      openClipboardContents();
+    }
+  }
 
-//      if((event.getModifiers() & InputEvent.BUTTON2_MASK) != 0) {
-//        pasteClipboard();
-//      }
-//    }
+  /**
+  * Get the String residing on the clipboard.
+  *
+  * @return any text found on the Clipboard; if none found, return an
+  * empty String.
+  */
+  public void openClipboardContents() 
+  {
+    Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+    //odd: the Object param of getContents is not currently used
+    Transferable contents = clipboard.getContents(null);
+    boolean hasTransferableText = (contents != null) &&
+                                  contents.isDataFlavorSupported(DataFlavor.stringFlavor);
+    if(hasTransferableText)
+    {
+      TextDocument entry_document = new TextDocument();
+      final InputStreamProgressListener progress_listener =
+                                     getInputStreamProgressListener();
+
+      entry_document.addInputStreamProgressListener(progress_listener);
+
+      final EntryInformation artemis_entry_information =
+                          Options.getArtemisEntryInformation();
+
+      final uk.ac.sanger.artemis.io.Entry new_embl_entry =
+          EntryFileDialog.getEntryFromFile(this, entry_document,
+                                           artemis_entry_information,
+                                           false);
+
+      if(new_embl_entry == null)  // the read failed
+        return;
+
+      try 
+      {
+        final Entry entry = new Entry(new_embl_entry);
+        EntryEdit last_entry_edit = makeEntryEdit(entry);
+        addEntryEdit(last_entry_edit);
+        getStatusLabel().setText("");
+        last_entry_edit.setVisible(true);
+      }
+      catch(OutOfRangeException e) 
+      {
+        new MessageDialog(this, "read failed: one of the features in " +
+                           " cut and paste has an out of range " +
+                           "location: " + e.getMessage());
+      } 
+      catch(NoSequenceException e) 
+      {
+        new MessageDialog(this, "read failed: " +
+                           " cut and paste contains no sequence");
+      }
+    }
+  }
+
+
+  /**
+  *
+  * Launch database manager window
+  *
+  */
+  private void launchDatabaseJFrame(final boolean prompt_user)
+  {
+    SwingWorker entryWorker = new SwingWorker()
+    {
+      public Object construct()
+      {
+        getStatusLabel().setText("Connecting ...");
+//        DatabaseEntrySource entry_source = new DatabaseEntrySource();
+ //       if(!entry_source.setLocation(prompt_user))
+          return null;
+
+ //       final DatabaseJFrame frame = new DatabaseJFrame(entry_source,
+  //                                             ArtemisMain.this);
+  //      frame.setVisible(true);
+  //      getStatusLabel().setText("");
+  //      return null;
+      }
+    };
+    entryWorker.start();
+  }
 
   /**
    *  Read the entries named in args and in the diana.ini file.
    **/
-  public void readArgsAndOptions(final String [] args,
-                                 ProgressThread progress_thread) 
+  public void readArgsAndOptions(final String [] args)
   {
     if(args.length == 0) 
     {
@@ -173,9 +291,6 @@ public class ArtemisMain extends Splash
     EntryEdit last_entry_edit = null;
     boolean seen_plus = false;
 
-    if(progress_thread != null)
-      progress_thread.start();
-
     for(int i = 0 ; i<args.length ; ++i) 
     {
       String new_entry_name = args[i];
@@ -189,7 +304,6 @@ public class ArtemisMain extends Splash
         continue;
       }
 
-      
       if(new_entry_name.startsWith("+") && last_entry_edit != null ||
          seen_plus) 
       {
@@ -279,18 +393,26 @@ public class ArtemisMain extends Splash
 
     for(int entry_index=0; entry_index<entry_edit_objects.size();
         ++entry_index) 
-      entry_edit_objects.elementAt(entry_index).show();
+      entry_edit_objects.elementAt(entry_index).setVisible(true);
   }
 
   /**
+   *
    *  Handle the -biojava option
+   * 
+   *  Command line syntax:  
+   *  art -biojava org.biojava.bio.seq.io.EmblLikeFormat foo.embl
+   *
+   *  BioJava formats:
+   *  EmblLikeFormat, FastaFormat, GAMEFormat, GenbankFormat, PhredFormat
+   *
    **/
   private void handleBioJava(final String [] args) 
   {
     if(args.length == 3) 
     {
       final String class_name = args[1];
-      final String location = args[2];
+      final String location   = args[2];
 
       final Document location_document =
         DocumentFactory.makeDocument(location);
@@ -307,18 +429,15 @@ public class ArtemisMain extends Splash
 
         if(biojava_object instanceof SequenceFormat)
         {
-          final SequenceFormat sequence_format =
-           (SequenceFormat) biojava_object;
+          final SequenceFormat sequence_format = (SequenceFormat)biojava_object;
 
           emblEntry =
             new uk.ac.sanger.artemis.io.BioJavaEntry(entry_information,
-                                                          location_document,
-                                                          sequence_format);
+                                                     location_document,
+                                                     sequence_format);
 
           final Entry new_entry = new Entry(emblEntry);
-
           final EntryEdit new_entry_edit = makeEntryEdit(new_entry);
-
           new_entry_edit.setVisible(true);
         } 
         else 
@@ -483,7 +602,7 @@ public class ArtemisMain extends Splash
   /**
    *  Make an EntryEdit component from the given Entry.
    **/
-  private EntryEdit makeEntryEdit(final Entry entry) 
+  protected EntryEdit makeEntryEdit(final Entry entry) 
   {
     final Bases bases = entry.getBases();
     final EntryGroup entry_group = new SimpleEntryGroup(bases);
@@ -521,15 +640,13 @@ public class ArtemisMain extends Splash
     entry_edit_objects.addElement(entry_edit);
   }
 
+
   /**
    *  Read an Entry from the given EntrySource and make a new EntryEdit
    *  component for the Entry.
    **/
   private void getEntryEditFromEntrySource(final EntrySource entry_source) 
   {
-    final ProgressThread progress_thread = new ProgressThread(null,
-                                                "Loading Entry...");
-
     SwingWorker entryWorker = new SwingWorker()
     { 
       EntryEdit entry_edit;
@@ -537,7 +654,7 @@ public class ArtemisMain extends Splash
       {
         try
         {
-          final Entry entry = entry_source.getEntry(true,progress_thread);
+          final Entry entry = entry_source.getEntry(true);
           if(entry == null)
             return null;
 
@@ -568,20 +685,9 @@ public class ArtemisMain extends Splash
       {
         if(entry_edit != null)
           entry_edit.setVisible(true);
-        if(progress_thread !=null)
-          progress_thread.finished();
       }
     };
     entryWorker.start();
-  }
-
-  /**
-   *  Force all the EntryEdit components to be redisplayed.
-   **/
-  private void redisplayAll() 
-  {
-    for(int i=0 ; i<entry_edit_objects.size() ; ++i) 
-      entry_edit_objects.elementAt(i).redisplay();
   }
 
   /**
@@ -590,6 +696,7 @@ public class ArtemisMain extends Splash
    **/
   protected void exit() 
   {
+ //   Splash.exitApp();
 //  for(int i=0 ; i<entry_edit_objects.size() ;++i) 
 //    entryEditFinished(entry_edit_objects.elementAt(i));
  
@@ -599,7 +706,6 @@ public class ArtemisMain extends Splash
 //  setVisible(false);
 //  dispose();
 //  System.gc();
-    System.exit(0);
   }
 
   /**
@@ -610,22 +716,13 @@ public class ArtemisMain extends Splash
     final ArtemisMain main_window = new ArtemisMain();
     main_window.setVisible(true);
 
-    final ProgressThread progress_thread = new ProgressThread(null,
-                                         "Loading Entry...");
-
     SwingWorker entryWorker = new SwingWorker()
     {
       public Object construct()
       {
         // read the entries given on the command line and in the diana.ini file
-        main_window.readArgsAndOptions(args,progress_thread);
+        main_window.readArgsAndOptions(args);
         return null;
-      }
-     
-      public void finished()
-      {
-        if(progress_thread !=null)
-          progress_thread.finished();
       }
     };
     entryWorker.start();

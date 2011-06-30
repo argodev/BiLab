@@ -34,8 +34,7 @@ import java.util.*;
 public class FileNode extends DefaultMutableTreeNode 
                  implements Transferable, Serializable
 {
-    /** true if explored */
-    private boolean explored = false;
+    private boolean isDir;
     /** data flavour of a file node */
     public static DataFlavor FILENODE =
            new DataFlavor(FileNode.class, "Local file");
@@ -44,12 +43,13 @@ public class FileNode extends DefaultMutableTreeNode
 
     /**
     *
-    * @param file	file node file
+    * @param file   file node file
     *
     */
     public FileNode(File file)
     { 
       setUserObject(file); 
+      this.isDir = file.isDirectory();
     }
 
     /** Determine if this is a directory */
@@ -58,13 +58,15 @@ public class FileNode extends DefaultMutableTreeNode
     public boolean isLeaf() { return !isDirectory(); }
     /** Get the File this node represents */
     public File getFile() { return (File)getUserObject(); }
-    /** Determine if this node has been explored */
-    public boolean isExplored() { return explored; }
     /** Determine if this is a directory */
     public boolean isDirectory() 
+    { 
+      return isDir;
+    }
+
+    public void setDirectory(boolean isDir)
     {
-      File file = getFile();
-      return file.isDirectory();
+      this.isDir = isDir;
     }
 
     /**
@@ -83,44 +85,43 @@ public class FileNode extends DefaultMutableTreeNode
                                             filename;
     }
 
-    /**
-    *
-    * Explores a directory adding a FileNode for each
-    * child
-    *
-    */
-    public void explore(FileFilter filter) 
+    private Object child_cache[];
+
+    public Object[] getChildren(FileFilter filter)
     {
       if(!isDirectory())
-        return;
+        return null;
 
-      if(!isExplored()) 
-      {
-        File file = getFile();
-        explored = true;
-        File[] children;
-// filter files
-        children = file.listFiles(filter);
-        
-// sort into alphabetic order
-        java.util.Arrays.sort(children);
-        for(int i=0; i < children.length; ++i)
-          add(new FileNode(children[i]));
-      }
-    }
+      if(child_cache != null)
+        return child_cache;
 
-    /**
-    *
-    * Forces the directory to be re-explored
-    *
-    */
-    public void reExplore(FileFilter filter)
-    {
-      explored = false;
-      removeAllChildren();
-      explore(filter);
-    }
+      File file = getFile();
+      File[] children = file.listFiles(filter);
  
+      if(children == null)
+        return null;
+      
+//    if(child_cache != null &&
+//       child_cache.length == children.length)
+//      return child_cache;
+
+// sort into alphabetic order
+      java.util.Arrays.sort(children);
+      child_cache = new Object[children.length];
+      for(int i=0; i < children.length; ++i)
+      {
+        child_cache[i] = new FileNode(children[i]);
+        ((FileNode)child_cache[i]).setParent(this);
+      }
+      return child_cache;
+    }
+
+    public void reset()
+    {
+      child_cache = null;
+    }
+
+
 // Transferable
     public DataFlavor[] getTransferDataFlavors()
     {

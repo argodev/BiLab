@@ -7,7 +7,25 @@
 # To enable this in Artemis, sanger_options must be set to true in the options
 # file.
 
-NETSCAPE=/usr/bin/X11/real-netscape
+# Default browser is mozilla
+# If you are under KDE, you should use Konqueror then
+# If you are under MAC OS X, use Safari
+
+if [ `uname` = Darwin ]; then
+  NETSCAPE=/usr/bin/open
+else
+  for f in /usr/bin/x-www-browser \
+         /usr/bin/X11/real-netscape \
+         /usr/bin/firefox \
+         /usr/bin/iceweasel \
+         /usr/bin/mozilla; do
+    if [ -f $f ]; then
+      NETSCAPE=$f
+      break
+    fi
+  done
+fi
+
 
 if [ -f "$DIANA_ENVIRONMENT_FILE" ]
 then
@@ -28,7 +46,9 @@ unique_bit=$$.`hostname`
 file_arg=`echo $file_arg | sed 's@^/tmp_mnt/nfs/@/nfs/@' | sed 's@^/tmp_mnt/tmp_nfs/@/nfs/@'`
 # fix for pcs3:
 file_arg=`echo $file_arg | sed 's@^/yeastpub4/@/nfs/disk222/yeastpub4/@'`
-
+# fix for pcs4:
+file_arg=`echo $file_arg | sed 's@^/.automount/pcs3/root/nfs/@/nfs/@'`
+file_arg=`echo $file_arg | sed 's@^/.automount/evs-users2/root/@/nfs/@'`
 
 if [ -f ./$file_arg ]
 then
@@ -38,6 +58,21 @@ then
 else
     new_file=$file_arg.$unique_bit.html
 fi
+
+###
+# sanger fix for /nfs/repository which isn't mounted on workstations:
+REPOSITORY=`echo $new_file | sed -n  -e 's|^\/nfs\/repository\/\(.*\)\(\/\)\(.*\)$|\3|p'`
+
+if [ "$REPOSITORY" != "" ]; then
+
+  if [ ! -d $HOME/artemis_tmp ]; then
+    mkdir $HOME/artemis_tmp
+  fi
+  new_file="$HOME/artemis_tmp/$REPOSITORY"
+ 
+fi
+#
+###
 
 cat <<EOF > $new_file
 <HTML>
@@ -54,11 +89,12 @@ perl -e '
 BEGIN {
   # change these variable to list the databases to search for the IDs - the
   # database names should be separated by spaces
-  $PROTEIN_DATABASES = "swall";
+  $PROTEIN_DATABASES = "uniprot";
   $DNA_DATABASES = "embl";
 
   # change this to point to the wgetz script of your SRS server
   $SRS_SERVER = "www.sanger.ac.uk/srs6bin/cgi-bin/wgetz?-e+";
+  $SRS_SERVER = "srs.ebi.ac.uk/srsbin/cgi-bin/wgetz?-e+";
 
   $PROTEIN_DATABASES =~ s/ /%20/g;
   $DNA_DATABASES =~ s/ /%20/g;
@@ -103,7 +139,10 @@ sub hyperlink_id
       }
     }
 
-    $r = qq#<a href="http://$SRS_SERVER\[\{$PROTEIN_DATABASES\}-ID:$id*]|[\{$PROTEIN_DATABASES\}-AccNumber:$id*]">$id</a>#;
+    # Text Entry
+    $r = qq#<a href="http://$SRS_SERVER-id+1+\[\{$PROTEIN_DATABASES\}-ID:$id*]|[\{$PROTEIN_DATABASES\}-AccNumber:$id*]+-vn+2">$id</a>#;
+
+    #$r = qq#<a href="http://$SRS_SERVER-id+1+\[\{$PROTEIN_DATABASES\}-ID:$id*]|[\{$PROTEIN_DATABASES\}-AccNumber:$id*]">$id</a>#;
   }
   return $r
 }
@@ -144,7 +183,8 @@ while (<IN_FILE>) {
     $summary_finished = 1;
   }
 
-  if (/^(?:(?:>?>?(?:[A-Z]+:)?)(\w+)|($GENEDB_PATTERN)) /) {
+  if (/^>?\w+\|\w+\|(\w+)|^(?:(?:>?>?(?:[A-Z]+:)?)(\w+)|($GENEDB_PATTERN))|^(?:(?:>?>?(?:[A-Z]+:)?)(\w+)\\.\d+\s+) /) {
+
     $id = $1;
 
     if (!defined $id) {
@@ -165,10 +205,10 @@ while (<IN_FILE>) {
 
       s/$id/hyperlink_to_anchor($id)/ei;
 
-      if (!s/ $id/" " . hyperlink_id($id)/ei) {
+#     if (!s/ $id/" " . hyperlink_id($id)/ei) {
         # if the id occurs once in the line put a link at end of line
         s/$/"  LINK:" . hyperlink_id($id)/e;
-      }
+#     }
     }
   }
   print;
@@ -183,10 +223,26 @@ cat <<EOF >> $new_file;
 EOF
 
 # delete it at some point
-echo "rm -f $new_file > /dev/null 2>&1" | at now + 36 hours
+echo "rm -f $new_file > /dev/null 2>&1" | at now + 12 hours
 
-if $NETSCAPE -remote "openURL($new_file)"
+# MAC OS X => Safari browser
+# The command then is the following
+if [ -f "/usr/bin/open" -a `uname` = Darwin ]
 then
+  /usr/bin/open $new_file
+  exit 0
+elif [ -f "/Applications/Safari.app/Contents/MacOS/Safari" ]
+then
+  if $NETSCAPE $new_file
+  then
+    exit 0
+  fi
+# For Netscape or mozilla
+# Use openURL($new_file, new-tab) to get new-tab
+elif $NETSCAPE -remote "openURL($new_file)"
+then
+    sleep 1m 
+    rm -f $new_file
     exit 0
 else
     echo starting new netscape 2>&1
@@ -204,6 +260,8 @@ else
     do
         if $NETSCAPE -remote "openURL($new_file)" 2> /dev/null
         then
+	    sleep 1m
+	    rm -f $new_file
             exit 0
         else
             sleep 2

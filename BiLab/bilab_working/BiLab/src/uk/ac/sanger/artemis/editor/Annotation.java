@@ -24,6 +24,8 @@
 
 package uk.ac.sanger.artemis.editor;
 
+import uk.ac.sanger.artemis.Options;
+import uk.ac.sanger.artemis.util.StringVector;
 
 import java.util.StringTokenizer;
 import java.util.Vector;
@@ -63,8 +65,8 @@ public class Annotation extends JEditorPane
   public Annotation(JDesktopPane desktop)
   {
     super();
-
     this.desktop = desktop;
+
     setEditable(false);
     setContentType("text/html");
     setFont(BigPane.font);
@@ -93,8 +95,7 @@ public class Annotation extends JEditorPane
     });
     back.add(url);
   }
-  
-
+ 
   protected void setAnnotation(String text)
   {
 //  setText("<html><body>"+text+"</html></body>");
@@ -116,13 +117,16 @@ public class Annotation extends JEditorPane
     catch(IOException ioe){}
     qualifier.add("/similarity=");
     qualifier.add("/gene=");
+    qualifier.add("/GO_component=");
+    qualifier.add("/product=");
+    qualifier.add("/EC_number=");
+    qualifier.add("/note=");
 
     text = getDatabaseHTML(text,"SWALL:");
-    text = getDatabaseHTML(text,"UNIPROT:");
+    text = getDatabaseHTML(text,"UniProt:");
     text = getDatabaseHTML(text,"EMBL:");
-    setText("<html><body>"+text+"</html></body>");
+    setText("<html><body><font size=3>"+text+"</font></html></body>");
     startRange = getDocument().getLength();
-
   }
 
 
@@ -147,15 +151,17 @@ public class Annotation extends JEditorPane
     try
     {
       txt = ((HTMLDocument)getDocument()).getText(0,getDocument().getLength()).trim();
+
       StringBuffer buff = new StringBuffer();
       StringTokenizer tok = new StringTokenizer(txt,"/");
       int ntok = 0;
 
       while(tok.hasMoreTokens())
       {
-        String tokTxt = "/"+tok.nextToken();
+        String tokTxt = "/"+tok.nextToken().trim();
 
         int ind = tokTxt.indexOf("=");
+
         if(ntok != 0 && ind > -1 && qualifier.contains(tokTxt.substring(0,ind+1)))
           buff.append("\n"+tokTxt);
         else
@@ -178,10 +184,11 @@ public class Annotation extends JEditorPane
   protected void insert(String s, boolean ortholog)
   {
     s = getDatabaseHTML(s,"SWALL:");
-    s = getDatabaseHTML(s,"UNIPROT:");
+    s = getDatabaseHTML(s,"UniProt:");
     s = getDatabaseHTML(s,"EMBL:");
+    s = getGeneDBHTML(s);
 
-    int ind = s.indexOf("/gene");
+//  int ind = s.indexOf("/gene");
     
     Document doc = getDocument();
     int offset = doc.getLength();
@@ -189,6 +196,8 @@ public class Annotation extends JEditorPane
       offset = startRange;
 
     insert(s,offset);
+
+    setCaretPosition(doc.getLength());  
 //  reportHTML();
   }
 
@@ -204,6 +213,7 @@ public class Annotation extends JEditorPane
     }
     catch(BadLocationException ble)
     {
+      System.out.println("Offset "+offset);
       ble.printStackTrace();
     }
     catch(Exception exp)
@@ -212,33 +222,109 @@ public class Annotation extends JEditorPane
     }
   }
 
-
-  private String getDatabaseHTML(String s, String db)
+  
+  private String getGeneDBHTML(String s)
   {
-    int ind = s.indexOf(db);
+    int ind = s.indexOf("GeneDB");
     if(ind>-1)
     {
       String startStr = s.substring(0,ind);
-      int ind2 = s.indexOf(" ",ind);
-      int ind3 = s.indexOf(")",ind);     
-      if(ind3>-1 && ind3<ind2)
-        ind2 = ind3;
-      ind3 = s.indexOf(";",ind);
-      if(ind3>-1 && ind3<ind2)
-        ind2 = ind3;
+      int ind2 = s.indexOf(";",ind);
 
       String midStr = s.substring(ind,ind2);
       String endStr = s.substring(ind2);
 
-      String srscmd = "http://srs.sanger.ac.uk/srsbin/cgi-bin/wgetz?-e+" +
-                      "["+midStr+"]";
+      ind2 = midStr.indexOf(":")+1;
 
-      s = startStr + "<a href=\""+srscmd+"\">" +
+      String db = midStr.substring(7,8)+".+"+
+                  midStr.substring(8,ind2-1);
+      String genedb = "http://www.genedb.org/genedb/Search?name="+
+                      midStr.substring(ind2)+
+                      "&organism="+db;
+                                    
+      s = startStr + "<a href=\""+genedb+"\">" +
           midStr   + "</a>" + endStr;
     }
     return s;
   }
 
+
+  private String getDatabaseHTML(String s, String db)
+  {
+//  int ind = s.indexOf(db);
+
+//  if(ind == -1)
+//    ind = s.indexOf(db.toLowerCase());
+
+//  if(ind>-1)
+//  {
+//    s = setHyperLinks(s,ind);
+//    String startStr = s.substring(0,ind);
+//    int ind2 = s.indexOf(" ",ind);
+//    int ind3 = s.indexOf(")",ind);     
+//    if(ind3>-1 && ind3<ind2)
+//      ind2 = ind3;
+//    ind3 = s.indexOf(";",ind);
+//    if(ind3>-1 && ind3<ind2)
+//      ind2 = ind3;
+
+//    String midStr = s.substring(ind,ind2);
+//    String endStr = s.substring(ind2);
+
+//    String srscmd = "http://srs.sanger.ac.uk/srsbin/cgi-bin/wgetz?-e+" +
+//                    "["+midStr+"]";
+
+//    s = startStr + "<a href=\""+srscmd+"\">" +
+//        midStr   + "</a>" + endStr;
+//  }
+
+    int ind = 0;
+    while((ind = s.indexOf(db, ind)) > -1)
+    {
+      s = setHyperLinks(s,ind);
+      ind = s.lastIndexOf("</a>");
+    }
+
+    db = db.toLowerCase();
+    ind = 0;
+    while((ind = s.indexOf(db, ind)) > -1)
+    {
+      s = setHyperLinks(s,ind);
+      ind = s.lastIndexOf("</a>");
+    }
+
+    return s;
+  }
+
+  private String setHyperLinks(String s, int ind)
+  {
+    String startStr = s.substring(0,ind);
+    int ind2 = s.indexOf(" ",ind);
+    if(ind2 == -1)
+      ind2 = s.indexOf(";",ind);
+
+    int ind3 = s.indexOf(")",ind);
+    if(ind3>-1 && ind3<ind2)
+      ind2 = ind3;
+    ind3 = s.indexOf(";",ind);
+    if(ind3>-1 && ind3<ind2)
+      ind2 = ind3;
+    ind3 = s.indexOf("\"",ind);
+    if(ind3>-1 && ind3<ind2)
+      ind2 = ind3;
+
+    String midStr = s.substring(ind,ind2);
+    String endStr = s.substring(ind2);
+    String srscmd = DataCollectionPane.srs_url+"/wgetz?-e+["+midStr+"]";
+
+    // link to uniprot accession
+    if( (ind2 = srscmd.indexOf("UniProt:")) > -1)
+      srscmd = srscmd.substring(0,ind2+7)+"-acc:"+
+               srscmd.substring(ind2+8);
+
+    return  startStr + "<a href=\""+srscmd+"\">" +
+            midStr   + "</a>" + endStr;
+  }
 
   private void replaceRange(String newStr,int start,int end)
   {
@@ -262,70 +348,118 @@ public class Annotation extends JEditorPane
   * Deletes the annotation line that contains an ID.
   *
   */
+  protected void deleteGo(String id, String go_id)
+  {
+    String txt = getText();
+    int ind1  = 0;
+    int ind2  = 0;
+    int indID = 0;
+  
+    while((ind2 = txt.indexOf("<br>",ind1)) > -1 ||
+          (ind2 = txt.indexOf("</body>",ind1)) > -1)
+    {
+      String line = txt.substring(ind1,ind2);
+      
+      if( ((indID = line.indexOf(id)) > -1) &&
+          (line.indexOf(go_id) > -1) )
+        break;
+      else
+        ind1 = ind2+1;
+    }
+      
+//  ind2 = txt.indexOf("<br>",indID);
+    
+    if(ind2 == -1 || ind2 > txt.length())
+      ind2 = txt.length();
+
+    if(ind1 == 0)
+      return;
+
+    setText(txt.substring(0,ind1-1)+txt.substring(ind2));
+  }
+
+  /**
+  *
+  * Deletes the annotation similarity line that contains an ID.
+  *
+  */
   protected void delete(String id, boolean ortholog)
   {
-//  try
-//  {
-//    reportHTML();
+    String txt = getText();
 
-//    String txt = ((HTMLDocument)getDocument()).getText(0,getDocument().getLength());
-//    String line = null;
-//    int eol = 0;
-//    int len = 0;
-//    BufferedReader buffRead = new BufferedReader(new StringReader(txt));
-//    while((line = buffRead.readLine()) != null)
-//    {
-//      len = line.length()+1;
-//      if(line.indexOf("SWALL:"+id) > -1)
-//      {
-//        len += eol;
-//       
-//        if(ortholog)
-//        {
-//          line = buffRead.readLine();
-//          if(line != null && line.startsWith("/gene="))
-//            len += line.length();
-//        }
+    int ind1  = 0;
+    int ind2  = 0;
+    int indID = 0;
+    String line = null;
 
-//        if(len > txt.length())
-//          len = txt.length();
+    while((ind2 = txt.indexOf("<br>",ind1)) > -1 ||
+          (ind2 = txt.indexOf("</body>",ind1)) > -1)
+    {
+      line = txt.substring(ind1,ind2);
 
-//        replaceRange("",eol-1,len);
-//        reportHTML();
-//        return;
-//      }
-//      eol += len;
-//    }
-      String txt = getText();
-      int indID = txt.indexOf("SWALL:"+id);
-      if(indID == -1)
-        indID = txt.indexOf("UNIPROT:"+id);
+      if((line.indexOf("/similarity=") > -1) &&
+         ((indID = line.indexOf(id)) > -1) &&
+         (line.indexOf("GO:") == -1) )
+        break;
+      else
+        ind1 = ind2+1;
+    }
 
-      int ind1 = 0;
-      int ind2 = 0;
-      
-      while((ind2 = txt.indexOf("<br>",ind1)) > -1)
-      {
-        if(ind2 < indID)
-          ind1 = ind2+1; 
-        else
-          break;
-      }
-      
-      ind2 = txt.indexOf("<br>",indID);
+    // if ortholog then delete gene and product lines as well
+    if(ortholog)
+    {
+      if(ind1 > -1)
+        ind2 = txt.indexOf("/product=",ind1);
+      else
+        ind2 = txt.indexOf("/product=");
 
-      // if ortholog then delete gene line as well
-      if(ortholog)
+      if(ind2 > -1)
         ind2 = txt.indexOf("<br>",ind2+4);
-      
-      if(ind2 == -1)
-        ind2 = txt.length();
+    }
+   
+    if(ind2 == -1 || ind2 > txt.length())
+      ind2 = txt.length();
 
-      setText(txt.substring(0,ind1-1)+txt.substring(ind2));
-//  }
-//  catch(BadLocationException ble) { ble.printStackTrace(); }
-//  catch(IOException ioe) { ioe.printStackTrace(); }
-    
+    if(ind1 == 0)
+      return;
+
+    setText(txt.substring(0,ind1-1)+txt.substring(ind2));
+  }
+
+
+
+  /**
+  *
+  * Deletes the annotation note line that contains an ID.
+  *
+  */
+  protected void deleteNote()
+  {
+    String txt = getText();
+
+    int ind1  = 0;
+    int ind2  = 0;
+    int indID = 0;
+    String line = null;
+
+    while((ind2 = txt.indexOf("<br>",ind1)) > -1 ||
+          (ind2 = txt.indexOf("</body>",ind1)) > -1)
+    {
+      line = txt.substring(ind1,ind2);
+
+      if(line.indexOf("/note=&quot;Similar to ") > -1)
+        break;
+      else
+        ind1 = ind2+1;
+    }
+
+    if(ind2 == -1 || ind2 > txt.length())
+      ind2 = txt.length();
+
+    if(ind1 == 0)
+      return;
+
+    setText(txt.substring(0,ind1-1)+txt.substring(ind2));
   }
 
 
@@ -390,7 +524,13 @@ public class Annotation extends JEditorPane
         String search = "";
         if(ind1 > -1 && ind2 > -1)
           search = event.getDescription().substring(ind1+1,ind2);
-        
+        else
+        {
+          ind1 = event.getDescription().indexOf("=")+1; // genedb
+          if(ind1 > -1)
+            search = event.getDescription().substring(ind1);
+        }
+
         if(desktop != null)
         {
           if(BigPane.srsTabPane.isSelected())

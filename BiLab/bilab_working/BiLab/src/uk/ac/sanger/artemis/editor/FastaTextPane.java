@@ -32,14 +32,18 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.Dimension;
 import java.io.InputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.File;
+import java.io.StringReader;
 import java.io.InputStreamReader;
 import java.io.BufferedReader;
 import java.util.Vector;
 import java.util.Enumeration;
 import java.util.StringTokenizer;
+import java.net.URL;
+import java.net.MalformedURLException;
 
 import uk.ac.sanger.artemis.util.WorkingGZIPInputStream;
 
@@ -51,6 +55,7 @@ public class FastaTextPane extends JScrollPane
   private String dataFile;
   private int qlen;
   private Vector listerners = new Vector();
+  private Vector threads = new Vector();
 
   public FastaTextPane(String dataFile)
   {
@@ -207,9 +212,14 @@ public class FastaTextPane extends JScrollPane
             sbuff.append(line+"\n");
   
             hit = new HitInfo(line,format);
+
             hitInfoCollection.add(hit);
           }
-
+        }
+        else if(line.indexOf(" ----") > -1 ||
+                line.indexOf(" --- ") > -1 ||
+                line.indexOf(" -- ") > -1 )
+        {
         }
         else if(line.startsWith(">"))  // start of alignment
         {
@@ -217,7 +227,22 @@ public class FastaTextPane extends JScrollPane
 
           int ind = line.indexOf(" ");
           if(ind > -1)
+          {
             currentID = line.substring(1,ind);
+            int indDot;
+            if( (indDot = currentID.indexOf(".")) > 5)
+            {
+              String version = currentID.substring(indDot+1);
+              try
+              {
+                int version_no = Integer.parseInt(version);
+                // version number looks like uniprot so strip this
+                if(version_no < 50)
+                  currentID= currentID.substring(0,indDot);
+              }
+              catch(NumberFormatException nfe){}
+            }
+          }
 
           int ind2 = currentID.indexOf(":");
           if(ind2 > -1)
@@ -262,26 +287,40 @@ public class FastaTextPane extends JScrollPane
           }
 
 // get query start
-          while(!(nextLine = buffReader.readLine()).startsWith("Query: "))
-          {
-            len += nextLine.length()+1;
-            sbuff.append(nextLine+"\n");
-          }
+          int start = 999999;
+          int end   = 0;
+          boolean seen = false;
 
-          if(nextLine != null)
+          while((nextLine = buffReader.readLine()) != null &&
+                !nextLine.startsWith(">"))
           {
             len += nextLine.length()+1;
             sbuff.append(nextLine+"\n");
-            if(nextLine.startsWith("Query:"))
+
+            if(nextLine.startsWith(" Score ="))
+            {
+//            System.out.println("start:: "+start+"  end:: "+end);
+              if(end != 0)
+  //              hit.setQueryPosition(start,end);
+              start = 999999;
+              end   = 0;
+              seen  = true;
+            }
+            else if(nextLine.startsWith("Query:"))
             {
               ind1 = nextLine.indexOf(" ",8);
-              int start = Integer.parseInt(nextLine.substring(7,ind1).trim());
-              hit.setQueryStart(start);
-              hit.setQueryEnd(Integer.parseInt(nextLine.substring(nextLine.lastIndexOf(" ")).trim()));
+              int nstart = Integer.parseInt(nextLine.substring(7,ind1).trim());
+              if(nstart < start)
+                start = nstart;
+              end  = Integer.parseInt(nextLine.substring(nextLine.lastIndexOf(" ")).trim());
+              seen = false;
             }
+            buffReader.mark(100); 
           }
-          
-//        buffReader.reset();
+          if(!seen && end != 0)
+//            hit.setQueryPosition(start,end);
+
+          buffReader.reset();
         }
         else if( (ind1 = line.indexOf("Identities = ")) > -1)
         {
@@ -291,8 +330,10 @@ public class FastaTextPane extends JScrollPane
         }
         else if( (ind1 = line.indexOf("  Length = ")) > -1)
           hit.setLength(line.substring(ind1+11));
-        else if(line.startsWith("Query: "))
-          hit.setQueryEnd(Integer.parseInt(line.substring(line.lastIndexOf(" ")).trim()));
+//      else if(line.startsWith("Query: "))
+//      {
+//        hit.setQueryEnd(Integer.parseInt(line.substring(line.lastIndexOf(" ")).trim()));
+//      }
         else if(line.startsWith("Query="))
         {
           int ind2 = 0;
@@ -300,7 +341,7 @@ public class FastaTextPane extends JScrollPane
           if(ind1 == -1)
           {
             String nextLine = null;
-            while((nextLine = buffReader.readLine()).indexOf(" letters)") < -1)
+            while((nextLine = buffReader.readLine()).indexOf(" letters)") < 0)
             {
               len += nextLine.length()+1;
               sbuff.append(nextLine+"\n");
@@ -326,6 +367,7 @@ public class FastaTextPane extends JScrollPane
 
       GetzThread getz = new GetzThread(hitInfoCollection);
       getz.start();
+      threads.add(getz);
     }
     catch (IOException ioe)
     {
@@ -363,10 +405,10 @@ public class FastaTextPane extends JScrollPane
 
         if(line.endsWith(" aa"))
         {
-          int in1 = line.indexOf(":");
-          int in2 = line.lastIndexOf(" ");
-          if(in1 > -1 && in2 > -1)
-            qlen = Integer.parseInt(line.substring(in1+1,in2).trim());
+          String tmp = line.substring(0,line.length()-3).trim();
+          int in1 = tmp.lastIndexOf(" ");
+          if(in1 > -1)
+            qlen = Integer.parseInt(tmp.substring(in1).trim());
         }
         else if(line.startsWith("The best scores are:"))
         {
@@ -381,7 +423,23 @@ public class FastaTextPane extends JScrollPane
         {
           int ind = line.indexOf(" ");
           String currentID = line.substring(2,ind);
-          
+ 
+          int indDot;
+          if( (indDot = currentID.indexOf(".")) > 5)
+          {
+            String version = currentID.substring(indDot+1);
+            try
+            {
+              int version_no = Integer.parseInt(version);
+              // version number looks like uniprot so strip this
+              if(version_no < 50)
+                currentID= currentID.substring(0,indDot);
+            }
+            catch(NumberFormatException nfe){}
+
+            // HERE currentID= currentID.substring(0,indDot);
+          }
+
           if(hi != null)
             hi.setEndPosition(textPosition);
 
@@ -395,6 +453,7 @@ public class FastaTextPane extends JScrollPane
           if(ind1 > -1)
           {
             ind2 = line.indexOf(";",ind1);
+
             hi.setScore(line.substring(ind1+6,ind2));
      
             ind1 = ind2+1;
@@ -406,7 +465,8 @@ public class FastaTextPane extends JScrollPane
             if(ind1 > -1)
             {
               ind2 = line.indexOf("ungapped)",ind1);
-              hi.setUngapped(line.substring(ind1+1,ind2).trim());
+              if(ind2 > -1)
+                hi.setUngapped(line.substring(ind1+1,ind2).trim());
             }
 
             ind1 = line.indexOf(" in ",ind2);
@@ -423,8 +483,10 @@ public class FastaTextPane extends JScrollPane
               int split = range.indexOf("-");
               if(split > -1)
               {   
-                hi.setQueryStart(Integer.parseInt(range.substring(0,split)));
-                hi.setQueryEnd(Integer.parseInt(range.substring(split+1)));
+//              hi.setQueryStart(Integer.parseInt(range.substring(0,split)));
+//              hi.setQueryEnd(Integer.parseInt(range.substring(split+1)));
+  //              hi.setQueryPosition(Integer.parseInt(range.substring(0,split)),
+  //                                  Integer.parseInt(range.substring(split+1)));
               }
             }
 
@@ -451,6 +513,7 @@ public class FastaTextPane extends JScrollPane
 
       GetzThread getz = new GetzThread(hitInfoCollection);
       getz.start();
+      threads.add(getz);
     }
     catch (IOException ioe)
     {
@@ -475,23 +538,50 @@ public class FastaTextPane extends JScrollPane
     return hitInfoCollection;
   }
 
-  protected HitInfo getHitInfo(String ID, Vector hitInfoCollection)
+
+  private static HitInfo getHitInfo(String acc, Vector hits)
   {
-    Enumeration hitInfo = hitInfoCollection.elements();
-    
-    while(hitInfo.hasMoreElements())
+    int ind = 0;
+    acc     = acc.trim();
+
+    if((ind = acc.indexOf(";")) > -1)
+      acc = acc.substring(0,ind);
+
+    Enumeration ehits = hits.elements();
+    HitInfo hit = null;
+    while(ehits.hasMoreElements())
     {
-      HitInfo hi = (HitInfo)hitInfo.nextElement();
-      if(hi.getID().equals(ID))
-        return hi;
+      hit = (HitInfo)ehits.nextElement();
+      if(hit.getAcc().equals(acc) ||
+         hit.getID().equals(acc))
+        return hit;
     }
 
     return null;
   }
 
+   
+  /**
+  *
+  * Stop all getz processes
+  *
+  */
+  protected void stopGetz()
+  {
+    Enumeration threadEnum = threads.elements();
+
+    while(threadEnum.hasMoreElements())
+    {
+      GetzThread gthread = (GetzThread)threadEnum.nextElement();
+      if(gthread.isAlive())
+        gthread.stopMe();
+    }
+  }
+
   class GetzThread extends Thread
   {
     private Vector hitInfoCollection;
+    private boolean keepRunning = true;
 
     protected GetzThread(Vector hitInfoCollection)
     {
@@ -507,11 +597,243 @@ public class FastaTextPane extends JScrollPane
 //    for(int i=0; i<max; i++)
 //      DataCollectionPane.getzCall((HitInfo)hitInfoCollection.get(i),false);
 
-      DataCollectionPane.getzCall(hitInfoCollection,hitInfoCollection.size());
+//    DataCollectionPane.getzCall(hitInfoCollection,hitInfoCollection.size());
+      getzCall(hitInfoCollection,hitInfoCollection.size());
     }
 
+    protected void stopMe()
+    {
+      keepRunning = false;
+    }
+
+    /**
+    *
+    * Creates and executes an SRS query for all the hits in the
+    * collection.
+    * @param hit          HitInfo for a single hit.
+    * @param ortholog     true if ortholog is selected.
+    *
+    */
+    private void getzCall(final Vector hits, final int nretrieve)
+    {
+      final String env[] = { "PATH=/usr/local/pubseq/bin/" };
+
+      StringBuffer query = new StringBuffer();
+
+      int n = 0;
+
+      Enumeration ehits = hits.elements();
+      while(ehits.hasMoreElements() && keepRunning)
+      {
+        if(n>nretrieve)
+          break;
+        HitInfo hit = (HitInfo)ehits.nextElement();
+        if(n > 0)
+          query.append("|");
+
+        query.append(hit.getAcc());
+        n++;
+      }
+       
+      BufferedReader strbuff = null;
+      File fgetz = new File("/usr/local/pubseq/bin/getz");
+      if(!fgetz.exists())
+      {
+        try
+        {
+          URL wgetz = new URL(DataCollectionPane.srs_url+
+                             "/wgetz?-f+acc%20org%20description%20gen+[uniprot-acc:"+
+                             query.toString()+"]+-lv+500");
+          InputStream in = wgetz.openStream();
+
+          strbuff = new BufferedReader(new InputStreamReader(in));
+          StringBuffer resBuff = new StringBuffer();
+          String line;
+          while((line = strbuff.readLine()) != null)
+            resBuff.append(line);
+   
+          strbuff.close();
+          in.close();
+
+          String res = resBuff.toString();
+          res= insertNewline(res, "OS ");
+          res= insertNewline(res, "DE ");
+          res= insertNewline(res, "GN ");
+          res= insertNewline(res, "AC ");
+
+          StringReader strread   = new StringReader(res);
+          strbuff = new BufferedReader(strread);
+
+//        System.out.println(DataCollectionPane.srs_url+
+//                           "/wgetz?-f+acc%20org%20description%20gen+[uniprot-acc:"+
+//                           query.toString()+"]+-lv+500");
+//        System.out.println("HERE\n"+res);
+        }
+        catch(MalformedURLException e) {System.err.println(e);}
+        catch(IOException e) {System.err.println(e);} 
+      }
+      else
+      {
+        String cmd[]   = { "getz", "-f", "acc org description gen",
+                           "[uniprot-acc:"+query.toString()+"]" };
+                      
+        ExternalApplication app = new ExternalApplication(cmd,
+                                                   env,null);
+        String res = app.getProcessStdout();
+        StringReader strread   = new StringReader(res);
+        strbuff = new BufferedReader(strread);
+      }             
+
+      HitInfo hit = null;
+      String line = null;
+      String lineStrip = null;
+
+      try             
+      { 
+        while((line = strbuff.readLine()) != null)
+        { 
+          line = line.trim();
+          if(line.equals(""))
+            continue; 
+           
+          if(line.length() < 3)  // empty description line
+            continue;
+        
+          lineStrip = line.substring(3).trim();
+          if(line.startsWith("AC "))
+          {           
+            hit = getHitInfo(lineStrip,hits);
+                      
+            if(hit == null)
+            {         
+              System.out.println("HIT NOT FOUND "+line);
+              continue;
+            }         
+                      
+            hit.setOrganism("");
+            hit.setGeneName("");
+          }           
+                      
+          if(hit == null)
+            continue; 
+                      
+          if(line.startsWith("OS "))
+            hit.setOrganism(lineStrip);
+          else if(line.startsWith("DE "))
+            hit.appendDescription(lineStrip);
+          else if(line.startsWith("GN "))
+          {           
+            StringTokenizer tokGN = new StringTokenizer(lineStrip,";");
+            while(tokGN.hasMoreTokens())
+            {         
+              line = tokGN.nextToken();
+              if(line.startsWith("Name="))
+                hit.setGeneName(line.substring(5));
+//            else    
+//              hit.appendDescription(line);
+            }         
+          }           
+        }
+
+        strbuff.close();   
+      }   
+      catch(IOException ioe){}
+
+      String res = null;
+      ehits = hits.elements();
+      while(ehits.hasMoreElements() && keepRunning)
+      {               
+        hit = (HitInfo)ehits.nextElement();
+        res = getUniprotLinkToDatabase(fgetz, hit, env, "EMBL");
+              
+        int ind1 = res.indexOf("ID ");
+        if(ind1 > -1) 
+        {             
+          StringTokenizer tok = new StringTokenizer(res);
+          tok.nextToken();
+          hit.setEMBL(tok.nextToken());
+        }             
+        else          
+          hit.setEMBL("");
+                      
+        // EC_number  
+  //      if(hit.getEC_number() != null)
+          continue;   
+
+   //     res = getUniprotLinkToDatabase(fgetz, hit, env, "enzyme");
+
+  //      ind1 = res.indexOf("ID ");
+  //      if(ind1 > -1) 
+  //      {             
+ //         StringTokenizer tok = new StringTokenizer(res);
+ //         tok.nextToken();
+ //         hit.setEC_number(tok.nextToken());
+        }             
+      }               
+    }              
+
+ // }
+
+  protected static String insertNewline(String s1, String s2)
+  {
+    int index = 0;
+    while((index = s1.indexOf(s2, index)) > -1)
+    {
+      if(index > 0)
+        s1 = s1.substring(0,index-1)+"\n"+s1.substring(index);
+      index++;
+    }
+    return s1;
   }
 
+  /**
+  *
+  * Link Uniprot to the another database (e.g. EMBL or ENZYME)
+  *
+  */
+  protected static String getUniprotLinkToDatabase(File fgetz, HitInfo hit,
+                                                  String env[], String DB)
+  {
+    String res = null;
+    if(!fgetz.exists())
+    {
+      try
+      {
+        URL wgetz = new URL(DataCollectionPane.srs_url+
+                         "/wgetz?-f+id+[uniprot-acc:"+hit.getAcc()+"]%3E"+DB);
+
+        InputStream in = wgetz.openStream();
+        BufferedReader strbuff = new BufferedReader(new InputStreamReader(in));
+        StringBuffer resBuff = new StringBuffer();
+        String line;
+        while((line = strbuff.readLine()) != null)
+          resBuff.append(line);
+   
+        strbuff.close();
+        in.close();
+
+        res = resBuff.toString();
+
+        if(res.indexOf("SRS error") > -1)
+          return "";
+ 
+//      System.out.println(DataCollectionPane.srs_url+
+//                         "/wgetz?-f+id+[uniprot-acc:"+hit.getAcc()+"]%3E"+DB);
+      }
+      catch(MalformedURLException e) {System.err.println(e);}
+      catch(IOException e) {System.err.println(e);}
+
+    }
+    else
+    {
+      String cmd3[] = { "getz", "-f", "id",
+             "[libs={uniprot}-acc:"+hit.getID()+"]>"+DB };
+      ExternalApplication app = new ExternalApplication(cmd3,env,null);
+      res = app.getProcessStdout();
+    }
+
+    return res;
+  }
 
   public void show(Object obj)
   {

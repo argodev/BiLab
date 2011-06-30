@@ -4,7 +4,7 @@
  *
  * This file is part of Artemis
  *
- * Copyright(C) 1998-2003  Genome Research Limited
+ * Copyright(C) 1998-2005  Genome Research Limited
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -20,7 +20,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Header: /cvsroot/pathsoft/artemis/uk/ac/sanger/artemis/ExternalProgram.java,v 1.2 2004/06/09 13:00:09 tjc Exp $
+ * $Header: /cvsroot/pathsoft/artemis/uk/ac/sanger/artemis/ExternalProgram.java,v 1.12 2006/02/03 09:33:42 tjc Exp $
  **/
 
 package uk.ac.sanger.artemis;
@@ -30,6 +30,9 @@ import uk.ac.sanger.artemis.io.EntryInformation;
 import uk.ac.sanger.artemis.io.EntryInformationException;
 import uk.ac.sanger.artemis.io.DocumentEntry;
 import uk.ac.sanger.artemis.io.Qualifier;
+import uk.ac.sanger.artemis.components.RemoteFileNode;
+import uk.ac.sanger.artemis.j2ssh.FileTransferProgressMonitor;
+import uk.ac.sanger.artemis.j2ssh.FTProgress;
 
 import java.io.*;
 import java.text.*;
@@ -41,7 +44,7 @@ import java.util.Enumeration;
  *  and contains methods for invoking it.
  *
  *  @author Kim Rutherford
- *  @version $Id: ExternalProgram.java,v 1.2 2004/06/09 13:00:09 tjc Exp $
+ *  @version $Id: ExternalProgram.java,v 1.12 2006/02/03 09:33:42 tjc Exp $
  **/
 
 public class ExternalProgram 
@@ -120,18 +123,18 @@ public class ExternalProgram
     // sequence_file_names will be set by prepareRun()
     final File file_of_filenames = prepareRun(features, sequence_file_names);
 
-    final Integer job_control_id =
-      Options.getOptions().getIntegerProperty("jcon_" + getName() +
-                                                "_program_id");
+//  final Integer job_control_id =
+//    Options.getOptions().getIntegerProperty("jcon_" + getName() +
+//                                              "_program_id");
 
-    final Integer min_jc_jobs =
-      Options.getOptions().getIntegerProperty("jcon_min_jobs");
+//  final Integer min_jc_jobs =
+//    Options.getOptions().getIntegerProperty("jcon_min_jobs");
 
-    String jcon_template =
-      Options.getOptions().getProperty("jcon_" + getName() + "_template");
+//  String jcon_template =
+//    Options.getOptions().getProperty("jcon_" + getName() + "_template");
 
-    final String jcon_batch_queue =
-      Options.getOptions().getProperty("jcon_batch_queue");
+//  final String jcon_batch_queue =
+//    Options.getOptions().getProperty("jcon_batch_queue");
 
 //  if(job_control_id != null &&
 //     min_jc_jobs != null &&
@@ -140,12 +143,62 @@ public class ExternalProgram
 //     features.size() >= min_jc_jobs.intValue()) 
 //  {
 //    return ExternalProgramUtils.runJConProgram(this, features, 
-//                			         sequence_file_names, logger);
+//                                   sequence_file_names, logger);
 //  }
 //  else 
 //  {
       try 
       {
+        if( System.getProperty("j2ssh") != null &&
+            !System.getProperty("j2ssh").equals("false") &&
+            (getRealName().indexOf("blast") > -1 || getRealName().startsWith("fast")) )
+        {
+
+          if(System.getProperty("debug") != null) 
+            System.out.println("GET READY TO CALL SSH CLIENT "+getRealName());
+
+          final Feature this_feature = features.elementAt(0);
+          Entry entry = this_feature.getEntry();
+          String [] args;
+
+          if(((DocumentEntry)entry.getEMBLEntry()).getDocument()
+                            instanceof RemoteFileDocument)
+          {
+            RemoteFileDocument nodeDoc =
+               (RemoteFileDocument)(((DocumentEntry)entry.getEMBLEntry()).getDocument());
+            RemoteFileNode node = nodeDoc.getRemoteFileNode();
+
+            String wdir = node.getRootDir()+"/"+node.getFullName();
+            int index = wdir.lastIndexOf("/");
+            wdir = wdir.substring(0,index);
+
+            args = new String[9];
+
+            args[0] = "-f";    args[1] = file_of_filenames.getPath();
+            args[2] = "-cmd";  args[3] = getRealName();
+            args[4] = "-wdir"; args[5] = wdir; 
+            args[6] = "-d";    args[7] = getProgramOptions();
+            args[8] = "-keep";
+          }
+          else
+          {
+            args = new String[6];
+
+            args[0] = "-f";    args[1] = file_of_filenames.getPath();
+            args[2] = "-cmd";  args[3] = getRealName();
+            args[4] = "-d";    args[5] = getProgramOptions();
+          }
+
+          if(System.getProperty("debug") != null)
+            System.out.println("CALL SSH CLIENT "+getRealName());
+
+          uk.ac.sanger.artemis.j2ssh.SshPSUClient ssh =
+                new uk.ac.sanger.artemis.j2ssh.SshPSUClient(args);
+          ssh.start();
+
+          return null;
+        }
+
         final String [] arguments;
 
         switch(program_type) 
@@ -269,6 +322,18 @@ public class ExternalProgram
     // store the file number to use for the next sequence file - the key is
     // a File containing the directory of there Entry that contains the
     // Feature and the value is the next file number to use
+
+    Entry entry = features.elementAt(0).getEntry();
+    RemoteFileNode node = null;
+
+    if(((DocumentEntry)entry.getEMBLEntry()).getDocument()
+                            instanceof RemoteFileDocument)
+    {
+      RemoteFileDocument nodeDoc =
+               (RemoteFileDocument)(((DocumentEntry)entry.getEMBLEntry()).getDocument());
+      node = nodeDoc.getRemoteFileNode();
+    }  
+    
     final java.util.Hashtable file_number_hash = new java.util.Hashtable();
 
     for(final Enumeration e = feature_count_hash.keys() ;
@@ -276,14 +341,14 @@ public class ExternalProgram
     {
       final File directory =(File) e.nextElement();
 
-      final long old_file_number = getFileNumber(directory);
+      final long old_file_number = getFileNumber(directory, node);
 
       final long feature_count =
        ((Long) feature_count_hash.get(directory)).longValue();
 
       file_number_hash.put(directory, new Long(old_file_number));
 
-      setFileNumber(directory, old_file_number + feature_count);
+      setFileNumber(directory, old_file_number + feature_count, node);
     }
 
     // write the sequences out
@@ -369,7 +434,7 @@ public class ExternalProgram
       new File(new File(first_directory, getName()),
                 getName() + "_" +
                 "file_of_filenames." +
-               (getFileNumber(first_directory) - 1));
+               (getFileNumber(first_directory, node) - 1));
 
     final Writer filenames_writer = new FileWriter(file_of_filenames);
 
@@ -381,6 +446,10 @@ public class ExternalProgram
 
     filenames_printwriter.close();
     filenames_writer.close();
+
+    if(System.getProperty("debug") != null)
+      System.out.println("WRITTEN "+file_of_filenames.getCanonicalPath());
+
 
     return file_of_filenames;
   }
@@ -474,15 +543,49 @@ public class ExternalProgram
    *  file_counter_filename.  If the file doesn't exist, it is created and
    *  initialised.
    **/
-  protected long getFileNumber(final File directory)
+  private long getFileNumber(final File directory,
+                             final RemoteFileNode node)
       throws IOException 
   {
     try 
     {
-      final FileReader file_reader =
-        new FileReader(new File(directory, File.separatorChar +
+      final Reader file_reader;
+      if(node == null)
+        file_reader =
+          new FileReader(new File(directory, File.separatorChar +
                                   getName() + File.separatorChar +
                                   file_counter_filename));
+      else
+      {
+        String fs  = "/";    // assume ssh to unix server
+
+        String dir = node.getRootDir()+ fs +
+                     node.getFullName();
+        int index  = dir.lastIndexOf(fs);
+        dir = dir.substring(0,index) + fs + getName();
+
+        FileTransferProgressMonitor monitor =
+                   new FileTransferProgressMonitor(null);
+        FTProgress progress = monitor.add(node.getFile());
+        byte[] contents = node.getFileContents(progress, dir+fs+ 
+                                               file_counter_filename);
+        monitor.close();
+
+        if(contents == null)
+        {
+          if(System.getProperty("debug") != null)
+            System.out.println("getFileNumber() creating "+dir+
+                                fs+file_counter_filename);
+
+          node.mkdir(dir);
+          return setFileNumber(directory, 1, node);
+        }
+
+        file_reader = new StringReader(new String(contents));
+
+        if(System.getProperty("debug") != null)
+          System.out.println("getFileNumber()\n"+new String(contents));
+      }
 
       final BufferedReader reader = new BufferedReader(file_reader);
 
@@ -490,10 +593,10 @@ public class ExternalProgram
       final String comment_line = reader.readLine();
 
       if(comment_line == null || comment_line.length() == 0) 
-        return setFileNumber(directory, guessNumber(directory));
+        return setFileNumber(directory, guessNumber(directory), node);
 
       if(!comment_line.startsWith("#")) 
-        return setFileNumber(directory, guessNumber(directory));
+        return setFileNumber(directory, guessNumber(directory), node);
 
       final String number_line = reader.readLine();
 
@@ -503,7 +606,7 @@ public class ExternalProgram
       }
       catch(NumberFormatException e) 
       {
-        return setFileNumber(directory, guessNumber(directory));
+        return setFileNumber(directory, guessNumber(directory), node);
       }
       finally
       {
@@ -514,11 +617,11 @@ public class ExternalProgram
     catch(FileNotFoundException e)
     {
       // create a new file_number_counter file
-      return setFileNumber(directory, guessNumber(directory));
+      return setFileNumber(directory, guessNumber(directory), node);
     }
     catch(IOException e) 
     {
-      return setFileNumber(directory, guessNumber(directory));
+      return setFileNumber(directory, guessNumber(directory), node);
     }
   }
 
@@ -527,22 +630,38 @@ public class ExternalProgram
    * (eg. directory + "/blastp/" + new_file_number).
    **/
   protected long setFileNumber(final File directory,
-                                final long new_file_number)
+                               final long new_file_number, final RemoteFileNode node)
       throws IOException 
   {
     makeDirectory(new File(directory, getName()));
 
-    final FileWriter file_writer =
-      new FileWriter(new File(directory, File.separatorChar +
-                                getName() + File.separatorChar +
-                                file_counter_filename));
+    File local_file = new File(directory, File.separatorChar +
+                               getName() + File.separatorChar +
+                               file_counter_filename);
 
+    final FileWriter file_writer = new FileWriter(local_file);
     final PrintWriter print_writer = new PrintWriter(file_writer);
 
     print_writer.println("# the file is machine generated - do not edit");
     print_writer.println(new_file_number);
     print_writer.close();
     file_writer.close();
+    
+    if(node != null)
+    {
+      final String fs = "/";  // assume unix ssh server
+      String dir = node.getRootDir()+ fs +
+                   node.getFullName();
+      int index  = dir.lastIndexOf(fs);
+      dir = dir.substring(0,index) + fs +
+                         getName() + fs;
+
+      if(System.getProperty("debug") != null)
+        System.out.println("setFileNumber() "+
+                           local_file.getCanonicalPath()+" --> "+dir);
+
+      node.put(dir, local_file, null, true);     
+    }
 
     return new_file_number;
   }
@@ -675,6 +794,9 @@ public class ExternalProgram
           return new File(file_document.getFile().getParent());
       }
     }
+    if(((DocumentEntry)entry.getEMBLEntry()).getDocument()
+       instanceof RemoteFileDocument)
+      return new File(System.getProperty("user.dir"));
 
     return null;
   }

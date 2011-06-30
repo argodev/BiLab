@@ -928,6 +928,14 @@ public class BilabPlugin extends AbstractUIPlugin {
         loadLibrary("jemboss.jar");
         loadLibrary("jaligner.jar");
         loadLibrary("cdk-1.2.10.jar");
+        loadLibrary("j2ssh-core.jar");
+        loadLibrary("j2ssh-artemis-plugin.jar");
+        loadLibrary("log4j-1.2.14.jar");
+        loadLibrary("ibatis-2.3.4.726.jar");
+        loadLibrary("cglib-nodep-2.2.jar");
+        loadLibrary("sam.jar");
+        loadLibrary("picard.jar");
+         
 
         //loadLibrary("jython.jar");
 
@@ -1021,7 +1029,7 @@ public class BilabPlugin extends AbstractUIPlugin {
                 "ABI automated chromatagraph sequencer trace format", "abi");
 
         registerResourceType("FASTA", "Pearson/FASTA DNA/protein sequence",
-                "fa", "fsa", "fasta", "fna");
+                "faa", "fsa", "fasta", "fna");
         registerResourceType("BLAST", "BLAST similarity search results",
                 "blast");
 

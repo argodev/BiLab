@@ -20,15 +20,16 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Header: /cvsroot/pathsoft/artemis/uk/ac/sanger/artemis/components/FeatureEdit.java,v 1.3 2004/08/13 13:59:20 tjc Exp $
+ * $Header: /cvsroot/pathsoft/artemis/uk/ac/sanger/artemis/components/FeatureEdit.java,v 1.18 2006/02/07 20:19:26 tjc Exp $
  **/
 
 package uk.ac.sanger.artemis.components;
 
 import uk.ac.sanger.artemis.util.*;
 import uk.ac.sanger.artemis.*;
-import uk.ac.sanger.artemis.sequence.*;
+import uk.ac.sanger.artemis.sequence.MarkerRange;
 
+import uk.ac.sanger.artemis.io.DocumentEntry;
 import uk.ac.sanger.artemis.io.OutOfDateException;
 import uk.ac.sanger.artemis.io.LocationParseException;
 import uk.ac.sanger.artemis.io.InvalidRelationException;
@@ -44,19 +45,23 @@ import uk.ac.sanger.artemis.io.EntryInformation;
 import uk.ac.sanger.artemis.io.EntryInformationException;
 import uk.ac.sanger.artemis.io.StreamQualifier;
 import uk.ac.sanger.artemis.io.QualifierInfo;
-import uk.ac.sanger.artemis.io.EmblStreamFeature;
+
+import uk.ac.sanger.artemis.components.ProgressThread;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.Date;
+import java.util.Vector;
+import java.util.Collections;
+import java.util.Comparator;
 import javax.swing.*;
 
 /**
  *  FeatureEdit class
  *
  *  @author Kim Rutherford
- *  @version $Id: FeatureEdit.java,v 1.3 2004/08/13 13:59:20 tjc Exp $
+ *  @version $Id: FeatureEdit.java,v 1.18 2006/02/07 20:19:26 tjc Exp $
  **/
 
 public class FeatureEdit extends JFrame
@@ -76,18 +81,18 @@ public class FeatureEdit extends JFrame
   private final static int LOCATION_TEXT_WIDTH = 80;
 
   /** The location text - set by updateLocation(). */
-  private JTextField location_text = new JTextField (LOCATION_TEXT_WIDTH);
+  private JTextField location_text = new JTextField(LOCATION_TEXT_WIDTH);
 
-  private JButton add_qualifier_button = new JButton ("Add qualifier");
+  private JButton add_qualifier_button = new JButton("Add qualifier");
 
   /** When pressed - apply changes and dispose of the component. */
-  private JButton ok_button = new JButton ("OK");
+  private JButton ok_button = new JButton("OK");
 
   /** When pressed - discard changes and dispose of the component. */
-  private JButton cancel_button = new JButton ("Cancel");
+  private JButton cancel_button = new JButton("Cancel");
 
   /** When pressed - apply changes and keep the component open. */
-  private JButton apply_button = new JButton ("Apply");
+  private JButton apply_button = new JButton("Apply");
 
   /** Edit area for qualifiers - created by createComponents(). */
   private QualifierTextArea qualifier_text_area;
@@ -108,7 +113,7 @@ public class FeatureEdit extends JFrame
   private EntryGroup entry_group;
 
   /**
-   *  The datestamp of the RWCorbaFeature when updateFromFeature () was last
+   *  The datestamp of the RWCorbaFeature when updateFromFeature() was last
    *  called or null if this is not a RWCorbaFeature.
    **/
   private Date datestamp = null;
@@ -128,26 +133,25 @@ public class FeatureEdit extends JFrame
    *  @param entry_group The EntryGroup that contains this Feature.
    *  @param selection The Selection operate on.  The operations are "Remove
    *    Range" and "Grab Range"
-   *  @param goto_event_source The object the we will call gotoBase () on.
+   *  @param goto_event_source The object the we will call gotoBase() on.
    **/
-  public FeatureEdit (final Feature edit_feature,
-                      final EntryGroup entry_group,
-                      final Selection selection,
-                      final GotoEventSource goto_event_source) 
+  public FeatureEdit(final Feature edit_feature,
+                     final EntryGroup entry_group,
+                     final Selection selection,
+                     final GotoEventSource goto_event_source) 
   {
-    super("Artemis Feature Edit: " + edit_feature.getIDString () +
-          (edit_feature.isReadOnly () ?
+    super("Artemis Feature Edit: " + edit_feature.getIDString() +
+          (edit_feature.isReadOnly() ?
            "  -  (read only)" :
            ""));
 
     this.edit_feature = edit_feature;
-    this.edit_entry   = edit_feature.getEntry ();
+    this.edit_entry   = edit_feature.getEntry();
     this.entry_group  = entry_group;
     this.selection    = selection;
     this.goto_event_source = goto_event_source;
 
     createComponents();
-
     updateFromFeature();
 
     orig_qualifier_text = qualifier_text_area.getText();
@@ -157,14 +161,14 @@ public class FeatureEdit extends JFrame
 
     addWindowListener(new WindowAdapter() 
     {
-      public void windowClosing (WindowEvent event) 
+      public void windowClosing(WindowEvent event) 
       {
-        stopListening ();
-        dispose ();
+        stopListening();
+        dispose();
       }
     });
 
-    pack ();
+    pack();
 
     final Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
     setLocation(new Point((screen.width - getSize().width)/2,
@@ -178,8 +182,8 @@ public class FeatureEdit extends JFrame
    **/
   public void stopListening() 
   {
-    getEntry().removeEntryChangeListener (this);
-    getFeature().removeFeatureChangeListener (this);
+    getEntry().removeEntryChangeListener(this);
+    getFeature().removeFeatureChangeListener(this);
   }
 
   /**
@@ -187,15 +191,15 @@ public class FeatureEdit extends JFrame
    *  EntryChange events so we can notify the user if of this component if the
    *  feature gets deleted.
    **/
-  public void entryChanged (EntryChangeEvent event) 
+  public void entryChanged(EntryChangeEvent event) 
   {
     switch(event.getType())
     {
       case EntryChangeEvent.FEATURE_DELETED:
-        if (event.getFeature () == edit_feature) 
+        if(event.getFeature() == edit_feature) 
         {
-          stopListening ();
-         dispose ();
+          stopListening();
+          dispose();
         }
         break;
       default:
@@ -225,7 +229,7 @@ public class FeatureEdit extends JFrame
    **/
   public void addApplyActionListener(final ActionListener l) 
   {
-    apply_button.addActionListener (l);
+    apply_button.addActionListener(l);
   }
 
   /**
@@ -244,34 +248,35 @@ public class FeatureEdit extends JFrame
    **/
   public void featureChanged(FeatureChangeEvent event) 
   {
+    getFeature().resetColour();
     // re-read the information from the feature
-    switch (event.getType ()) 
+    switch(event.getType()) 
     {
-    case FeatureChangeEvent.LOCATION_CHANGED:
-      updateLocation ();
-      break;
-    case FeatureChangeEvent.KEY_CHANGED:
-      updateKey ();
-      break;
-    case FeatureChangeEvent.QUALIFIER_CHANGED:
-      if(qualifier_text_area.getText ().equals (orig_qualifier_text)) 
-        updateFromFeature ();
-      else
-      {
-        final String message =
-          "warning: the qualifiers have changed outside the editor - " +
-          "view now?";
+      case FeatureChangeEvent.LOCATION_CHANGED:
+        updateLocation();
+        break;
+      case FeatureChangeEvent.KEY_CHANGED:
+        updateKey();
+        break;
+      case FeatureChangeEvent.QUALIFIER_CHANGED:
+        if(qualifier_text_area.getText().equals(orig_qualifier_text)) 
+          updateFromFeature();
+        else
+        {
+          final String message =
+            "warning: the qualifiers have changed outside the editor - " +
+            "view now?";
 
-        final YesNoDialog yes_no_dialog =
-          new YesNoDialog(FeatureEdit.this, message);
+          final YesNoDialog yes_no_dialog =
+            new YesNoDialog(FeatureEdit.this, message);
 
-        if(yes_no_dialog.getResult()) 
-          new FeatureViewer(getFeature());
-      }
-      break;
-    default:
-      updateFromFeature ();
-      break;
+          if(yes_no_dialog.getResult()) 
+            new FeatureViewer(getFeature());
+        }
+        break;
+      default:
+        updateFromFeature();
+        break;
     }
   }
 
@@ -281,26 +286,24 @@ public class FeatureEdit extends JFrame
    **/
   private void createComponents()
   {
-    qualifier_text_area = new QualifierTextArea ();
-    qualifier_text_area.setWrapStyleWord (true);
+    qualifier_text_area = new QualifierTextArea();
+    qualifier_text_area.setWrapStyleWord(true);
 
     key_choice =
       new KeyChoice(getEntryInformation(),getFeature().getKey());
 
     final JPanel key_and_qualifier_panel = new JPanel();
-
     location_text.setBackground(Color.white);
 
     final JPanel key_panel = new JPanel();
-    key_panel.add(new JLabel ("Key:"));
+    key_panel.add(new JLabel("Key:"));
     key_panel.add(key_choice);
 
     key_and_qualifier_panel.setLayout(new BorderLayout());
     key_and_qualifier_panel.add(key_panel, "West");
 
     qualifier_choice = new QualifierChoice(getEntryInformation(),
-                                           key_choice.getSelectedItem(),
-                                           null);
+                                  key_choice.getSelectedItem(),null);
 
     final JPanel qualifier_panel = new JPanel();
     final JButton qualifier_add_button = new JButton("Add Qualifier:");
@@ -314,7 +317,7 @@ public class FeatureEdit extends JFrame
     {
       public void itemStateChanged(ItemEvent _) 
       {
-        qualifier_choice.setKey (key_choice.getSelectedItem ());
+        qualifier_choice.setKey(key_choice.getSelectedItem());
       }
     });
 
@@ -323,21 +326,19 @@ public class FeatureEdit extends JFrame
       public void actionPerformed(ActionEvent e)
       {
         final String qualifier_name =
-          (String)qualifier_choice.getSelectedItem ();
+          (String)qualifier_choice.getSelectedItem();
 
         QualifierInfo qualifier_info =
           getEntryInformation().getQualifierInfo(qualifier_name);
 
         if(qualifier_info == null) 
-        {
           qualifier_info = new QualifierInfo(qualifier_name,
                               QualifierInfo.OPTIONAL_QUOTED_TEXT,
                               null, null, false);
-        }
 
         qualifier_text_area.append("/" + qualifier_name);
 
-        switch (qualifier_info.getType ()) 
+        switch(qualifier_info.getType()) 
         {
           case QualifierInfo.QUOTED_TEXT:
             if(qualifier_name.equals("GO")) 
@@ -346,8 +347,7 @@ public class FeatureEdit extends JFrame
               final java.util.Calendar calendar =
                       java.util.Calendar.getInstance();
                 
-              final java.util.Date current_time =
-                                    calendar.getTime();
+              final Date current_time = calendar.getTime();
             
               final java.text.SimpleDateFormat date_format =
                   new java.text.SimpleDateFormat("yyyyMMdd");
@@ -357,15 +357,31 @@ public class FeatureEdit extends JFrame
               date_format.format(current_time, result_buffer,
                                  new java.text.FieldPosition(java.text.DateFormat.DATE_FIELD));
             
-              final String go_string =
-                "aspect=; term=; GOid=GO:; "+
-                "evidence=ISS; db_xref=GOC:unpublished; " +
-                "with=UNIPROT:; date=" + result_buffer;
+              final String go_string = "aspect=; term=; GOid=GO:; "+
+                                       "evidence=ISS; db_xref=GOC:unpublished; " +
+                                       "with=UniProt:; date=" + result_buffer;
               qualifier_text_area.append("=\"" + go_string + "\"");
             } 
+            else if(qualifier_name.equals("controlled_curation"))
+            {
+              final java.util.Calendar calendar =
+                      java.util.Calendar.getInstance();
+
+              final Date current_time = calendar.getTime();
+
+              final java.text.SimpleDateFormat date_format =
+                  new java.text.SimpleDateFormat("yyyyMMdd");
+
+              final StringBuffer result_buffer = new StringBuffer();
+
+              date_format.format(current_time, result_buffer,
+                                 new java.text.FieldPosition(java.text.DateFormat.DATE_FIELD));
+
+              final String cc_string = "term=; db_xref=; date="+ result_buffer;
+              qualifier_text_area.append("=\"" + cc_string + "\"");
+            }
             else 
               qualifier_text_area.append ("=\"\"");
-            
             break;
 
           case QualifierInfo.NO_VALUE:
@@ -373,18 +389,18 @@ public class FeatureEdit extends JFrame
             break;
 
           default:
-            qualifier_text_area.append ("=");
+            qualifier_text_area.append("=");
         }
 
-        qualifier_text_area.append ("\n");
+        qualifier_text_area.append("\n");
       }
     });
 
     final JPanel middle_panel = new JPanel();
-    middle_panel.setLayout (new BorderLayout());
+    middle_panel.setLayout(new BorderLayout());
 
     final JPanel lower_panel = new JPanel();
-    lower_panel.setLayout (new BorderLayout());
+    lower_panel.setLayout(new BorderLayout());
 
     final JPanel outer_location_button_panel = new JPanel();
     lower_panel.add(outer_location_button_panel, "North");
@@ -396,7 +412,7 @@ public class FeatureEdit extends JFrame
     final JPanel location_panel = new JPanel();
     location_panel.setLayout(new BorderLayout());
     location_panel.add(new JLabel("location: "), "West");
-    location_panel.add (location_text, "Center");
+    location_panel.add(location_text, "Center");
 
     final JButton complement_button = new JButton("Complement");
     location_button_panel.add(complement_button);
@@ -414,7 +430,7 @@ public class FeatureEdit extends JFrame
     {
       public void actionPerformed(ActionEvent e)
       {
-        grabSelectedRange ();
+        grabSelectedRange();
       }
     });
 
@@ -430,7 +446,7 @@ public class FeatureEdit extends JFrame
 
     final JButton goto_button = new JButton("Goto Feature");
     location_button_panel.add(goto_button);
-    goto_button.addActionListener(new ActionListener () 
+    goto_button.addActionListener(new ActionListener() 
     {
       public void actionPerformed(ActionEvent e)
       {
@@ -448,10 +464,7 @@ public class FeatureEdit extends JFrame
       }
     });
 
-    final boolean sanger_options =
-      Options.getOptions().getPropertyTruthValue("sanger_options");
-
-    if(sanger_options) 
+    if(Options.getOptions().getPropertyTruthValue("sanger_options"))
     {
       // a PSU only hack 
       final JButton tidy_button = new JButton("Tidy");
@@ -462,9 +475,10 @@ public class FeatureEdit extends JFrame
         {
           try 
           {
-            tidy ();
+            tidy();
+            tidyGO();
           } 
-          catch (QualifierParseException exception) 
+          catch(QualifierParseException exception) 
           {
             final String error_string = exception.getMessage();
             new MessageDialog(FeatureEdit.this,
@@ -500,37 +514,24 @@ public class FeatureEdit extends JFrame
                 else 
                   max_fasta_hits = max_fasta_hits_from_options;
 
-                externalEdit(new String[] 
-                {
-                  "-fasta",
-                  "-maxhits",
-                  max_fasta_hits,
-                  "-euk"
-                });
+                externalEdit(new String[] { "-fasta", "-maxhits",
+                                            max_fasta_hits, "-euk" });
               } 
               else 
               {
                 if(max_fasta_hits_from_options == null) 
                 {
-                  externalEdit(new String[] 
-                  {
-                    "-fasta"
-                  });
+                  externalEdit(new String[] { "-fasta" });
                 } 
                 else 
                 {
-                  externalEdit(new String[] 
-                  {
-                    "-fasta",
-                    "-maxhits",
-                    max_fasta_hits_from_options
-                  });
-
+                  externalEdit(new String[] { "-fasta", "-maxhits",
+                                              max_fasta_hits_from_options });
                 }
               }
               return;
             }
-          } catch (InvalidRelationException _) {}
+          } catch(InvalidRelationException _) {}
           
           new MessageDialog(FeatureEdit.this,
                             "nothing to edit - no /fasta_file qualifier");
@@ -560,22 +561,13 @@ public class FeatureEdit extends JFrame
 
               if(Options.getOptions().isEukaryoticMode()) 
               {
-                externalEdit(new String[] 
-                {
-                  "-blastp",
-                  "-maxhits",
-                  max_blastp_hits,
-                  "-euk"
-                });
+                externalEdit(new String[] { "-blastp", "-maxhits",
+                                            max_blastp_hits, "-euk" });
               } 
               else
               {
-                externalEdit(new String[] 
-                {
-                  "-blastp",
-                  "-maxhits",
-                  max_blastp_hits
-                });
+                externalEdit(new String[] { "-blastp", "-maxhits",
+                                            max_blastp_hits });
               }
               return;
             }
@@ -609,26 +601,17 @@ public class FeatureEdit extends JFrame
 
               if(Options.getOptions().isEukaryoticMode()) 
               {
-                externalEdit(new String[] 
-                {
-                  "-blastp+go",
-                  "-maxhits",
-                  max_go_blast_hits,
-                  "-euk"
-                });
+                externalEdit(new String[] { "-blastp+go", "-maxhits",
+                                            max_go_blast_hits, "-euk" });
               } 
               else
               {
-                externalEdit(new String[] 
-                {
-                  "-blastp+go",
-                  "-maxhits",
-                  max_go_blast_hits
-                });
+                externalEdit(new String[] { "-blastp+go", "-maxhits",
+                                            max_go_blast_hits });
               }
               return;
             }
-          } catch (InvalidRelationException _) {}
+          } catch(InvalidRelationException _) {}
           
           new MessageDialog(FeatureEdit.this,
                             "nothing to edit - no /blastp+go_file qualifier");
@@ -636,8 +619,126 @@ public class FeatureEdit extends JFrame
       });
     }
 
-    middle_panel.add(location_panel, "North");
+    if(Options.isUnixHost())
+    {
+      JButton oo_edit_button = new JButton("ObjectEdit");
+      location_button_panel.add(oo_edit_button);
+      final uk.ac.sanger.artemis.editor.BigPane bp =
+                             new uk.ac.sanger.artemis.editor.BigPane();
 
+      oo_edit_button.addActionListener(new ActionListener ()
+      {
+        public void actionPerformed(ActionEvent e)
+        {
+          String qualifier_txt = qualifier_text_area.getText();
+        
+          File base_dir = getBaseDirectoryFromEntry(edit_entry);
+          String baseDirStr = "";
+
+          if(base_dir != null)
+            baseDirStr = base_dir.getAbsolutePath() + 
+                              System.getProperty("file.separator");
+
+          StringReader strRead = new StringReader(qualifier_txt);
+          BufferedReader buff = new BufferedReader(strRead);
+          String line;
+          final Vector dataFile = new Vector();
+          try
+          {
+            while((line = buff.readLine()) != null)
+            {
+              if(line.startsWith("/fasta_file="))
+              {
+                int ind = line.lastIndexOf("\"");
+                if(ind > -1)
+                  dataFile.add(baseDirStr+line.substring(13,ind));
+              }
+              else if(line.startsWith("/blastp_file="))
+              {
+                int ind = line.lastIndexOf("\"");
+                if(ind > -1)
+                  dataFile.add(baseDirStr+line.substring(14,ind));
+              }
+              else if(line.startsWith("/blastp+go_file="))
+              {
+                int ind = line.lastIndexOf("\"");
+                if(ind > -1)
+                  dataFile.add(baseDirStr+line.substring(17,ind));
+              }   
+            }
+          }
+          catch(IOException ioe){}
+ 
+          FeatureEdit.this.setCursor(new Cursor(Cursor.WAIT_CURSOR)); 
+          final ProgressThread progress = new ProgressThread(null,
+                                        "Loading Data....");
+          progress.start();
+          SwingWorker ooEd = new SwingWorker()
+          {
+            public Object construct()
+            {
+              // find overlaping features
+              final Location this_loc = edit_feature.getLocation();
+              final int this_start = this_loc.getFirstBase();
+              final int this_end   = this_loc.getLastBase();
+
+              FeaturePredicate predicate = new FeaturePredicate()
+              {
+                public boolean testPredicate (final Feature feature) 
+                {
+                  final Location loc = feature.getLocation();
+
+                  final int start = loc.getFirstBase();
+                  final int end   = loc.getLastBase();
+
+                  if((start > this_start &&
+                      start < this_end) ||
+                     (end > this_start &&
+                      end < this_end))
+                  {
+                    final String note = feature.getNote();
+                    if(note != null &&
+                       note.indexOf("Pfam")>-1)
+                      return true;
+                  }
+                  
+                  return false;
+                }
+              };
+
+              final FeatureVector overlapFeatures = new FeatureVector();
+              final FeatureEnumeration featureEnum = entry_group.features();
+              while(featureEnum.hasMoreFeatures()) 
+              {
+                Feature this_feature = featureEnum.nextFeature();
+                if(predicate.testPredicate(this_feature))
+                  overlapFeatures.add(this_feature);
+              }
+
+              // show object editor
+              try
+              {
+               bp.set(dataFile.toArray(), qualifier_text_area, overlapFeatures,
+                      edit_feature);
+              }
+              catch(ArrayIndexOutOfBoundsException e)
+              {
+                JOptionPane.showMessageDialog(null,"No results files.",
+                        "Warning",
+                        JOptionPane.WARNING_MESSAGE);
+              }
+
+              progress.finished();
+              FeatureEdit.this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+              return null;
+            }
+          };
+          ooEd.start();   
+        }
+      });
+    }
+
+    middle_panel.add(location_panel, "North");
     getContentPane().add(key_and_qualifier_panel, "North");
 
     cancel_button.addActionListener(new ActionListener()
@@ -678,12 +779,12 @@ public class FeatureEdit extends JFrame
     final JPanel ok_cancel_update_panel = new JPanel(flow_layout);
 
     if(!getFeature().isReadOnly()) 
-      ok_cancel_update_panel.add (ok_button);
+      ok_cancel_update_panel.add(ok_button);
 
-    ok_cancel_update_panel.add (cancel_button);
+    ok_cancel_update_panel.add(cancel_button);
 
     if(!getFeature().isReadOnly()) 
-      ok_cancel_update_panel.add (apply_button);
+      ok_cancel_update_panel.add(apply_button);
 
     getContentPane().add(ok_cancel_update_panel, "South");
 
@@ -691,6 +792,31 @@ public class FeatureEdit extends JFrame
     lower_panel.add(new JScrollPane (qualifier_text_area), "Center");
 
     getContentPane().add(middle_panel, "Center");
+  }
+
+
+  /**
+   *  Return the dirtectory that the given entry was read from.
+   **/
+  private File getBaseDirectoryFromEntry(final Entry entry)
+  {
+    final uk.ac.sanger.artemis.io.Entry embl_entry = entry.getEMBLEntry();
+
+    if(embl_entry instanceof DocumentEntry)
+    {
+      final DocumentEntry document_entry =(DocumentEntry) embl_entry;
+
+      if(document_entry.getDocument() instanceof FileDocument)
+      {
+        final FileDocument file_document =
+         (FileDocument) document_entry.getDocument();
+
+        if(file_document.getFile().getParent() != null)
+          return new File(file_document.getFile().getParent());
+      }
+    }
+
+    return null;
   }
 
   /**
@@ -724,24 +850,24 @@ public class FeatureEdit extends JFrame
       if(location_text.getText().startsWith("complement(")) 
       {
         final String new_text = location_text.getText().substring(11);
-        if (new_text.endsWith (")")) 
+        if (new_text.endsWith(")")) 
         {
           final String new_text2 =
-            new_text.substring (0, new_text.length () - 1);
-          location_text.setText (new_text2);
+            new_text.substring(0, new_text.length () - 1);
+          location_text.setText(new_text2);
         } 
         else 
-          location_text.setText (new_text);
+          location_text.setText(new_text);
       }
       else 
       {
         final String new_text = location_text.getText ();
-        location_text.setText ("complement(" + new_text + ")");
+        location_text.setText("complement(" + new_text + ")");
       }
     } 
     else 
-      new MessageDialog (this, "complement failed - " +
-                         "current location cannot be parsed");
+      new MessageDialog(this, "complement failed - " +
+                        "current location cannot be parsed");
   }
 
   /**
@@ -760,7 +886,7 @@ public class FeatureEdit extends JFrame
     for(int qualifier_index = 0; qualifier_index < qualifiers.size();
          ++qualifier_index) 
     {
-      final Qualifier this_qualifier = qualifiers.elementAt(qualifier_index);
+      final Qualifier this_qualifier = (Qualifier)qualifiers.elementAt(qualifier_index);
       
       final QualifierInfo qualifier_info =
             getEntryInformation().getQualifierInfo(this_qualifier.getName());
@@ -772,7 +898,7 @@ public class FeatureEdit extends JFrame
           ++value_index)
       {
         final String qualifier_string =
-          qualifier_strings.elementAt(value_index);
+          (String)qualifier_strings.elementAt(value_index);
 
         buffer.append(tidyHelper(qualifier_string) + "\n");
       }
@@ -780,6 +906,47 @@ public class FeatureEdit extends JFrame
 
     qualifier_text_area.setText(buffer.toString());
   }
+
+  private void tidyGO() throws QualifierParseException
+  {
+    String qualifier_txt = qualifier_text_area.getText();
+    StringReader strRead = new StringReader(qualifier_txt);
+    BufferedReader buff = new BufferedReader(strRead);
+    String line;
+    final Vector qual_str = new Vector();
+    try
+    {
+      while((line = buff.readLine()) != null)
+        qual_str.add(line);
+    }
+    catch(IOException ioe){}
+
+    Comparator comparator = new Comparator()
+    {
+      public int compare (Object fst, Object snd)
+      {
+        if( !((String)fst).startsWith("/GO") ||
+            !((String)snd).startsWith("/GO") )
+          return 0;
+
+        return ((String)fst).compareTo((String)snd);
+      }
+    };
+  
+    Collections.sort(qual_str, comparator);
+    
+    StringBuffer buffer = new StringBuffer();
+    for(int i = 0; i < qual_str.size(); i++)
+    {
+      final String qualifier_string = 
+                           (String)qual_str.elementAt(i);
+
+      buffer.append(tidyHelper(qualifier_string) + "\n");
+    }
+
+    qualifier_text_area.setText(buffer.toString());
+  }
+
 
   /**
    *  Perform the action of tidy() on the String version of one qualifier.
@@ -860,9 +1027,8 @@ public class FeatureEdit extends JFrame
     if(!rationalizeLocation())
     {
       location_text.setText (old_location_text);
-      new MessageDialog (this,
-                         "grab failed - location cannot be parsed after " +
-                         "grabbing");
+      new MessageDialog(this, "grab failed - location cannot be parsed after " +
+                        "grabbing");
     }
   }
 
@@ -900,17 +1066,17 @@ public class FeatureEdit extends JFrame
 
     try 
     {
-      location = new Location (location_text.getText ());
+      location = new Location(location_text.getText ());
     }
     catch (LocationParseException e) 
     {
       // this shouldn't happen because we called rationalizeLocation ()
-      throw new Error ("internal error - unexpected exception: " + e);
+      throw new Error("internal error - unexpected exception: " + e);
     }
 
     final Range location_total_range = location.getTotalRange();
 
-    if(!selected_range.overlaps (location_total_range))
+    if(!selected_range.overlaps(location_total_range))
     {
       new MessageDialog(this, "remove range failed - the range you " +
                         "selected does not overlap the feature");
@@ -935,29 +1101,29 @@ public class FeatureEdit extends JFrame
     // completely contained then the appropriate end of the range is truncated
     for(int i = 0; i < location_ranges.size(); ++i) 
     {
-      final Range this_range = location_ranges.elementAt(i);
+      final Range this_range = (Range)location_ranges.elementAt(i);
 
-      if(selected_range.overlaps (this_range)) 
+      if(selected_range.overlaps(this_range)) 
       {
         try 
         {
-          if(this_range.contains (selected_range) &&
-             this_range.getStart () != selected_range.getStart () &&
-             this_range.getEnd () != selected_range.getEnd ()) 
+          if(this_range.contains(selected_range) &&
+             this_range.getStart() != selected_range.getStart() &&
+             this_range.getEnd() != selected_range.getEnd()) 
           {
             // chop a piece out of the middle and make two new ranges
             final Range new_start_range =
-                    this_range.change(selected_range.getEnd () + 1,
-                                      this_range.getEnd ());
+                    this_range.change(selected_range.getEnd() + 1,
+                                      this_range.getEnd());
             new_ranges.add(new_start_range);
             final Range new_end_range =
-              this_range.change(this_range.getStart (),
-                                selected_range.getStart () - 1);
+              this_range.change(this_range.getStart(),
+                                selected_range.getStart() - 1);
             new_ranges.add(new_end_range);
           } 
           else
           {
-            if(selected_range.contains (this_range)) {
+            if(selected_range.contains(this_range)) {
               // delete (ie. don't copy) the range
             } 
             else
@@ -998,7 +1164,7 @@ public class FeatureEdit extends JFrame
     final Location new_location =
       new Location(new_ranges, location_is_complemented);
 
-    location_text.setText(new_location.toStringShort ());
+    location_text.setText(new_location.toStringShort());
   }
 
   /**
@@ -1011,8 +1177,8 @@ public class FeatureEdit extends JFrame
   {
     try 
     {
-      final Location location = new Location(location_text.getText ());
-      location_text.setText(location.toStringShort ());
+      final Location location = new Location(location_text.getText());
+      location_text.setText(location.toStringShort());
       return true;
     }
     catch(LocationParseException e) 
@@ -1037,7 +1203,7 @@ public class FeatureEdit extends JFrame
       final String pre_edit_text = qualifier_text_area.getText();
 
       // write to a temporary file
-      final java.util.Date current_time = calendar.getTime();
+      final Date current_time = calendar.getTime();
 
       final String temp_file_name =
                "/tmp/artemis_temp." + current_time.getTime();
@@ -1079,6 +1245,11 @@ public class FeatureEdit extends JFrame
         process_args[process_args.length - 1] = temp_file.getCanonicalPath();
       }
 
+
+      System.out.println(editor_path);
+      for(int i=0;i<process_args.length;i++)
+        System.out.println(process_args[i]);
+
       final Process process =
         ExternalProgram.startProgram(editor_path, process_args);
 
@@ -1086,7 +1257,6 @@ public class FeatureEdit extends JFrame
                                 new ProcessWatcher(process, "editor", false);
 
       final Thread watcher_thread = new Thread(process_watcher);
-
       watcher_thread.start();
 
       final ProcessWatcherListener listener = new ProcessWatcherListener()
@@ -1096,21 +1266,17 @@ public class FeatureEdit extends JFrame
           try 
           {
             final FileReader file_reader = new FileReader(temp_file);
-
             final BufferedReader buffered_reader = 
                                      new BufferedReader(file_reader);
 
             final StringBuffer buffer = new StringBuffer();
-
             String line;
 
             while((line = buffered_reader.readLine()) != null) 
               buffer.append(line + "\n");
 
-            final String current_qualifier_text =
-                                       qualifier_text_area.getText();
-
-            if(!current_qualifier_text.equals(pre_edit_text))
+            //ensure current qualifier text has not changed
+            if(!qualifier_text_area.getText().equals(pre_edit_text))
             {
               final String message =
                   "the qualifiers have changed - apply changes from the " +
@@ -1164,13 +1330,12 @@ public class FeatureEdit extends JFrame
   private String getQualifierString() 
   {
     final StringBuffer buffer = new StringBuffer();
-
     final QualifierVector qualifiers = getFeature().getQualifiers();
 
     for(int qualifier_index = 0; qualifier_index < qualifiers.size();
         ++qualifier_index) 
     {
-      final Qualifier this_qualifier = qualifiers.elementAt(qualifier_index);
+      final Qualifier this_qualifier = (Qualifier)qualifiers.elementAt(qualifier_index);
 
       final QualifierInfo qualifier_info =
                        getEntryInformation().getQualifierInfo(this_qualifier.getName());
@@ -1181,7 +1346,7 @@ public class FeatureEdit extends JFrame
       for(int value_index = 0; value_index < qualifier_strings.size();
           ++value_index)
       {
-        final String qualifier_string = qualifier_strings.elementAt(value_index);
+        final String qualifier_string = (String)qualifier_strings.elementAt(value_index);
         buffer.append(qualifier_string + "\n");
       }
     }
@@ -1199,7 +1364,6 @@ public class FeatureEdit extends JFrame
   private boolean setFeature() 
   {
     final Key key = key_choice.getSelectedItem();
-
     final KeyVector possible_keys = getEntryInformation().getValidKeys();
 
     if(possible_keys != null && !possible_keys.contains(key)) 
@@ -1214,7 +1378,6 @@ public class FeatureEdit extends JFrame
     }
 
     final Location location;
-
     try 
     {
       location = new Location(location_text.getText());
@@ -1223,10 +1386,8 @@ public class FeatureEdit extends JFrame
     {
       final String error_string = exception.getMessage ();
       System.out.println(error_string);
-      new MessageDialog(this,
-                        "Cannot apply changes because of location error: " +
+      new MessageDialog(this, "Cannot apply changes because of location error: " +
                         error_string);
-
       return false;
     }
 
@@ -1242,8 +1403,7 @@ public class FeatureEdit extends JFrame
     {
       final String error_string = exception.getMessage();
       System.out.println(error_string);
-      new MessageDialog(this,
-                        "Cannot apply changes because of a qualifier " +
+      new MessageDialog(this, "Cannot apply changes because of a qualifier " +
                         "error: " + error_string);
       return false;
     }
@@ -1259,8 +1419,7 @@ public class FeatureEdit extends JFrame
       catch(OutOfDateException e) 
       {
         final YesNoDialog dialog =
-          new YesNoDialog(this,
-                          "the feature has changed since the edit " +
+          new YesNoDialog(this, "the feature has changed since the edit " +
                           "window was opened, continue?");
 
         if(dialog.getResult())  // yes - ignore the datestamp
@@ -1278,15 +1437,13 @@ public class FeatureEdit extends JFrame
     } 
     catch(OutOfRangeException e) 
     {
-      new MessageDialog(this,
-                        "Cannot apply changes - the location is out of " +
+      new MessageDialog(this, "Cannot apply changes - the location is out of " +
                         "range for this sequence");
       return false;
     } 
     catch(ReadOnlyException e) 
     {
-      new MessageDialog(this,
-                        "Cannot apply changes - the feature is " +
+      new MessageDialog(this, "Cannot apply changes - the feature is " +
                         "read only");
       return false;
     } 
@@ -1314,7 +1471,7 @@ public class FeatureEdit extends JFrame
    **/
   private void dribble()
   {
-    if(!Options.isUnixHost ()) 
+    if(!Options.isUnixHost()) 
       return;
 
     final String dribble_file_name;

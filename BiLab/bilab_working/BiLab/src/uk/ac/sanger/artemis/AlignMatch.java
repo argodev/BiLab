@@ -20,18 +20,19 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Header: /cvsroot/pathsoft/artemis/uk/ac/sanger/artemis/AlignMatch.java,v 1.1 2004/06/09 09:44:06 tjc Exp $
+ * $Header: /cvsroot/pathsoft/artemis/uk/ac/sanger/artemis/AlignMatch.java,v 1.7 2005/12/13 10:33:29 tjc Exp $
  */
 
 package uk.ac.sanger.artemis;
 
 import uk.ac.sanger.artemis.io.Range;
+import uk.ac.sanger.artemis.util.OutOfRangeException;
 
 /**
  *  Each object of this class represents a single match from an alignment.
  *
  *  @author Kim Rutherford
- *  @version $Id: AlignMatch.java,v 1.1 2004/06/09 09:44:06 tjc Exp $
+ *  @version $Id: AlignMatch.java,v 1.7 2005/12/13 10:33:29 tjc Exp $
  **/
 
 public class AlignMatch 
@@ -55,6 +56,8 @@ public class AlignMatch
    **/
   private boolean rev_match;
 
+  private int match_length;
+
   /**
    *  Create a new AlignMatch object.
    *  @param rev_match true if and only if the query hits the reverse
@@ -73,6 +76,23 @@ public class AlignMatch
     this.rev_match              = rev_match;
     this.score                  = score;
     this.percent_id             = percent_id;
+
+    match_length = Math.abs(getSubjectSequenceStart() -
+                            getSubjectSequenceEnd());
+  }
+
+  public static AlignMatch copy(AlignMatch m)
+  {
+    return new AlignMatch(m.subject_sequence_range,
+                          m.query_sequence_range,
+                          m.rev_match, 
+                          m.score,
+                          m.percent_id);
+  }
+
+  public int getLength()
+  {
+    return match_length;
   }
 
   /**
@@ -96,10 +116,10 @@ public class AlignMatch
    **/
   public int getQuerySequenceStart() 
   {
-    if(isRevMatch())
+    if(rev_match)
       return query_sequence_range.getEnd();
-    else
-      return query_sequence_range.getStart();
+    
+    return query_sequence_range.getStart();
   }
 
   /**
@@ -107,10 +127,10 @@ public class AlignMatch
    **/
   public int getQuerySequenceEnd() 
   {
-    if(isRevMatch()) 
+    if(rev_match) 
       return query_sequence_range.getStart();
-    else 
-      return query_sequence_range.getEnd();
+     
+    return query_sequence_range.getEnd();
   }
 
   /**
@@ -127,6 +147,42 @@ public class AlignMatch
   public Range getQuerySequenceRange() 
   {
     return query_sequence_range;
+  }
+
+  /**
+   * Set the range for either the query or the subject match. This
+   * is used when flipping contigs round.
+   * @param start
+   * @param end
+   * @param subject
+   */
+  public void setRange(final int start, final int end, 
+                       boolean subject, boolean flip)
+  {
+    try
+    {
+      if(subject)
+      {
+    if(start < end)
+      this.subject_sequence_range = new Range(start, end);
+    else
+          this.subject_sequence_range = new Range(end, start);
+      }
+      else
+      {
+        if(start < end)
+         this.query_sequence_range = new Range(start, end);
+        else
+          this.query_sequence_range = new Range(end, start);
+      }
+    }
+    catch(OutOfRangeException ex)
+    {
+      ex.printStackTrace();
+    }
+   
+    if(flip)
+      this.rev_match = !this.rev_match;
   }
 
   /**
@@ -161,10 +217,9 @@ public class AlignMatch
   public boolean isSelfMatch() 
   {
     if(getQuerySequenceStart() == getSubjectSequenceStart() && 
-        getQuerySequenceEnd() == getSubjectSequenceEnd()) 
+       getQuerySequenceEnd() == getSubjectSequenceEnd()) 
       return true;
     else 
       return false;
   }
-
 }

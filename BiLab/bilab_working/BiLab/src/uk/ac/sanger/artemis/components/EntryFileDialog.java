@@ -1,3 +1,4 @@
+
 /* EntryFileDialog.java
  *
  * created: Mon Dec  7 1998
@@ -20,7 +21,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Header: /cvsroot/pathsoft/artemis/uk/ac/sanger/artemis/components/EntryFileDialog.java,v 1.2 2004/06/09 14:22:10 tjc Exp $
+ * $Header: /cvsroot/pathsoft/artemis/uk/ac/sanger/artemis/components/EntryFileDialog.java,v 1.5 2005/10/11 14:20:31 tjc Exp $
  */
 
 package uk.ac.sanger.artemis.components;
@@ -32,6 +33,7 @@ import uk.ac.sanger.artemis.io.DocumentEntryFactory;
 import uk.ac.sanger.artemis.io.ReadFormatException;
 import uk.ac.sanger.artemis.io.EntryInformation;
 import uk.ac.sanger.artemis.io.EntryInformationException;
+import uk.ac.sanger.artemis.io.DocumentEntry;
 
 import java.io.*;
 import javax.swing.*;
@@ -40,7 +42,7 @@ import javax.swing.*;
  *  This class is a JFileChooser that can read EMBL Entry objects.
  *
  *  @author Kim Rutherford
- *  @version $Id: EntryFileDialog.java,v 1.2 2004/06/09 14:22:10 tjc Exp $
+ *  @version $Id: EntryFileDialog.java,v 1.5 2005/10/11 14:20:31 tjc Exp $
  **/
 
 public class EntryFileDialog extends StickyFileChooser 
@@ -81,7 +83,7 @@ public class EntryFileDialog extends StickyFileChooser
 
           for(int i = 0; i<sequence_suffixes.size(); ++i) 
           {
-            final String this_suffix = sequence_suffixes.elementAt(i);
+            final String this_suffix = (String)sequence_suffixes.elementAt(i);
 
             if(file.getName().endsWith("." + this_suffix) ||
                 file.getName().endsWith("." + this_suffix + ".gz")) 
@@ -90,7 +92,7 @@ public class EntryFileDialog extends StickyFileChooser
 
           for(int i = 0; i<feature_suffixes.size(); ++i) 
           {
-            final String this_suffix = feature_suffixes.elementAt(i);
+            final String this_suffix = (String)feature_suffixes.elementAt(i);
 
             if(file.getName().endsWith("." + this_suffix) ||
                file.getName().endsWith("." + this_suffix + ".gz")) 
@@ -115,7 +117,7 @@ public class EntryFileDialog extends StickyFileChooser
 
           for(int i = 0 ; i < feature_suffixes.size() ; ++i) 
           {
-            final String this_suffix = feature_suffixes.elementAt(i);
+            final String this_suffix = (String)feature_suffixes.elementAt(i);
 
             if(file.getName().endsWith("." + this_suffix) ||
                file.getName().endsWith("." + this_suffix + ".gz")) 
@@ -141,7 +143,7 @@ public class EntryFileDialog extends StickyFileChooser
 
           for(int i = 0 ; i<sequence_suffixes.size() ; ++i) 
           {
-            final String this_suffix = sequence_suffixes.elementAt(i);
+            final String this_suffix = (String)sequence_suffixes.elementAt(i);
 
             if(file.getName().endsWith("." + this_suffix) ||
                file.getName().endsWith("." + this_suffix + ".gz")) 
@@ -185,7 +187,6 @@ public class EntryFileDialog extends StickyFileChooser
    **/
   public Entry getEntry(final EntryInformation entry_information,
                         final InputStreamProgressListener listener,
-                        final ProgressThread progress_thread,
                         final boolean show_progress) 
   {
     setDialogTitle("Select a file ...");
@@ -200,9 +201,6 @@ public class EntryFileDialog extends StickyFileChooser
     if(status != JFileChooser.APPROVE_OPTION ||
        getSelectedFile() == null) 
       return null;
-
-    if(progress_thread != null)
-      progress_thread.start();
 
     final File file = new File(getCurrentDirectory(),
                                getSelectedFile().getName());
@@ -276,20 +274,21 @@ public class EntryFileDialog extends StickyFileChooser
   {
     InputStreamProgressDialog progress_dialog = null;
 
-    if(show_progress) {
+    if(show_progress) 
+    {
 // XXX FIXME
 
 // This doesn't work because getEntryFromFile() is called from the Swing
 // thread so the Dialog never gets updated
 
-//     progress_dialog =
-//       new InputStreamProgressDialog(frame, "Reading ...",
-//                                      "Reading from " +
-//                                      entry_document.getName(), false);
-//     final InputStreamProgressListener listener =
-//       progress_dialog.getInputStreamProgressListener();
+       progress_dialog =
+         new InputStreamProgressDialog(frame, "Reading ...",
+                                        "Reading from " +
+                                        entry_document.getName(), false);
+       final InputStreamProgressListener listener =
+         progress_dialog.getInputStreamProgressListener();
 
-//     entry_document.addInputStreamProgressListener(listener);
+       entry_document.addInputStreamProgressListener(listener);
     }
 
     try 
@@ -321,8 +320,8 @@ public class EntryFileDialog extends StickyFileChooser
     }
     finally
     {
-//    if(progress_dialog != null) 
-//      progress_dialog.dispose();
+      if(progress_dialog != null) 
+        progress_dialog.dispose();
     }
     return null;
   }
@@ -351,13 +350,20 @@ public class EntryFileDialog extends StickyFileChooser
                   final boolean keep_new_name,
                   final int destination_type) 
   {
+
+    JCheckBox remoteSave = new JCheckBox("Ssh/Remote Save",
+                                         true);
+    File file = null;
+
     try 
     {
       if(ask_for_name || entry.getName() == null) 
       {
+        Box yBox = Box.createVerticalBox();
+        boolean useAccessory = false;
+
         JCheckBox emblHeader = new JCheckBox("Add EMBL Header",
                                              false);
-        emblHeader.setSelected(false);
 
         setDialogTitle("Save to ...");
         setDialogType(JFileChooser.SAVE_DIALOG);
@@ -365,7 +371,21 @@ public class EntryFileDialog extends StickyFileChooser
         if( destination_type == DocumentEntryFactory.EMBL_FORMAT &&
            (entry.getHeaderText() == null ||
            !isHeaderEMBL(entry.getHeaderText())) )
-          setAccessory(emblHeader);
+        {
+          yBox.add(emblHeader);
+          useAccessory = true;
+        }
+
+        if(((DocumentEntry)entry.getEMBLEntry()).getDocument() 
+                                       instanceof RemoteFileDocument)
+        {
+          yBox.add(remoteSave);
+          useAccessory = true;
+        }
+
+        if(useAccessory)
+          setAccessory(yBox);
+
         int status = showSaveDialog(owner);
 
         if(status != JFileChooser.APPROVE_OPTION ||
@@ -394,7 +414,7 @@ public class EntryFileDialog extends StickyFileChooser
           }
         }
 
-        File file = new File(getCurrentDirectory(),
+        file = new File(getCurrentDirectory(),
                         getSelectedFile().getName());
 
         if(file.exists()) 
@@ -481,6 +501,20 @@ public class EntryFileDialog extends StickyFileChooser
       new MessageDialog(owner, "error while saving: " + e);
       return;
     }
+
+    // save it back to ssh server
+    if(((DocumentEntry)entry.getEMBLEntry()).getDocument()
+                                   instanceof RemoteFileDocument &&
+        remoteSave.isSelected())
+    {
+       RemoteFileDocument node =
+           (RemoteFileDocument)(((DocumentEntry)entry.getEMBLEntry()).getDocument());
+
+       if(file == null)
+         file = new File( ((DocumentEntry)entry.getEMBLEntry()).getDocument().toString() );
+       node.saveEntry(file);
+    }
+
   }
 
   /**

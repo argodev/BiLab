@@ -24,6 +24,10 @@
 
 package uk.ac.sanger.artemis.editor;
 
+import uk.ac.sanger.artemis.Options;
+import uk.ac.sanger.artemis.util.StringVector;
+import uk.ac.sanger.artemis.components.SwingWorker;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.util.StringTokenizer;
@@ -32,10 +36,15 @@ import java.io.StringReader;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.net.URL;
+import java.net.MalformedURLException;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -50,22 +59,27 @@ public class DataCollectionPane extends JScrollPane
   private FastaTextPane fastaTextPane;
   private Annotation ann;
   private JDesktopPane desktop;
+  private DataViewInternalFrame dataView;
+  protected static String srs_url = getSrsSite();
 
   /**
   *
   * @param fastaTextPane   fasta/blast display.
-  * @param ann		   annotation display.
-  * @param desktop	   desktop pane.
+  * @param ann         annotation display.
+  * @param desktop     desktop pane.
   *
   */
   public DataCollectionPane(FastaTextPane fastaTextPane,
-                            Annotation ann, JDesktopPane desktop)
+                            Annotation ann, JDesktopPane desktop,
+                            DataViewInternalFrame dataView)
   {
     super();
     this.fastaTextPane = fastaTextPane;
     this.ann = ann;
-    this.desktop = desktop;
+    this.desktop  = desktop;
+    this.dataView = dataView;
 
+//  getSrsSite();
     Box bdown = Box.createVerticalBox();
     ScrollPanel scrollPanel = new ScrollPanel();
     scrollPanel.add(bdown);
@@ -77,6 +91,16 @@ public class DataCollectionPane extends JScrollPane
     setResultLines(bdown,hitInfoCollection,goHash);
     setViewportView(scrollPanel);
     setPreferredSize(new Dimension(500,300));
+  }
+
+  private static String getSrsSite()
+  {
+    StringVector srs = Options.getOptions().getOptionValues("srs_url");
+    if(srs != null)
+      srs_url = (String)srs.elementAt(0);
+    else
+      srs_url = "http://srs.sanger.ac.uk/srsbin/cgi-bin/";
+    return srs_url;
   }
 
   /**
@@ -101,13 +125,13 @@ public class DataCollectionPane extends JScrollPane
 
   /**
   *
-  * @param bdown   		vertical Box containing all one line results.
-  * @param hitInfoCollection	Collection of HitInfo from results.
-  * @param goHash 		Hash of GO ID's with description.
+  * @param bdown        vertical Box containing all one line results.
+  * @param hitInfoCollection    Collection of HitInfo from results.
+  * @param goHash       Hash of GO ID's with description.
   *
   */
   private void setResultLines(Box bdown, Vector hitInfoCollection, 
-	                      Hashtable goHash)
+                          Hashtable goHash)
   {
     final Vector orthoCheckBox = new Vector();
     Enumeration hitEnum = hitInfoCollection.elements();
@@ -126,7 +150,7 @@ public class DataCollectionPane extends JScrollPane
       orthoBox.setMargin(new Insets(1,1,1,1));
       paraBox.setMargin(new Insets(1,1,1,1));
   
-      orthoBox.setActionCommand(hit.getID());
+      orthoBox.setActionCommand(hit.getAcc());
       orthoCheckBox.add(orthoBox);
 
       bacross.add(orthoBox);
@@ -152,13 +176,28 @@ public class DataCollectionPane extends JScrollPane
             if(paraBox.isSelected())
             {
               paraBox.setSelected(false);
-              ann.delete(hit.getID(),false);
+              ann.delete(hit.getAcc(),false);
             }
 
-            setAnnotation(hit,ann,fastaTextPane.getFormat(),true);
+            try
+            {
+              setAnnotation(hit,ann,fastaTextPane.getFormat(),true);
+            }
+            catch(NullPointerException npe)
+            {
+              JOptionPane.showMessageDialog(DataCollectionPane.this,
+                           "There may be a probelem retrieving "+hit.getAcc()+
+                           "\nfrom SRS",
+                           "Connection Error to SRS?",
+                           JOptionPane.WARNING_MESSAGE);
+            }
           }
           else
-            ann.delete(hit.getID(),true);           
+            ann.delete(hit.getAcc(),true);
+
+          ann.deleteNote();
+          if(BigPane.addNote.isSelected())
+            dataView.updateNote();  
         }
       });
 
@@ -173,13 +212,28 @@ public class DataCollectionPane extends JScrollPane
             if(orthoBox.isSelected())
             {
               orthoBox.setSelected(false);
-              ann.delete(hit.getID(),true);
+              ann.delete(hit.getAcc(),true);
             }
-           
-            setAnnotation(hit,ann,fastaTextPane.getFormat(),false);
+
+            try
+            {
+              setAnnotation(hit,ann,fastaTextPane.getFormat(),false);
+            }
+            catch(NullPointerException npe)
+            {
+              JOptionPane.showMessageDialog(DataCollectionPane.this,
+                           "There may be a probelem retrieving "+hit.getAcc()+
+                           "\nfrom SRS",
+                           "Connection Error to SRS?",
+                           JOptionPane.WARNING_MESSAGE);
+            }
           }
           else
-            ann.delete(hit.getID(),false);
+            ann.delete(hit.getAcc(),false);
+
+          ann.deleteNote();
+          if(BigPane.addNote.isSelected())
+            dataView.updateNote();
         }
       });
 
@@ -232,36 +286,37 @@ public class DataCollectionPane extends JScrollPane
 
       JLabel hiLabel = new JLabel(head);
       hiLabel.setFont(BigPane.font);
-      hiLabel.setForeground(Color.red);
+      hiLabel.setForeground(Color.black);
+//    hiLabel.setForeground(Color.red);
 
 // align button
-      final JButton selectButt = new JButton("ALIGN");
-      selectButt.setMargin(new Insets(1,1,1,1));
-      selectButt.addActionListener(new ActionListener()
-      {
-        public void actionPerformed(ActionEvent e)
-        {
-          fastaTextPane.show(hit);
-        }
-      });
-      selectButt.setFont(BigPane.font);
+//    final JButton selectButt = new JButton("ALIGN");
+//    selectButt.setMargin(new Insets(1,1,1,1));
+//    selectButt.addActionListener(new ActionListener()
+//    {
+//      public void actionPerformed(ActionEvent e)
+//      {
+//        fastaTextPane.show(hit);
+//      }
+//    });
+//    selectButt.setFont(BigPane.font);
 
 // retrieve srs entry
-      JButton srsButt = new JButton("->SRS");
-      srsButt.setMargin(new Insets(1,1,1,1));
+//    JButton srsButt = new JButton("->SRS");
+//    srsButt.setMargin(new Insets(1,1,1,1));
 
-      srsButt.addActionListener(new ActionListener()
-      {
-        public void actionPerformed(ActionEvent e)
-        {
-          getSRSEntry(hit,desktop);
-        }
-      });
-      srsButt.setFont(BigPane.font);
+//    srsButt.addActionListener(new ActionListener()
+//    {
+//      public void actionPerformed(ActionEvent e)
+//      {
+//        getSRSEntry(hit,desktop);
+//      }
+//    });
+//    srsButt.setFont(BigPane.font);
 
       bacross.add(hiLabel);
-      bacross.add(selectButt);
-      bacross.add(srsButt);
+//    bacross.add(selectButt);
+//    bacross.add(srsButt);
      
       bacross.add(Box.createHorizontalGlue());
       bdown.add(bacross);
@@ -275,7 +330,36 @@ public class DataCollectionPane extends JScrollPane
         {
           final String go_id = ((String)gov_enum.nextElement()).trim();
           bacross = Box.createHorizontalBox();
-          JButton goButton = new JButton("GO:"+go_id);
+
+          final String goLine = (String)goHash.get(go_id);
+          final JCheckBox goBox = new JCheckBox();
+          goBox.setSelected(false);
+          goBox.addActionListener(new ActionListener()
+          {
+            public void actionPerformed(ActionEvent e)
+            {
+              if(goBox.isSelected())
+              {
+ //               String go_term = hit.getGoAssociation(go_id);
+ //               if(go_term == null)
+                { 
+ //                 go_term = setGoAnnotation(ann,hit,go_id,goLine);
+ //               hit.setGoAssociation(go_id,go_term);
+                }
+//                else
+//                  ann.insert(go_term,false);
+              }
+              else
+              {
+                // possibly 2 line to delete
+                ann.deleteGo(hit.getAcc(),go_id);
+                ann.deleteGo(hit.getAcc(),go_id);
+              }
+            }
+          });
+          goBox.setMargin(new Insets(0,1,0,1));
+
+          MouseOverButton goButton = new MouseOverButton("GO:"+go_id);
           goButton.setFont(BigPane.font);
           goButton.addActionListener(new ActionListener()
           {
@@ -306,11 +390,16 @@ public class DataCollectionPane extends JScrollPane
 
             }
           });
+          goButton.setForeground(Color.blue);
+          goButton.setMargin(new Insets(1,1,1,1));
+          goButton.setBorderPainted(false);
+
           bacross.add(Box.createHorizontalStrut(10));
+          bacross.add(goBox);
           bacross.add(goButton);
           goButton.setMargin(new Insets(0,1,0,1));
 
-          JLabel goLabel = new JLabel((String)goHash.get(go_id));
+          JLabel goLabel = new JLabel(goLine);
           goLabel.setFont(BigPane.font);
           bacross.add(goLabel);
           bdown.add(bacross);
@@ -323,13 +412,13 @@ public class DataCollectionPane extends JScrollPane
 
   /**
   *
-  * @param hit		HitInfo for a single hit.
-  * @param desktop	desktop pane.
+  * @param hit      HitInfo for a single hit.
+  * @param desktop  desktop pane.
   *
   */
   private void getSRSEntry(HitInfo hit, JDesktopPane desktop)
   {
-    String srscmd = "srs.sanger.ac.uk/srsbin/cgi-bin/wgetz?-e+";
+    String srscmd = "/wgetz?-e+";
 
     if(hit.getID() != null)
     {
@@ -339,11 +428,11 @@ public class DataCollectionPane extends JScrollPane
         srscmd = srscmd.concat("|[{uniprot}-AccNumber:"+hit.getAcc()+"*]");
 
       if(BigPane.srsBrowser.isSelected())
-        BrowserControl.displayURL(srscmd);
+        BrowserControl.displayURL(srs_url+srscmd);
 
       try
       {
-        URL url = new URL("http://"+srscmd);
+        URL url = new URL(srs_url+srscmd);
 
         if(BigPane.srsTabPane.isSelected())
           setUpSRSFrame(url,search,desktop);
@@ -372,7 +461,7 @@ public class DataCollectionPane extends JScrollPane
       {
         JOptionPane.showMessageDialog(DataCollectionPane.this,
                  "Cannot retrieve "+search+
-                 "\nConnection failed to:\nhttp://"+srscmd,
+                 "\nConnection failed to:\n"+srs_url+srscmd,
                  "Connection Error",
                  JOptionPane.WARNING_MESSAGE);
       }
@@ -390,12 +479,12 @@ public class DataCollectionPane extends JScrollPane
 
   /**
   *
-  * @param url		URL to be displayed.
-  * @param name		URL name.
-  * @param desktop	desktop pane.
+  * @param url      URL to be displayed.
+  * @param name     URL name.
+  * @param desktop  desktop pane.
   *
   */
-  protected void setUpSRSFrame(URL url, String name, JDesktopPane desktop)
+  protected static void setUpSRSFrame(URL url, String name, JDesktopPane desktop)
                  throws IOException
   {
     if(BigPane.srsFrame == null)
@@ -419,160 +508,90 @@ public class DataCollectionPane extends JScrollPane
   }
 
 
-  /**
-  *
-  * Creates and executes an SRS query for all the hits in the
-  * collection.
-  * @param hit          HitInfo for a single hit.
-  * @param ortholog     true if ortholog is selected.
-  *
-  */
-  protected static void getzCall(Vector hits, int nretrieve)
+  private HitInfo findHitInfo(String acc)
   {
-    String env[] = { "PATH=/usr/local/pubseq/bin/" };
-
-    StringBuffer query = new StringBuffer();
-
-    int n = 0;
-    query.append("[uniprot-acc:");
-
-    Enumeration ehits = hits.elements();
-    while(ehits.hasMoreElements())
+    Enumeration hitEnum = fastaTextPane.getHitCollection().elements();
+    while(hitEnum.hasMoreElements())
     {
-      if(n>nretrieve)
-        break;
-      HitInfo hit = (HitInfo)ehits.nextElement();
-      if(n > 0)
-        query.append("|");
-
-      query.append(hit.getAcc());
-      n++;
-    }
-    query.append("]");
-
-    String cmd[]   = { "getz", "-f", "acc org description gen",
-                       query.toString() };
-
-    ExternalApplication app = new ExternalApplication(cmd,
-                                                env,null);
-    String res = app.getProcessStdout();
-
-    HitInfo hit = null;
-    String line = null;
-    String lineStrip = null;
-    StringReader strread   = new StringReader(res);
-    BufferedReader strbuff = new BufferedReader(strread);
-
-    try
-    {
-      while((line = strbuff.readLine()) != null)
-      {
-        line = line.trim();
-        if(line.equals(""))
-          continue;
-
-        lineStrip = line.substring(3).trim();
-        if(line.startsWith("AC"))
-        {
-          hit = getHitInfo(lineStrip,hits);
-
-          if(hit == null)
-          {
-            System.out.println("HIT NOT FOUND "+line);
-            continue;
-          }
-
-          hit.setOrganism("");
-          hit.setGeneName("");
-        }
-
-        if(hit == null)
-          continue;
-
-        if(line.startsWith("OS "))
-          hit.setOrganism(lineStrip);
-        else if(line.startsWith("DE "))
-          hit.appendDescription(lineStrip);
-        else if(line.startsWith("GN "))
-        {
-          StringTokenizer tokGN = new StringTokenizer(lineStrip,";");
-          while(tokGN.hasMoreTokens())
-          {
-            line = tokGN.nextToken();
-            if(line.startsWith("Name="))
-              hit.setGeneName(line.substring(5));
-            else
-              hit.appendDescription(line);
-          }
-        }
-      }
-    }
-    catch(IOException ioe){}
-
-    ehits = hits.elements();
-    while(ehits.hasMoreElements())
-    {
-      hit = (HitInfo)ehits.nextElement();
-
-      String cmd2[]   = { "getz", "-f", "id",
-                 "[libs={uniprot}-id:"+hit.getID()+"]>EMBL" };
-      app = new ExternalApplication(cmd2,env,null);
-      res = app.getProcessStdout();
- 
-      int ind1 = res.indexOf("ID ");
-      if(ind1 > -1)
-      {
-        StringTokenizer tok = new StringTokenizer(res);
-        tok.nextToken();
-        hit.setEMBL(tok.nextToken());
-      }
-      else
-        hit.setEMBL("");
-    }
-
-  }
-
-
-  private static HitInfo getHitInfo(String acc, Vector hits)
-  {
-    int ind = 0;
-    acc     = acc.trim(); 
-    
-    if((ind = acc.indexOf(";")) > -1)
-      acc = acc.substring(0,ind);
-
-    Enumeration ehits = hits.elements();
-    HitInfo hit = null;
-    while(ehits.hasMoreElements())
-    {
-      hit = (HitInfo)ehits.nextElement();
-      if(hit.getAcc().equals(acc))
+      HitInfo hit = (HitInfo)hitEnum.nextElement();
+      if(acc.equals(hit.getID()))
         return hit;
     }
 
     return null;
   }
 
+
+//private static HitInfo getHitInfo(String acc, Vector hits)
+//{
+//  int ind = 0;
+//  acc     = acc.trim(); 
+//  
+//  if((ind = acc.indexOf(";")) > -1)
+//    acc = acc.substring(0,ind);
+
+//  Enumeration ehits = hits.elements();
+//  HitInfo hit = null;
+//  while(ehits.hasMoreElements())
+//  {
+//    hit = (HitInfo)ehits.nextElement();
+//    if(hit.getAcc().equals(acc))
+//      return hit;
+ // }
+
+//  return null;
+//}
+
   /**
   *
-  * @param hit		HitInfo for a single hit.
-  * @param ortholog	true if ortholog is selected.
+  * @param hit      HitInfo for a single hit.
+  * @param ortholog true if ortholog is selected.
   *
   */
   protected static void getzCall(HitInfo hit, boolean ortholog)
   {
     String env[] = { "PATH=/usr/local/pubseq/bin/" };
 
+    File fgetz = new File("/usr/local/pubseq/bin/getz");
     if(hit.getOrganism() == null ||
        hit.getDescription() == null)
     {
-      System.out.println("CALLING GETZ");
-      String cmd[]   = { "getz", "-f", "org description gen",
-                         "[uniprot:"+hit.getAcc()+"]|[uniprot:"+hit.getID()+"]" };
+      String res = null;
+      if(!fgetz.exists())
+      {
+        try
+        {
+          URL wgetz = new URL(DataCollectionPane.srs_url+
+                            "/wgetz?-f+acc%20org%20description%20gen+"+
+                            "[uniprot:"+hit.getAcc()+"]|[uniprot:"+hit.getID()+"]");
+          InputStream in = wgetz.openStream();
 
-      ExternalApplication app = new ExternalApplication(cmd,
-                                                  env,null);
-      String res = app.getProcessStdout();
+          BufferedReader strbuff = new BufferedReader(new InputStreamReader(in));
+          StringBuffer resBuff = new StringBuffer();
+          String line;
+          while((line = strbuff.readLine()) != null)
+            resBuff.append(line);
+          strbuff.close();
+          in.close();
+
+          res = resBuff.toString();
+          res = FastaTextPane.insertNewline(res, "OS ");
+          res = FastaTextPane.insertNewline(res, "DE ");
+          res = FastaTextPane.insertNewline(res, "GN ");
+          res = FastaTextPane.insertNewline(res, "AC ");
+        }
+        catch(MalformedURLException e) {System.err.println(e);}
+        catch(IOException e) {System.err.println(e);}
+      }
+      else
+      {
+        String cmd[]   = { "getz", "-f", "org description gen",
+                           "[uniprot:"+hit.getAcc()+"]|[uniprot:"+hit.getID()+"]" };
+
+        ExternalApplication app = new ExternalApplication(cmd,
+                                                    env,null);
+        res = app.getProcessStdout();
+      }
 
       StringTokenizer tok = new StringTokenizer(res,"\n");
       while(tok.hasMoreTokens())
@@ -594,8 +613,8 @@ public class DataCollectionPane extends JScrollPane
             token = tokGN.nextToken();
             if(token.startsWith("Name="))          
               hit.setGeneName(tokenline.substring(5));
-            else
-              hit.appendDescription(token);
+//          else
+//            hit.appendDescription(token);
           }
         }
       }
@@ -603,10 +622,7 @@ public class DataCollectionPane extends JScrollPane
 
     if(hit.getEMBL() == null)
     {
-      String cmd2[]   = { "getz", "-f", "id",
-                 "[libs={uniprot}-id:"+hit.getID()+"]>EMBL" };
-      ExternalApplication app = new ExternalApplication(cmd2,env,null);
-      String res = app.getProcessStdout();
+      String res = FastaTextPane.getUniprotLinkToDatabase(fgetz, hit, env, "EMBL");
   
       int ind1 = res.indexOf("ID ");
       if(ind1 > -1)
@@ -619,13 +635,173 @@ public class DataCollectionPane extends JScrollPane
 
   }
 
+  /**
+  *
+  * Sets the GO annotation for a given ID, first by querying
+  * Amigo and if not successful querying SRS.
+  * @param ann      annotation display
+  * @param id       database id
+  * @param go_id    GO id
+  * @return annotation 
+  *
+  */
+  private String setGoAnnotation(Annotation ann, HitInfo hit, 
+                                 String go_id, String goLine)
+  {
+    String go_ann = new String("/GO=\"GOid=GO:"+go_id+
+                               "; with="+hit.getDB()+":"+hit.getAcc()+
+                               "; "+goLine+"\"");
+  
+    String prog = DataCollectionPane.class.getResource("/etc/go_associations.pl").getPath(); 
+    String cmd[]   = { prog, "-assoc", hit.getAcc() };
+    ExternalApplication app = new ExternalApplication(cmd,
+                                                null,null);
+    String res = app.getProcessStdout();
+    boolean found = false;
+
+    try
+    {
+      String line;
+      BufferedReader buffRead = new BufferedReader(new StringReader(res));
+      while((line = buffRead.readLine()) != null)
+      {
+
+        int ind1 = line.indexOf("GO:");
+        int ind2 = line.indexOf(" ",ind1);
+        if(ind1 > -1 && ind2 > -1)
+        {
+          String this_go_id = line.substring(ind1+3,ind2).trim();
+          
+// see http://intweb.sanger.ac.uk/help/wiki/html/Intweb/PSUEukaryoticQualifiers.html
+          int ref = line.indexOf("db_xref=");
+          String db_xref = null;
+          if(ref > -1)
+          {
+            db_xref = line.substring(ref);
+            line = line.substring(0,ref);
+          }
+
+          // build GO line
+          StringBuffer goBuff = new StringBuffer();
+          if(line.startsWith("/GO_component"))
+            goBuff.append("/GO=\"aspect=component; ");
+          else if(line.startsWith("/GO_process"))
+            goBuff.append("/GO=\"aspect=process; ");
+          else
+            goBuff.append("/GO=\"aspect=function; ");
+          goBuff.append("GOid=GO:"+this_go_id+"; ");
+
+          ind1 = line.indexOf("(");
+          ind2 = line.indexOf(")")+1; 
+          if(ind1 > -1 && ind2 > -1)
+            goBuff.append("term="+line.substring(ind1,ind2)+"; ");
+
+          ind1 = ind2+1;
+          ind2 = line.indexOf(";",ind1);
+          if(ind1 > -1 && ind2 > -1)
+            goBuff.append("evidence="+line.substring(ind1,ind2)+"; ");
+
+          if(db_xref != null)
+            goBuff.append(db_xref+" ");
+
+          goBuff.append("with="+hit.getDB()+":"+hit.getAcc()+"; "); 
+
+          if(go_id.equals(this_go_id))
+            go_ann = line + "\"<br>" + goBuff.toString() +"\"";
+
+ //         hit.setGoAssociation(this_go_id,line + "\"<br>" + goBuff.toString() +"\"");
+          found = true;
+        }
+      }
+    }
+    catch(IOException ioe) { ioe.printStackTrace(); }
+
+    if(!found)  // try SRS
+    {
+      String env[]  = { "PATH=/usr/local/pubseq/bin/" };
+      String cmd2[] = { "getz", "-f", "dbxref", "[uniprot:"+hit.getAcc()+"]" };
+      app = new ExternalApplication(cmd2,env,null);
+      res = app.getProcessStdout();
+
+      try
+      {
+        String line;
+        BufferedReader buffRead = new BufferedReader(new StringReader(res));
+        while((line = buffRead.readLine()) != null)
+        {
+
+          int ind1 = line.indexOf("GO:");
+          int ind2 = line.indexOf(";",ind1);
+          if(ind1 > -1 && ind2 > -1)
+          {
+            String this_go_id = line.substring(ind1+3,ind2).trim();
+
+            line = line.substring(3).trim();
+            String aspect = null;
+            String term   = null;
+            String evidence = null;
+            ind1 = -1; 
+            ind2 = -1;
+
+            if((ind1 = line.indexOf(" F:"))> -1)
+            {
+              aspect = "function";
+              ind2 = line.indexOf(";",ind1+4);
+            }
+            else if((ind1 = line.indexOf(" P:"))> -1)
+            {
+              aspect = "process";
+              ind2 = line.indexOf(";",ind1+4);
+            }
+            else if((ind1 = line.indexOf(" C:"))> -1)
+            {
+              aspect = "component";
+              ind2 = line.indexOf(";",ind1+4);
+            }
+
+            if(ind1 > -1 && ind2 > -1)
+              term = line.substring(ind1+3,ind2);
+
+            if(ind2 > -1)
+              evidence = line.substring(ind2+1).trim();
+
+            StringBuffer goBuff = new StringBuffer();
+
+            goBuff.append("/GO_"+aspect);
+            goBuff.append("=\"GO:"+this_go_id+"; ");
+            goBuff.append(evidence+"; ");
+            goBuff.append(hit.getDB()+":"+hit.getAcc()+";\"<br>");
+
+            goBuff.append("/GO=\"aspect="+aspect+"; ");
+            goBuff.append("GOid=GO:"+this_go_id+"; ");
+            goBuff.append("term="+term+"; ");
+            goBuff.append("evidence="+evidence+"; ");
+            goBuff.append("db_xref= ;");
+            goBuff.append("with="+hit.getDB()+":"+hit.getAcc()+";\"");
+
+            if(go_id.equals(this_go_id))
+              go_ann = goBuff.toString();
+
+   //         hit.setGoAssociation(this_go_id,goBuff.toString());
+            found = true;
+//          break;
+          }
+        }
+      }
+      catch(IOException ioe) { ioe.printStackTrace(); }
+    }
+    ann.insert(go_ann,false);
+
+    return go_ann;
+  }
+
 
   /**
   *
-  * @param hit 		HitInfo for a single hit.
-  * @param ann		annotation display.
-  * @param resultFormat	format of the results (blastp/fasta).
-  * @param ortholog	true if ortholog selected.
+  * @param hit      HitInfo for a single hit.
+  * @param ann      annotation display.
+  * @param resultFormat format of the results (blastp/fasta).
+  * @param ortholog true if ortholog selected.
   *
   */
   private void setAnnotation(HitInfo hit, Annotation ann,
@@ -634,25 +810,38 @@ public class DataCollectionPane extends JScrollPane
     getzCall(hit,ortholog);
 
 // gene name for orthologs
-    String orthoText = "";
+    StringBuffer orthoText = new StringBuffer();
     if(ortholog)
     {
       String geneName = hit.getGeneName();
-      if(hit.getGeneName() != null)
-        orthoText = "<br>\n/gene=\""+hit.getGeneName()+"\"";
+
+      if(hit.getGeneName() != null &&
+         !hit.getGeneName().equals(""))
+        orthoText.append("<br>\n/gene=\""+hit.getGeneName()+"\"");
+
+   //   if(hit.getEC_number() != null)
+  //      orthoText.append("<br>\n/EC_number=\""+hit.getEC_number()+"\"");
+
+      String product = hit.getDescription();
+
+      if(product != null && !product.equals(""))
+      {
+        if(product.endsWith("."))
+          product = product.substring(0,product.length()-1);
+
+        orthoText.append("\n<br>\n/product=\""+product.toLowerCase()+"\"");
+      }
     }
 
-//  System.out.println("ID "+hit.getID());
-//  System.out.println("OS "+hit.getOrganism());
-//  System.out.println("DE "+hit.getDescription());
-//  System.out.println("GN "+hit.getGeneName());
+//  System.out.println("ID "+hit.getID()+"\nOS "+hit.getOrganism()+
+//                   "\nDE "+hit.getDescription()+"\nGN "+hit.getGeneName());
     
     StringBuffer buff = new StringBuffer();
     
     if(hit.getDB() != null)
-      buff.append(hit.getDB()+":"+hit.getID());
+      buff.append(" with="+hit.getDB()+":"+hit.getAcc());
     else
-      buff.append(" UNIPROT:"+hit.getID());
+      buff.append(" with=UniProt:"+hit.getAcc());
 
     if(hit.getEMBL() != null &&
        !hit.getEMBL().equals(""))
@@ -669,26 +858,28 @@ public class DataCollectionPane extends JScrollPane
       buff.append(" "+hit.getDescription()+";");
     if(hit.getLength() != null)
       buff.append(" length="  + hit.getLength()+";");
+    if(hit.getIdentity() != null)
+      buff.append(" id " + hit.getIdentity()+";");
     if(hit.getUngapped() != null)
-      buff.append("ungapped id=" + hit.getUngapped()+";");
+      buff.append(" ungapped id " + hit.getUngapped()+";");
     if(hit.getEValue() != null)
       buff.append(" E()="     + hit.getEValue()+";");
     if(hit.getOverlap() != null)
       buff.append(" "+hit.getOverlap()+";");
     if(hit.getQueryRange() != null)
-      buff.append("query "   + hit.getQueryRange()+";");
+      buff.append(" query "   + hit.getQueryRange()+";");
     if(hit.getSubjectRange() != null)
-      buff.append("subject " + hit.getSubjectRange());
+      buff.append(" subject " + hit.getSubjectRange());
     buff.append("\"");
 
     ann.insert("\n/similarity=\""+resultFormat+";"+
-               buff.toString()+orthoText, ortholog);
+               buff.toString()+orthoText.toString(), ortholog);
   }
 
 
   /**
   *
-  * @param hitInfoCollection	Collection of HitInfo.
+  * @param hitInfoCollection    Collection of HitInfo.
   *
   */
   private Hashtable getIDHash(Vector hitInfoCollection)
@@ -716,9 +907,9 @@ public class DataCollectionPane extends JScrollPane
   
   /**
   *
-  * @param filename	name of the file containing the GO id and 
+  * @param filename name of the file containing the GO id and 
   *                     description.
-  * @param goHash	Hashtable of GO id's and description.
+  * @param goHash   Hashtable of GO id's and description.
   *
   */
   public void getGoHash(String filename, Hashtable goHash)
@@ -740,77 +931,9 @@ public class DataCollectionPane extends JScrollPane
           goHash.put(ID,desc);
       }
     }
+    catch(FileNotFoundException fnf) { System.err.println(filename+" not found"); }
     catch(IOException ioe) { ioe.printStackTrace(); }
   }
-
-
-  /**
-  *
-  * Extend JButton to show mouse over colour change.
-  *
-  */
-  public class MouseOverButton extends JButton       
-  {
-    private boolean over = false;
-    private HitInfo hit;
-
-    public MouseOverButton()
-    {
-      super();
-    }
-
-    public MouseOverButton(HitInfo hit)
-    {
-      super(hit.getID());
-      this.hit = hit;
-    }
-
-    public void paintComponent(Graphics g)
-    {
-      super.paintComponent(g);
-
-      if(!getText().equals(""))
-        return;
-
-      Graphics2D g2 = (Graphics2D)g;
-
-      if(over)
-        g2.setColor(new Color(100,100,200));
-      else
-        g2.setColor(Color.blue);
-      g2.setStroke(new BasicStroke(1.5f));
-      g2.drawLine(1,3,11,3);
-      g2.drawLine(1,7,11,7);
-
-      setSize(12,12);
-    }
-
-    public String getToolTipText()
-    {
-      if(hit == null)
-        return null;
-
-      return hit.getOrganism();
-    }
-
-    protected void processMouseEvent(MouseEvent evt)
-    {
-      switch (evt.getID())
-      {
-	case MouseEvent.MOUSE_ENTERED:
-	  over = true; 
-          setForeground(new Color(100,100,200));
-	  repaint();
-	  break;
-	case MouseEvent.MOUSE_EXITED:
-	  over = false;
-          setForeground(Color.blue);
-	  repaint();
-	  break;
-      }
-      super.processMouseEvent(evt);
-    }
-  }
-
+  
 }
 

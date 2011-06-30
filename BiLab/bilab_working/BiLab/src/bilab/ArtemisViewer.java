@@ -199,8 +199,8 @@ public class ArtemisViewer extends ViewerBase {
                 final FeatureDisplay base_display = new FeatureDisplay(
                         entry_group, selection, goto_event_source,
                         base_plot_group);
-                base_display.setShowLabels(false);
-                base_display.setScaleFactor(0);
+//                base_display.setShowLabels(false);
+//                base_display.setScaleFactor(0);
                 vbox_panel.add(base_display);
                 base_display.setVisible(true);
 

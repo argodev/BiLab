@@ -39,6 +39,20 @@ Bundle-ClassPath: bilab.jar,
  libs/junit-4.8.1.jar,
  libs/dasobert.jar,
  libs/jgrapht-jdk1.5.jar,
+ libs/j2ssh-core.jar,
+ libs/j2ssh-artemis-plugin.jar,
+ libs/log4j-1.2.14.jar,
+ libs/ibatis-2.3.4.726.jar,
+ libs/cglib-nodep-2.2.jar,
+ libs/sam.jar,
+ libs/picard.jar,
  libs/org.eclipse.draw2d_3.6.2.v20110128-0100.jar,
  libs/org.eclipse.gef_3.6.2.v20110110-2020.jar
 Eclipse-AutoStart: true 
+Provide-Package: bilab,
+ bilab.notebook,
+ bilab.notebook.model,
+ bilab.notebook.model.commands,
+ bilab.notebook.parts,
+ scigol
+Bundle-Vendor: ORNL

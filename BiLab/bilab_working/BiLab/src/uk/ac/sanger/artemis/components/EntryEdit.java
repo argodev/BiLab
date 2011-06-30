@@ -307,11 +307,11 @@ public class EntryEdit extends JFrame
    *  Redraw this component.  This method is public so that other classes can
    *  force an update if, for example, the options files is re-read.
    **/
-  public void redisplay() 
-  {
-    feature_display.redisplay();
-    base_display.redisplay();
-  }
+//  public void redisplay() 
+//  {
+//    feature_display.redisplay();
+//    base_display.redisplay();
+//  }
 
   /**
    *  This method sends an GotoEvent to all the GotoEvent listeners that will

@@ -20,7 +20,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Header: /cvsroot/pathsoft/artemis/uk/ac/sanger/artemis/components/AddMenu.java,v 1.1 2004/06/09 09:45:57 tjc Exp $
+ * $Header: /cvsroot/pathsoft/artemis/uk/ac/sanger/artemis/components/AddMenu.java,v 1.13 2006/01/17 16:05:05 tjc Exp $
  */
 
 package uk.ac.sanger.artemis.components;
@@ -45,7 +45,8 @@ import uk.ac.sanger.artemis.io.EntryInformationException;
 
 import java.awt.*;
 import java.awt.event.*;
-
+import java.util.Vector;
+import java.util.Enumeration;
 import javax.swing.*;
 
 /**
@@ -53,17 +54,52 @@ import javax.swing.*;
  *  should have been called CreateMenu.
  *
  *  @author Kim Rutherford
- *  @version $Id: AddMenu.java,v 1.1 2004/06/09 09:45:57 tjc Exp $
+ *  @version $Id: AddMenu.java,v 1.13 2006/01/17 16:05:05 tjc Exp $
  **/
-
-public class AddMenu extends SelectionMenu {
+public class AddMenu extends SelectionMenu 
+{
   /**
    *  The shortcut for "Create From Base Range".
    **/
   final static KeyStroke CREATE_FROM_BASE_RANGE_KEY =
-    KeyStroke.getKeyStroke (KeyEvent.VK_C, InputEvent.CTRL_MASK);
+    KeyStroke.getKeyStroke (KeyEvent.VK_C,
+                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()); //InputEvent.CTRL_MASK);
 
   final static public int CREATE_FROM_BASE_RANGE_KEY_CODE = KeyEvent.VK_C;
+
+  /** busy cursor */
+  private Cursor cbusy = new Cursor(Cursor.WAIT_CURSOR);
+  /** done cursor */
+  private Cursor cdone = new Cursor(Cursor.DEFAULT_CURSOR);
+
+  private AlignmentViewer alignQueryViewer;
+  private AlignmentViewer alignSubjectViewer;
+
+  /**
+   *  Create a new AddMenu object.
+   *  @param frame The JFrame that owns this JMenu.
+   *  @param selection The Selection that the commands in the menu will
+   *    operate on.
+   *  @param entry_group The EntryGroup object where new features/entries will
+   *    be added.
+   *  @param goto_event_source The object the we will call makeBaseVisible ()
+   *    on.
+   *  @param base_plot_group The BasePlotGroup associated with this JMenu -
+   *    needed to call getCodonUsageAlgorithm()
+   *  @param base_plot_group The AlignmentViewer associated with this JMenu
+   *
+   *  @param menu_name The name of the new menu.
+   **/
+  public AddMenu (final JFrame frame,
+                  final Selection selection,
+                  final EntryGroup entry_group,
+                  final GotoEventSource goto_event_source,
+                  final BasePlotGroup base_plot_group,
+                  final String menu_name) 
+  {
+    this(frame,selection,entry_group,
+         goto_event_source,base_plot_group,null,null,menu_name);
+  }
 
   /**
    *  Create a new AddMenu object.
@@ -78,14 +114,19 @@ public class AddMenu extends SelectionMenu {
    *    needed to call getCodonUsageAlgorithm()
    *  @param menu_name The name of the new menu.
    **/
-  public AddMenu (final JFrame frame,
-                  final Selection selection,
-                  final EntryGroup entry_group,
-                  final GotoEventSource goto_event_source,
-                  final BasePlotGroup base_plot_group,
-                  final String menu_name) {
+  public AddMenu(final JFrame frame,
+                 final Selection selection,
+                 final EntryGroup entry_group,
+                 final GotoEventSource goto_event_source,
+                 final BasePlotGroup base_plot_group,
+                 final AlignmentViewer alignQueryViewer, 
+                 final AlignmentViewer alignSubjectViewer,
+                 final String menu_name)
+  {
     super (frame, menu_name, selection);
 
+    this.alignQueryViewer   = alignQueryViewer;
+    this.alignSubjectViewer = alignSubjectViewer;
     this.entry_group = entry_group;
     this.base_plot_group = base_plot_group;
 
@@ -109,6 +150,56 @@ public class AddMenu extends SelectionMenu {
     });
 
     add (create_feature_from_range_item);
+
+    if(alignQueryViewer != null || alignSubjectViewer != null)
+    {
+      JMenuItem create_difference_feature  =
+        new JMenuItem("Create Features From Non-matching Regions");
+      create_difference_feature.addActionListener(new ActionListener()
+      {
+        public void actionPerformed (ActionEvent event) 
+        {
+          frame.setCursor(cbusy);
+          Vector diffs = null;
+          String comparisonNote = "";
+          if(alignQueryViewer == null || alignSubjectViewer == null)
+          {
+            final Entry sequence_entry;
+            if(alignQueryViewer != null)
+            {
+              diffs = alignQueryViewer.getDifferenceCoords(false);
+              sequence_entry = alignQueryViewer.getSubjectEntryGroup().getSequenceEntry();
+            }
+            else
+            {
+              diffs = alignSubjectViewer.getDifferenceCoords(true);
+              sequence_entry = alignSubjectViewer.getQueryEntryGroup().getSequenceEntry();
+            }
+
+            comparisonNote = comparisonNote + sequence_entry.getName();
+          }
+          else    // multi-comparison
+          {
+            Vector diffs1 = alignQueryViewer.getDifferenceCoords(false);
+            Vector diffs2 = alignSubjectViewer.getDifferenceCoords(true);
+          
+            Entry sequence_entry;
+            sequence_entry = alignQueryViewer.getSubjectEntryGroup().getSequenceEntry();
+            comparisonNote = comparisonNote + sequence_entry.getName();
+
+            sequence_entry = alignSubjectViewer.getQueryEntryGroup().getSequenceEntry();
+            comparisonNote = comparisonNote + " and " + sequence_entry.getName();
+  
+            diffs = union(diffs1,diffs2);
+          }
+          
+          createFeatures(diffs, frame, comparisonNote);
+          frame.setCursor(cdone);
+        }
+      });
+
+      add (create_difference_feature);
+    }
 
     create_intron_features_item =
       new JMenuItem ("Create Intron Features");
@@ -208,6 +299,128 @@ public class AddMenu extends SelectionMenu {
   }
 
   /**
+  *
+  * Find the union of coordinates in two Vecor objects.
+  * @param v1 Vector of Integer coordinates
+  * @param v2 Vector of Integer coordinates
+  *  
+  */
+  protected static Vector union(Vector v1, Vector v2)
+  {
+    Vector union = new Vector();
+
+    for(int i=0; i<v1.size(); i++)
+    {
+      Integer[] imatch = (Integer[])v1.get(i);
+      int istart = imatch[0].intValue();
+      int iend   = imatch[1].intValue();
+
+      for(int j=0; j<v2.size(); j++)
+      {
+        Integer[] jmatch = (Integer[])v2.get(j);
+        int jstart = jmatch[0].intValue();
+        int jend   = jmatch[1].intValue();
+
+        if( (istart >= jstart && istart <= jend) ||
+            (iend >= jstart && iend <= jend) ||
+            (jstart > istart && jend < iend) )
+        {
+          if(jstart > istart)
+            istart = jstart;
+          
+          if(iend < jend)
+            jend = iend;
+
+          Integer coords[] = new Integer[2];
+          coords[0] = new Integer(istart);
+          coords[1] = new Integer(jend);
+          union.add(coords);
+        }
+      }
+    }
+
+    return union;
+  }
+
+  /**
+  *
+  * Create features from Vector of coordinates.
+  * @param diffs Vector of coordinates to create feature from.
+  * @param frame The JFrame that owns this JMenu.
+  *
+  */
+  private void createFeatures(Vector diffs, JFrame frame, String name) 
+  {
+    Enumeration eDiffs = diffs.elements();
+    while(eDiffs.hasMoreElements())
+    {
+      Integer coords[] = (Integer[])eDiffs.nextElement();
+      int start = coords[0].intValue();
+      int end   = coords[1].intValue();
+//    System.out.println(start+" "+end);
+         
+      final Entry default_entry = entry_group.getDefaultEntry();
+      if(default_entry == null) 
+      {
+        new MessageDialog(frame, "There is no default entry");
+        return;
+      }
+
+      Location loc = null;
+      Feature temp_feature;
+      try 
+      {
+        loc = new Location(start+".."+end);
+        Key misc_feature = new Key("misc_feature");
+        temp_feature = default_entry.createFeature(misc_feature, loc);
+        Qualifier note = new Qualifier("note",
+                                       "Automatically generated region of difference with "+
+                                       name);
+        temp_feature.setQualifier(note);
+      } 
+      catch(EntryInformationException e) 
+      {
+        // use the default key instead
+        final Key default_key =
+          default_entry.getEntryInformation().getDefaultKey();
+
+        try
+        {
+          temp_feature =
+              default_entry.createFeature(default_key, loc);
+        }
+        catch(EntryInformationException einfo)
+        {
+          throw new Error("internal error - unexpected exception: " + einfo);
+        }
+        catch(ReadOnlyException eRead)
+        {
+          new MessageDialog(frame, "feature not created: " +
+                          "the default entry is read only");
+        }
+        catch(OutOfRangeException eout)
+        {
+          throw new Error("internal error - unexpected exception: " + eout);
+        }
+
+      }
+      catch(ReadOnlyException e) 
+      {
+        new MessageDialog(frame, "feature not created: " +
+                        "the default entry is read only");
+      } 
+      catch(OutOfRangeException e) 
+      {
+        throw new Error("internal error - unexpected exception: " + e);
+      }
+      catch(LocationParseException  lpe)
+      {
+        throw new Error("internal error - unexpected exception: " + lpe);
+      }
+    }
+  }
+
+  /**
    *  Create a new AddMenu object.
    *  @param frame The JFrame that owns this JMenu.
    *  @param selection The Selection that the commands in the menu will
@@ -269,7 +482,7 @@ public class AddMenu extends SelectionMenu {
             }
           });
 
-          feature_edit.show ();
+          feature_edit.setVisible(true);
         } catch (ReadOnlyException e) {
           new MessageDialog (getParentFrame (), "feature not created: " +
                              "the default entry is read only");
@@ -372,7 +585,7 @@ public class AddMenu extends SelectionMenu {
           }
         });
 
-        feature_edit.show ();
+        feature_edit.setVisible(true);
       } catch (ReadOnlyException e) {
         new MessageDialog (frame, "feature not created: " +
                            "the default entry is read only");
@@ -427,26 +640,43 @@ public class AddMenu extends SelectionMenu {
           cds_ranges.reverse ();
         }
 
+        int select = 0;
         for (int range_index = 0 ;
              range_index < cds_ranges.size () - 1 ;
              ++range_index) {
           final int end_of_range_1 =
-            cds_ranges.elementAt (range_index).getEnd ();
+            ((Range)cds_ranges.elementAt(range_index)).getEnd ();
           final int start_of_range_2 =
-            cds_ranges.elementAt (range_index + 1).getStart ();
+            ((Range)cds_ranges.elementAt(range_index + 1)).getStart ();
 
           if (end_of_range_1 > start_of_range_2) {
             // ignore - the exons overlap so there is no room for an intron
             continue;
           }
 
-          final Range new_range;
+          Range new_range = null;
 
           try {
             new_range = new Range (end_of_range_1 + 1,
                                    start_of_range_2 - 1);
           } catch (OutOfRangeException e) {
-            throw new Error ("internal error - unexpected exception: " + e);
+            Object[] options = { "CANCEL", "IGNORE", "IGNORE ALL"};
+
+            if(select != 2)
+            {
+              select = JOptionPane.showOptionDialog(null,
+                          "Found overlapping CDS\n"+e,
+                          "Out of Range",
+                           JOptionPane.YES_NO_CANCEL_OPTION,
+                           JOptionPane.WARNING_MESSAGE,
+                           null,
+                           options,
+                           options[0]);
+              if(select == 0)
+                throw new Error ("internal error - unexpected exception: " + e);
+             
+              continue;
+            }
           }
 
           final RangeVector intron_ranges = new RangeVector ();
@@ -467,7 +697,21 @@ public class AddMenu extends SelectionMenu {
           } catch (EntryInformationException e) {
             throw new Error ("internal error - unexpected exception: " + e);
           } catch (OutOfRangeException e) {
-            throw new Error ("internal error - unexpected exception: " + e);
+            Object[] options = { "CANCEL", "IGNORE", "IGNORE ALL"};
+
+            if(select != 2)
+            {
+              select = JOptionPane.showOptionDialog(null, 
+                          "Found overlapping CDS\n"+e,
+                          "Out of Range",
+                           JOptionPane.YES_NO_CANCEL_OPTION,
+                           JOptionPane.WARNING_MESSAGE,
+                           null,
+                           options,
+                           options[0]);
+              if(select == 0)
+                throw new Error ("internal error - unexpected exception: " + e);
+            }
           }
         }
       }
@@ -514,7 +758,7 @@ public class AddMenu extends SelectionMenu {
         for (int range_index = 0 ;
              range_index < cds_ranges.size () ;
              ++range_index) {
-          final Range this_range = cds_ranges.elementAt (range_index);
+          final Range this_range = (Range)cds_ranges.elementAt (range_index);
 
           final RangeVector exon_ranges = new RangeVector ();
 
@@ -919,7 +1163,7 @@ public class AddMenu extends SelectionMenu {
       }
     });
 
-    text_requester.show ();
+    text_requester.setVisible(true);
   }
 
   /**

@@ -627,15 +627,7 @@ public class MultiComparator extends JFrame
 
       if(Options.readWritePossible()) 
       {
-        final EditMenu this_edit_menu =
-          new EditMenu(this,
-                        getSelectionArray()[i],
-                        getGotoEventSourceArray()[i],
-                        getEntryGroupArray()[i],
-                        getBasePlotGroupArray()[i],
-                        sub_menu_name);
-        edit_menu.add(this_edit_menu);
-
+       
         this_create_menu =
           new AddMenu(this,
                        getSelectionArray()[i],

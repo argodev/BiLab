@@ -20,13 +20,16 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Header: /cvsroot/pathsoft/artemis/uk/ac/sanger/artemis/components/ActMain.java,v 1.2 2004/06/29 08:46:13 tjc Exp $
+ * $Header: /cvsroot/pathsoft/artemis/uk/ac/sanger/artemis/components/ActMain.java,v 1.9 2006/03/02 15:58:46 tjc Exp $
  */
 
 package uk.ac.sanger.artemis.components;
 
+import uk.ac.sanger.artemis.components.FileManager;
+import uk.ac.sanger.artemis.components.LocalAndRemoteFileManager;
 import uk.ac.sanger.artemis.*;
 import uk.ac.sanger.artemis.sequence.Bases;
+import uk.ac.sanger.artemis.components.FileManager;
 
 import uk.ac.sanger.artemis.util.*;
 import uk.ac.sanger.artemis.io.EntryInformation;
@@ -34,19 +37,20 @@ import uk.ac.sanger.artemis.io.SimpleEntryInformation;
 
 import java.awt.event.*;
 import java.io.IOException;
+import java.io.File;
 import javax.swing.JFrame;
 
 /**
  *  The main window for the Artemis Comparison Tool.
  *
  *  @author Kim Rutherford <kmr@sanger.ac.uk>
- *  @version $Id: ActMain.java,v 1.2 2004/06/29 08:46:13 tjc Exp $
+ *  @version $Id: ActMain.java,v 1.9 2006/03/02 15:58:46 tjc Exp $
  **/
 
 public class ActMain extends Splash 
 {
   /** Version String use for banner messages and title bars. */
-  public static final String version = "Release 3";
+  public static final String version = "Release 5";
   /** File manager */
   protected static FileManager filemanager = null;
 
@@ -75,6 +79,20 @@ public class ActMain extends Splash
         exit();
       }
     };
+
+    ActionListener menu_listener_ssh = new ActionListener()
+    {
+      private LocalAndRemoteFileManager fm;
+      public void actionPerformed(ActionEvent event)
+      {
+        if(fm == null)
+          fm = new LocalAndRemoteFileManager(ActMain.this);
+        else
+          fm.setVisible(true);
+        new ComparatorDialog(ActMain.this).setVisible(true);
+      }
+    }; 
+    makeMenuItem(file_menu, "Open SSH File Manager ...", menu_listener_ssh);
 
     makeMenuItem(file_menu, "Quit", quit_listener);
   }
@@ -115,40 +133,13 @@ public class ActMain extends Splash
             new SimpleEntryInformation(Options.getArtemisEntryInformation());
 
           final String this_file_name = file_names[i];
-
-          final Document entry_document =
-            DocumentFactory.makeDocument(this_file_name);
-
-          if(progress_listener != null) 
-            entry_document.addInputStreamProgressListener(progress_listener);
-
-          final uk.ac.sanger.artemis.io.Entry embl_entry =
-            EntryFileDialog.getEntryFromFile(frame, entry_document,
-                                         entry_information,
-                                         true);
-
-          // getEntryFromFile() has alerted the user so we just need to quit
-          if(embl_entry == null) 
-            return null;
-
-          final uk.ac.sanger.artemis.io.Sequence sequence =
-                                             embl_entry.getSequence();
-
-          if(sequence == null) 
-          {
-            new MessageDialog(frame, "This file contains no sequence: " +
-                               this_file_name);
-            return null;
-          }
-
-          final Bases embl_bases = new Bases(sequence);
-          final EntryGroup entry_group = new SimpleEntryGroup(embl_bases);
-
+          File this_file = new File(this_file_name);
+ 
           try 
           {
-            final Entry entry = new Entry(entry_group.getBases(), embl_entry);
-            entry_group.add(entry);
-            entry_group_array[i / 2] = entry_group;
+            if(!openEntry(this_file_name, entry_group_array, 
+                               entry_information, i))
+              return null;
           } 
           catch(OutOfRangeException e) 
           {
@@ -222,11 +213,51 @@ public class ActMain extends Splash
           progress_thread.finished();
       }
 
+      private boolean openEntry(String this_file_name, EntryGroup[] entry_group_array,
+                                final EntryInformation entry_information, int i)
+                      throws OutOfRangeException
+      {
+        final Document entry_document =
+              DocumentFactory.makeDocument(this_file_name);
+
+        if(progress_listener != null)
+          entry_document.addInputStreamProgressListener(progress_listener);
+
+        final uk.ac.sanger.artemis.io.Entry embl_entry =
+            EntryFileDialog.getEntryFromFile(frame, entry_document,
+                                         entry_information,
+                                         false);
+
+        // getEntryFromFile() has alerted the user so we just need to quit
+        if(embl_entry == null)
+          return false;
+
+        final uk.ac.sanger.artemis.io.Sequence sequence =
+                                       embl_entry.getSequence();
+
+        if(sequence == null)
+        {
+          new MessageDialog(frame, "This file contains no sequence: " +
+                             this_file_name);
+          return false;
+        }
+  
+        final Bases embl_bases = new Bases(sequence);
+        EntryGroup entry_group = new SimpleEntryGroup(embl_bases);
+        Entry entry = new Entry(entry_group.getBases(), embl_entry);
+
+        entry_group.add(entry);
+        entry_group_array[i / 2] = entry_group;
+        return true;
+      }
+
+
     };
     entryWorker.start();
 
     return true;
   }
+
 
   /**
    *  Create a dialog that allow the user to the choose two files to compare

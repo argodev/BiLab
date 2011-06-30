@@ -272,14 +272,14 @@ public class FileDialogEntrySource
       dialog = new EntryFileDialog(frame, false);
 
 
-    uk.ac.sanger.artemis.io.Entry new_embl_entry =
-      dialog.getEntry(new_entry_information, stream_progress_listener,
-                      progress_thread, show_progress);
+    // uk.ac.sanger.artemis.io.Entry new_embl_entry =
+    // dialog.getEntry(new_entry_information, stream_progress_listener,
+    //                  progress_thread, show_progress);
 
-    if(new_embl_entry == null) 
+    //if(new_embl_entry == null) 
       return null;
 
-    return makeEntry(bases, new_embl_entry);
+    //return makeEntry(bases, new_embl_entry);
   }
 
 }

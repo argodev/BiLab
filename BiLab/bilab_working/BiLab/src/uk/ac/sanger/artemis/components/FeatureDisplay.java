@@ -20,60 +20,82 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Header: /cvsroot/pathsoft/artemis/uk/ac/sanger/artemis/components/FeatureDisplay.java,v 1.2 2004/07/01 11:26:55 tjc Exp $
+ * $Header: /cvsroot/pathsoft/artemis/uk/ac/sanger/artemis/components/FeatureDisplay.java,v 1.40 2006/01/03 13:15:09 tjc Exp $
  */
 
 package uk.ac.sanger.artemis.components;
 
+import uk.ac.sanger.artemis.components.*;
+import uk.ac.sanger.artemis.util.RemoteFileDocument;
+import uk.ac.sanger.artemis.util.ReadOnlyException;
+import uk.ac.sanger.artemis.util.FileDocument;
 import uk.ac.sanger.artemis.util.OutOfRangeException;
 import uk.ac.sanger.artemis.util.StringVector;
 import uk.ac.sanger.artemis.io.Range;
+import uk.ac.sanger.artemis.io.EntryInformation;
+import uk.ac.sanger.artemis.io.SimpleEntryInformation;
+import uk.ac.sanger.artemis.io.Key;
+import uk.ac.sanger.artemis.io.RawStreamSequence;
+import uk.ac.sanger.artemis.io.FastaStreamSequence;
+import uk.ac.sanger.artemis.io.Sequence;
 import uk.ac.sanger.artemis.*;
 import uk.ac.sanger.artemis.sequence.*;
 
+import java.io.IOException;
+import java.io.File;
 import java.awt.event.*;
 import java.awt.*;
 import java.lang.Math;
 import java.util.Vector;
 import java.util.Comparator;
+import java.util.Enumeration;
+import javax.swing.border.Border;
+import javax.swing.border.BevelBorder;
 
+import java.awt.datatransfer.*;
+import java.awt.dnd.*;
+import javax.swing.Box;
 import javax.swing.JScrollBar;
 import javax.swing.JComponent;
+import javax.swing.UIManager;
+import javax.swing.ImageIcon;
 
 /**
  *  This component is used for displaying an Entry.
  *
  *  @author Kim Rutherford
- *  @version $Id: FeatureDisplay.java,v 1.2 2004/07/01 11:26:55 tjc Exp $
+ *  @version $Id: FeatureDisplay.java,v 1.40 2006/01/03 13:15:09 tjc Exp $
  **/
 
 public class FeatureDisplay extends EntryGroupPanel
-  implements EntryGroupChangeListener,
-             EntryChangeListener, FeatureChangeListener,
+  implements EntryGroupChangeListener, EntryChangeListener, FeatureChangeListener,
              SelectionChangeListener, GotoListener, SequenceChangeListener,
-             DisplayComponent, OptionChangeListener, DisplayAdjustmentListener
+             DisplayComponent, DisplayAdjustmentListener,  DropTargetListener,
+             DragSourceListener
 {
+
+  private int highlight_drop_base = -1;
 
   /** Key code for calling zoomToSelection(). */
   final static public int ZOOM_TO_SELECTION_KEY = KeyEvent.VK_Z;
 
   final static public int SCROLLBAR_AT_TOP = 1;
   final static public int SCROLLBAR_AT_BOTTOM = 2;
-  final static public int NO_SCROLLBAR = 3;
+  final static private int NO_SCROLLBAR = 3;
 
-  public final static int FORWARD = Bases.FORWARD;
-  public final static int REVERSE = Bases.REVERSE;
+  private final static int FORWARD = Bases.FORWARD;
+  private final static int REVERSE = Bases.REVERSE;
 
-  public final static int NO_FRAME        = FeatureSegment.NO_FRAME;
-  public final static int FORWARD_STRAND  = FeatureSegment.FORWARD_STRAND;
-  public final static int REVERSE_STRAND  = FeatureSegment.REVERSE_STRAND;
-  public final static int FORWARD_FRAME_1 = FeatureSegment.FORWARD_FRAME_1;
-  public final static int FORWARD_FRAME_2 = FeatureSegment.FORWARD_FRAME_2;
-  public final static int FORWARD_FRAME_3 = FeatureSegment.FORWARD_FRAME_3;
-  public final static int REVERSE_FRAME_3 = FeatureSegment.REVERSE_FRAME_3;
-  public final static int REVERSE_FRAME_2 = FeatureSegment.REVERSE_FRAME_2;
-  public final static int REVERSE_FRAME_1 = FeatureSegment.REVERSE_FRAME_1;
-  public final static int SCALE_LINE      = FeatureSegment.SCALE_LINE;
+  private final static int NO_FRAME        = FeatureSegment.NO_FRAME;
+  private final static int FORWARD_STRAND  = FeatureSegment.FORWARD_STRAND;
+  private final static int REVERSE_STRAND  = FeatureSegment.REVERSE_STRAND;
+  private final static int FORWARD_FRAME_1 = FeatureSegment.FORWARD_FRAME_1;
+  private final static int FORWARD_FRAME_2 = FeatureSegment.FORWARD_FRAME_2;
+  private final static int FORWARD_FRAME_3 = FeatureSegment.FORWARD_FRAME_3;
+  private final static int REVERSE_FRAME_3 = FeatureSegment.REVERSE_FRAME_3;
+  private final static int REVERSE_FRAME_2 = FeatureSegment.REVERSE_FRAME_2;
+  private final static int REVERSE_FRAME_1 = FeatureSegment.REVERSE_FRAME_1;
+  private final static int SCALE_LINE      = FeatureSegment.SCALE_LINE;
 
 
   /**
@@ -247,13 +269,8 @@ public class FeatureDisplay extends EntryGroupPanel
   /** colour used for A. */
   private static Color dark_green = new Color(0, 150, 0);
 
-  /**
-   *  Used by drawOneLetter() - declared here so that we we don't need to
-   *  allocated a whole array each time drawOneLetter() is called.
-   **/
-  private final char [] draw_one_char_temp_array = new char [1];
+  private final int scrollbar_style;
 
- 
   /**
    *  Create a new FeatureDisplay object with the horizontal scrollbar at the
    *  bottom of the component.
@@ -271,7 +288,7 @@ public class FeatureDisplay extends EntryGroupPanel
                         final BasePlotGroup base_plot_group) 
   {
     this(entry_group, selection, goto_event_source,
-          base_plot_group, SCROLLBAR_AT_BOTTOM);
+         base_plot_group, SCROLLBAR_AT_BOTTOM);
   }
 
   /**
@@ -294,6 +311,8 @@ public class FeatureDisplay extends EntryGroupPanel
   {
     super(entry_group, selection, goto_event_source, base_plot_group);
 
+    this.scrollbar_style = scrollbar_style;
+
     show_feature_arrows =
       Options.getOptions().getPropertyTruthValue("draw_feature_arrows");
 
@@ -309,7 +328,6 @@ public class FeatureDisplay extends EntryGroupPanel
     show_labels =
       Options.getOptions().getPropertyTruthValue("feature_labels");
 
-//  getCanvas().addComponentListener(new ComponentAdapter()
     addComponentListener(new ComponentAdapter()
     {
       public void componentResized(ComponentEvent e) 
@@ -333,20 +351,13 @@ public class FeatureDisplay extends EntryGroupPanel
 
     if(scrollbar_style == SCROLLBAR_AT_TOP) 
       createScrollbar(true);
-    else
-    {
-      if(scrollbar_style == SCROLLBAR_AT_BOTTOM) 
-        createScrollbar(false);
-    }
+    else if(scrollbar_style == SCROLLBAR_AT_BOTTOM)
+      createScrollbar(false);
 
     createScaleScrollbar();
-    fixCanvasSize();
-    fixScrollbar();
     addListeners();
 
     needVisibleFeatureVectorUpdate();
-
-    fireAdjustmentEvent(DisplayAdjustmentEvent.ALL_CHANGE_ADJUST_EVENT);
 
     getSelection().addSelectionChangeListener(this);
     getGotoEventSource().addGotoListener(this);
@@ -357,19 +368,11 @@ public class FeatureDisplay extends EntryGroupPanel
 
     getBases().addSequenceChangeListener(this, Bases.MIN_PRIORITY);
 
-    Options.getOptions().addOptionChangeListener(this);
+    
+
+    setDropTarget(new DropTarget(this,this));
   }
 
-  /**
-   *  Returns the value of a flag that indicates whether this component can be
-   *  traversed using Tab or Shift-Tab keyboard focus traversal - returns true
-   *  for FeatureDisplay components
-   **/
-// tjc - deprecated replaced by isFocusable().
-//public boolean isFocusTraversable()
-//{
-//  return true;
-//}
 
   /**
    *  Overriden to call fixCanvasSize()
@@ -384,7 +387,7 @@ public class FeatureDisplay extends EntryGroupPanel
    *  Set value of the show label flag.
    *  @param show_label Show labels if and only if this argument is true.
    **/
-  public void setShowLabels(boolean show_labels) 
+  protected void setShowLabels(boolean show_labels) 
   {
     if(this.show_labels != show_labels) 
     {
@@ -396,7 +399,7 @@ public class FeatureDisplay extends EntryGroupPanel
   /**
    *  Get the value of the "show label" flag.
    **/
-  public boolean getShowLabels() 
+  protected boolean getShowLabels() 
   {
     return show_labels;
   }
@@ -406,7 +409,7 @@ public class FeatureDisplay extends EntryGroupPanel
    *  @param show_forward_lines Show forward frame lines if and only if
    *    this argument is true.
    **/
-  public void setShowForwardFrameLines(boolean show_forward_lines) 
+  protected void setShowForwardFrameLines(boolean show_forward_lines) 
   {
     if(this.show_forward_lines != show_forward_lines) 
     {
@@ -418,7 +421,7 @@ public class FeatureDisplay extends EntryGroupPanel
   /**
    *  Get the value of the "show forward frame lines" flag.
    **/
-  public boolean getShowForwardFrameLines() 
+  protected boolean getShowForwardFrameLines() 
   {
     return show_forward_lines;
   }
@@ -428,7 +431,7 @@ public class FeatureDisplay extends EntryGroupPanel
    *  @param show_reverse_lines Show frame lines if and only if this
    *    argument is true.
    **/
-  public void setShowReverseFrameLines(boolean show_reverse_lines) 
+  protected void setShowReverseFrameLines(boolean show_reverse_lines) 
   {
     if(this.show_reverse_lines != show_reverse_lines) 
     {
@@ -440,7 +443,7 @@ public class FeatureDisplay extends EntryGroupPanel
   /**
    *  Get the value of the "show source features" flag.
    **/
-  public boolean getShowSourceFeatures() 
+  protected boolean getShowSourceFeatures() 
   {
     return show_source_features;
   }
@@ -450,13 +453,12 @@ public class FeatureDisplay extends EntryGroupPanel
    *  @param show_source_features Show features with a "source" key if and
    *    only if this argument is true.
    **/
-  public void setShowSourceFeatures(boolean show_source_features) 
+  protected void setShowSourceFeatures(boolean show_source_features) 
   {
     if(this.show_source_features != show_source_features) 
     {
       this.show_source_features = show_source_features;
       needVisibleFeatureVectorUpdate();
-//    getCanvas().repaint();
       repaint();
     } 
   }
@@ -464,7 +466,7 @@ public class FeatureDisplay extends EntryGroupPanel
   /**
    *  Get the value of the "show frame lines" flag.
    **/
-  public boolean getShowReverseFrameLines()
+  protected boolean getShowReverseFrameLines()
   {
     return show_reverse_lines;
   }
@@ -474,14 +476,13 @@ public class FeatureDisplay extends EntryGroupPanel
    *  @param show_base_colours At scale_factor less than two show each base in
    *    a different colour if and only if this argument is true.
    **/
-  public void setShowBaseColours(boolean show_base_colours) 
+  protected void setShowBaseColours(boolean show_base_colours) 
   {
     if(this.show_base_colours != show_base_colours) 
     {
       this.show_base_colours = show_base_colours;
       if(getScaleFactor() > 1) 
         setScaleFactor(1);
-//    getCanvas().repaint();
       repaint();
     } 
   }
@@ -489,7 +490,7 @@ public class FeatureDisplay extends EntryGroupPanel
   /**
    *  Get the value of the "show base colours" flag.
    **/
-  public boolean getShowBaseColours() 
+  protected boolean getShowBaseColours() 
   {
     return show_base_colours;
   }
@@ -499,7 +500,7 @@ public class FeatureDisplay extends EntryGroupPanel
    *  @param one_line_per_entry If true then each entry will be shown on a
    *    different line, instead of showing frame lines.
    **/
-  public void setOneLinePerEntry(final boolean one_line_per_entry)
+  protected void setOneLinePerEntry(final boolean one_line_per_entry)
   {
     if(this.one_line_per_entry != one_line_per_entry) 
     {
@@ -511,7 +512,7 @@ public class FeatureDisplay extends EntryGroupPanel
   /**
    *  Get the value of the "one line per entry" flag.
    **/
-  public boolean getOneLinePerEntryFlag() 
+  protected boolean getOneLinePerEntryFlag() 
   {
     return one_line_per_entry;
   }
@@ -522,7 +523,7 @@ public class FeatureDisplay extends EntryGroupPanel
    *    left edge of the screen and the first visible base.  If false base one
    *    can be moved to the centre of the display.
    **/
-  public void setHardLeftEdge(final boolean hard_left_edge) 
+  protected void setHardLeftEdge(final boolean hard_left_edge) 
   {
     if(this.hard_left_edge != hard_left_edge) 
     {
@@ -535,32 +536,24 @@ public class FeatureDisplay extends EntryGroupPanel
   }
 
   /**
-   *  Get the value of the "hard left edge" flag.
-   **/
-  public boolean getHardLeftEdgeFlag() 
-  {
-    return hard_left_edge;
-  }
-
-  /**
    *  Set value of the show stop codons flag.
    *  @param show_stop_codons Show stop codons if and only if this argument is
    *    true.
    **/
-  public void setShowStopCodons(boolean show_stop_codons) 
+  protected void setShowStopCodons(boolean show_stop_codons) 
   {
     if(this.show_stop_codons != show_stop_codons) 
     {
       this.show_stop_codons = show_stop_codons;
-      getCanvas().repaint();
+      repaint();
     } 
   }
 
   /**
    *  Return the value of the "show stop codons" flag.
    **/
-  public boolean getShowStopCodons() 
-  {
+  protected boolean getShowStopCodons() 
+  { 
     return show_stop_codons;
   }
 
@@ -569,19 +562,19 @@ public class FeatureDisplay extends EntryGroupPanel
    *  @param show_start_codons Show start codons if and only if this argument
    *    is true.
    **/
-  public void setShowStartCodons(boolean show_start_codons) 
+  protected void setShowStartCodons(boolean show_start_codons) 
   {
     if(this.show_start_codons != show_start_codons) 
     {
       this.show_start_codons = show_start_codons;
-      getCanvas().repaint();
+      repaint();
     } 
   }
 
   /**
    *  Return the value of the "show start codons" flag.
    **/
-  public boolean getShowStartCodons() 
+  protected boolean getShowStartCodons() 
   {
     return show_start_codons;
   }
@@ -591,7 +584,7 @@ public class FeatureDisplay extends EntryGroupPanel
    *  @param show_start_codons Draw all features and sequence reverse
    *    complemented if and only if this argument is true.
    **/
-  public void setRevCompDisplay(boolean rev_comp_display) 
+  protected void setRevCompDisplay(boolean rev_comp_display) 
   {
     if(this.rev_comp_display != rev_comp_display) 
     {
@@ -618,14 +611,14 @@ public class FeatureDisplay extends EntryGroupPanel
 
       needVisibleFeatureVectorUpdate();
       fixScrollbar();
-      getCanvas().repaint();
+      repaint();
     }
   }
 
   /**
    *  Return the value of the "reverse complement display" flag.
    **/
-  public boolean isRevCompDisplay() 
+  protected boolean isRevCompDisplay() 
   {
     return rev_comp_display;
   }
@@ -635,19 +628,19 @@ public class FeatureDisplay extends EntryGroupPanel
    *  @param show_feature_arrows Show directional arrows if and only if this
    *    argument is true.
    **/
-  public void setShowFeatureArrows(boolean show_feature_arrows)
+  protected void setShowFeatureArrows(boolean show_feature_arrows)
   {
     if(this.show_feature_arrows != show_feature_arrows)
     {
       this.show_feature_arrows = show_feature_arrows;
-      getCanvas().repaint();
+      repaint();
     } 
   }
 
   /**
    *  Return the value of the "show feature arrows" flag.
    **/
-  public boolean getShowFeatureArrows() 
+  protected boolean getShowFeatureArrows() 
   {
     return show_feature_arrows;
   }
@@ -657,19 +650,19 @@ public class FeatureDisplay extends EntryGroupPanel
    *  @param show_feature_borders Draw a border around each feature if and
    *    only if this argument is true.
    **/
-  public void setShowFeatureBorders(boolean show_feature_borders) 
+  protected void setShowFeatureBorders(boolean show_feature_borders) 
   {
     if(this.show_feature_borders != show_feature_borders) 
     {
       this.show_feature_borders = show_feature_borders;
-      getCanvas().repaint();
+      repaint();
     } 
   }
 
   /**
    *  Return the value of the "show feature borders" flag.
    **/
-  public boolean getShowFeatureBorders() 
+  protected boolean getShowFeatureBorders() 
   {
     return show_feature_borders;
   }
@@ -679,19 +672,19 @@ public class FeatureDisplay extends EntryGroupPanel
    *  @param frame_features_flag All features(not just CDS features) will be
    *    drawn on the frame lines if and only if this argument is true.
    **/
-  public void setFrameFeaturesFlag(boolean frame_features_flag) 
+  protected void setFrameFeaturesFlag(boolean frame_features_flag) 
   {
     if(this.frame_features_flag != frame_features_flag) 
     {
       this.frame_features_flag = frame_features_flag;
-      getCanvas().repaint();
+      repaint();
     } 
   }
 
   /**
    *  Return the value of the "show frame features" flag.
    **/
-  public boolean getFrameFeaturesFlag() 
+  protected boolean getFrameFeaturesFlag() 
   {
     return frame_features_flag;
   }
@@ -700,18 +693,18 @@ public class FeatureDisplay extends EntryGroupPanel
    *  Set the value of the minimum score for this FeatureDisplay - features
    *  that have a /score lower than this value are never shown.
    **/
-  public void setMinimumScore(final int minimum_score) 
+  protected void setMinimumScore(final int minimum_score) 
   {
     current_min_score = minimum_score;
     needVisibleFeatureVectorUpdate();
-    getCanvas().repaint();
+    repaint();
   }
 
   /**
    *  Return the value of the minimum score for this FeatureDisplay - see
    *  setMinimumScore().
    **/
-  public int getMinimumScore() 
+  private int getMinimumScore() 
   {
     return current_min_score;
   }
@@ -720,30 +713,20 @@ public class FeatureDisplay extends EntryGroupPanel
    *  Set the value of the maximum score for this FeatureDisplay - features
    *  that have a /score higher than this value are never shown.
    **/
-  public void setMaximumScore(final int maximum_score) 
+  protected void setMaximumScore(final int maximum_score) 
   {
     current_max_score = maximum_score;
     needVisibleFeatureVectorUpdate();
-    getCanvas().repaint();
+    repaint();
   }
 
   /**
    *  Return the value of the maximum score for this FeatureDisplay - see
    *  setMaximumScore().
    **/
-  public int getMaximumScore() 
+  private int getMaximumScore() 
   {
     return current_max_score;
-  }
-
-  /**
-   *  Redraw this component.  This method is public so that other classes can
-   *  force an update.  for example this is called when the options files is
-   *  re-read.
-   **/
-  public void redisplay() 
-  {
-    getCanvas().repaint();
   }
 
   /**
@@ -751,7 +734,7 @@ public class FeatureDisplay extends EntryGroupPanel
    *  change events from this object.
    *  @param l the event change listener.
    **/
-  public void addDisplayAdjustmentListener(DisplayAdjustmentListener l) 
+  protected void addDisplayAdjustmentListener(DisplayAdjustmentListener l) 
   {
     adjustment_listener_list.addElement(l);
   }
@@ -761,7 +744,7 @@ public class FeatureDisplay extends EntryGroupPanel
    *  adjustment change events from this object.
    *  @param l the event change listener.
    **/
-  public void removeDisplayAdjustmentListener(DisplayAdjustmentListener l) 
+  protected void removeDisplayAdjustmentListener(DisplayAdjustmentListener l) 
   {
     adjustment_listener_list.removeElement(l);
   }
@@ -794,7 +777,7 @@ public class FeatureDisplay extends EntryGroupPanel
    *  At higher scale factors only stop codons are visible, and a bigger
    *  number will mean more bases are visible.
    **/
-  public void setScaleFactor(int scale_factor) 
+  protected void setScaleFactor(int scale_factor) 
   {
     if(this.scale_factor != scale_factor) 
     {
@@ -824,7 +807,7 @@ public class FeatureDisplay extends EntryGroupPanel
           first_base_marker_position = first_base_marker_raw_position;
 
         final Marker last_base_marker =
-                              getSelection().getEndBaseOfSelection();
+                                   getSelection().getEndBaseOfSelection();
 
         final int last_base_marker_raw_position =
                                    last_base_marker.getRawPosition();
@@ -881,7 +864,7 @@ public class FeatureDisplay extends EntryGroupPanel
       fireAdjustmentEvent(DisplayAdjustmentEvent.SCALE_ADJUST_EVENT);
       needVisibleFeatureVectorUpdate();
 
-      getCanvas().repaint();
+      repaint();
     }
   }
 
@@ -915,7 +898,7 @@ public class FeatureDisplay extends EntryGroupPanel
           getVisibleFeatures().add(event_feature);
       }
 
-      getCanvas().repaint();
+      repaint();
     }
   }
 
@@ -939,7 +922,7 @@ public class FeatureDisplay extends EntryGroupPanel
       break;
     }
 
-    getCanvas().repaint();
+    repaint();
   }
 
   /**
@@ -976,7 +959,7 @@ public class FeatureDisplay extends EntryGroupPanel
     if(event.getType() == SelectionChangeEvent.SELECTION_CHANGED) 
       raise_selection_flag = true;
 
-    getCanvas().repaint();
+    repaint();
   }
 
   /**
@@ -995,27 +978,24 @@ public class FeatureDisplay extends EntryGroupPanel
 
       makeBaseVisibleInternal(new_centre_position, true, false);
     } 
-    else 
-      makeBaseVisibleInternal(event.getPosition(), true, false);
+    
 
     fixScrollbar();
     needVisibleFeatureVectorUpdate();
-    getCanvas().repaint();
+    repaint();
 
-    if(event.getType() == SequenceChangeEvent.REVERSE_COMPLEMENT) 
+    if(event.getType() == SequenceChangeEvent.REVERSE_COMPLEMENT ) 
       fireAdjustmentEvent(DisplayAdjustmentEvent.REV_COMP_EVENT);
-    else 
+   
+    
+     else 
       fireAdjustmentEvent(DisplayAdjustmentEvent.SCROLL_ADJUST_EVENT);
   }
 
   /**
    *  Invoked when an Option is changed.
    **/
-  public void optionChanged(OptionChangeEvent event) 
-  {
-    getCanvas().repaint();
-  }
-
+  
   /**
    *  Implementation of the GotoListener interface.  Invoked when the listener
    *  should goto to the given base.
@@ -1032,6 +1012,9 @@ public class FeatureDisplay extends EntryGroupPanel
    **/
   public void displayAdjustmentValueChanged(DisplayAdjustmentEvent event) 
   {
+    if(event.getType() == DisplayAdjustmentEvent.CONTIG_REORDER)
+      return;
+
     disable_display_events = true;
     try 
     {
@@ -1047,7 +1030,7 @@ public class FeatureDisplay extends EntryGroupPanel
   /**
    *  Return a MarkerRange that exactly covers the visible bases
    **/
-  public MarkerRange getVisibleMarkerRange() 
+  protected MarkerRange getVisibleMarkerRange() 
   {
     final int first_base = getFirstVisibleForwardBase();
     final int last_base  = getLastVisibleForwardBase();
@@ -1068,12 +1051,12 @@ public class FeatureDisplay extends EntryGroupPanel
    *  Arrange for the given feature to be drawn last - ie. so that it will
    *  appear at the front of the other features.
    **/
-  void raiseFeature(Feature feature) 
+  protected void raiseFeature(Feature feature) 
   {
     if(getVisibleFeatures().remove(feature)) 
     {
       getVisibleFeatures().addElementAtEnd(feature);
-      getCanvas().repaint();
+      repaint();
     }
   }
 
@@ -1081,12 +1064,12 @@ public class FeatureDisplay extends EntryGroupPanel
    *  Arrange for the given feature to be drawn first - ie. so that it will
    *  appear at the back of the other features.
    **/
-  void lowerFeature(Feature feature) 
+  protected void lowerFeature(Feature feature) 
   {
     if(getVisibleFeatures().remove(feature))
     {
       getVisibleFeatures().insertElementAt(feature, 0);
-      getCanvas().repaint();
+      repaint();
     }
   }
 
@@ -1094,11 +1077,11 @@ public class FeatureDisplay extends EntryGroupPanel
    *  Redraw the display with the smallest features on top.  Selected features
    *  will always be on top.
    **/
-  void smallestToFront() 
+  protected void smallestToFront() 
   {
     visible_features = new FeatureVector();
     needVisibleFeatureVectorUpdate();
-    getCanvas().repaint();
+    repaint();
   }
 
   /**
@@ -1134,8 +1117,8 @@ public class FeatureDisplay extends EntryGroupPanel
    *    true
    **/
   private void makeBaseVisibleInternal(final int base_position,
-                                        final boolean forward,
-                                        final boolean send_event) 
+                                       final boolean forward,
+                                       final boolean send_event) 
   {
     int forward_base_position = base_position;
 
@@ -1156,40 +1139,35 @@ public class FeatureDisplay extends EntryGroupPanel
   private void makeBaseVisible(final Marker base_marker) 
   {
     makeBaseVisibleInternal(base_marker.getPosition(),
-                             base_marker.getStrand().isForwardStrand(),
-                             true);
+                            base_marker.getStrand().isForwardStrand(),
+                            true);
   }
 
   /**
    *  Scroll the display so that the given base is in the middle of the screen.
    *  @param base The base to scroll to.
    **/
-  public void makeBaseVisible(final int base) 
+  protected void makeBaseVisible(final int base) 
   {
     makeBaseVisibleInternal(base, true, true);
   }
 
   /**
    *  This method is called to add a single feature to the display by adding it
-   *  to the vector of visible features(if it is visible that is).
+   *  to the vector of visible features (if it is visible that is).
    *  @param feature The object to add
    **/
   private void add(Feature feature) 
   {
     if(getEntryGroup().isActive(feature.getEntry()) &&
-        featureVisible(feature)) 
+       featureVisible(feature)) 
     {
-      if(visible_features.contains(feature)) 
-      {
-//        throw new Error("internal error - feature added a second time");
-      } 
-      else 
+      if(!visible_features.contains(feature)) 
         getVisibleFeatures().addElementAtEnd(feature);
     }
 
-    getCanvas().repaint();
+    repaint();
   }
-
 
   /**
    *  The method is called when a Feature should be removed from the display.
@@ -1201,7 +1179,7 @@ public class FeatureDisplay extends EntryGroupPanel
     if(visible_features != null) 
       visible_features.remove(feature);
 
-    getCanvas().repaint();
+    repaint();
   }
 
   /**
@@ -1216,9 +1194,9 @@ public class FeatureDisplay extends EntryGroupPanel
    *  Returns a copy of the vector containing those features that are
    *  currently visible.
    **/
-  public FeatureVector getCurrentVisibleFeatures() 
+  protected FeatureVector getCurrentVisibleFeatures() 
   {
-    return(FeatureVector)visible_features.clone();
+    return (FeatureVector)visible_features.clone();
   }
 
   /**
@@ -1228,7 +1206,7 @@ public class FeatureDisplay extends EntryGroupPanel
   private Range getVisibleRange()
   {
     final int first_visible_base = getFirstVisibleForwardBase();
-    final int last_visible_base = getLastVisibleForwardBase();
+    final int last_visible_base  = getLastVisibleForwardBase();
 
     if(first_visible_base <= last_visible_base) 
       return newRange(first_visible_base, last_visible_base);
@@ -1247,7 +1225,7 @@ public class FeatureDisplay extends EntryGroupPanel
   {
     final Range visible_range;
 
-    if(getCanvas().getSize().width == 0)
+    if(getSize().width == 0)
     {
       // don't bother doing any thinking
       visible_features = new FeatureVector();
@@ -1258,7 +1236,8 @@ public class FeatureDisplay extends EntryGroupPanel
     {
       final FeatureVector all_features = getSelection().getAllFeatures();
 
-      for(int i = 0 ; i < all_features.size() ; ++i) 
+      final int all_features_size = all_features.size();
+      for(int i = 0 ; i < all_features_size; ++i) 
         raiseFeature(all_features.elementAt(i));
 
       raise_selection_flag = false;
@@ -1267,7 +1246,7 @@ public class FeatureDisplay extends EntryGroupPanel
     if(isRevCompDisplay())
     {
       final int first_visible_base = getFirstVisibleReverseBase();
-      final int last_visible_base = getLastVisibleReverseBase();
+      final int last_visible_base  = getLastVisibleReverseBase();
       visible_range = newRange(first_visible_base, last_visible_base);
     } 
     else 
@@ -1286,7 +1265,8 @@ public class FeatureDisplay extends EntryGroupPanel
 
     // add features that are in visible_features and
     // real_visible_features - ie features that are still visible
-    for(int i = 0 ; i < visible_features.size() ; ++i) 
+    final int visible_features_size = visible_features.size();
+    for(int i = 0 ; i < visible_features_size; ++i) 
     {
       final Feature new_feature = visible_features.elementAt(i);
       if(real_visible_features.contains(new_feature)) 
@@ -1296,26 +1276,26 @@ public class FeatureDisplay extends EntryGroupPanel
     // add features that are in real_visible_features and not currently
     // in visible_features and are not selected(selected features will be
     // added last so that they stay on top).
-    for(int i = 0 ; i < real_visible_features.size() ; ++i) 
+    final int real_visible_features_size = real_visible_features.size();
+    for(int i = 0 ; i < real_visible_features_size; ++i) 
     {
       final Feature new_feature = real_visible_features.elementAt(i);
 
       if(!visible_features.contains(new_feature) &&
-          !getSelection().contains(new_feature)) {
+         !getSelection().contains(new_feature)) 
         new_visible_features.addElementAtEnd(new_feature);
-      }
     }
 
     final FeatureVector selection_features = getSelection().getAllFeatures();
 
     // now add features that are in real_visible_features, are not in
-    // visible_features and are selected(selected features are added last so
+    // visible_features and are selected (selected features are added last so
     // that they stay on top).
-    for(int i = 0 ; i < real_visible_features.size() ; ++i) 
+    for(int i = 0 ; i < real_visible_features_size; ++i) 
     {
       final Feature new_feature = real_visible_features.elementAt(i);
       if(!visible_features.contains(new_feature) &&
-          selection_features.contains(new_feature)) 
+         selection_features.contains(new_feature)) 
         new_visible_features.addElementAtEnd(new_feature);
     }
 
@@ -1345,24 +1325,14 @@ public class FeatureDisplay extends EntryGroupPanel
 
       if(feature1_size > feature2_size) 
         return -1;
-      else 
-      {
-        if(feature1_size < feature2_size) 
-          return 1;
-        else
-        {
-          // use hash value as a last resort
-          if(feature1.hashCode() < feature2.hashCode()) 
-            return -1;
-          else 
-          {
-            if(feature1.hashCode() == feature2.hashCode())
-              return 0;
-            else
-              return 1;
-          }
-        }
-      }
+      else if(feature1_size < feature2_size)
+        return 1;
+      else if(feature1.hashCode() < feature2.hashCode())  // use hash value as a last resort
+        return -1;
+      else if(feature1.hashCode() == feature2.hashCode())
+        return 0;
+      else
+        return 1;
     }
   };
 
@@ -1392,9 +1362,9 @@ public class FeatureDisplay extends EntryGroupPanel
 
       final FeatureVector filtered_features = new FeatureVector();
 
-      // filter out low and high scoring features and(possibly) source
+      // filter out low and high scoring features and (possibly) source
       // features
-      for(int i = features_from_entry.size() - 1 ; i >= 0 ; --i)
+      for(int i = features_from_entry.size() - 1; i >= 0; --i)
       {
         final Feature this_feature = features_from_entry.elementAt(i);
 
@@ -1409,8 +1379,8 @@ public class FeatureDisplay extends EntryGroupPanel
 
           // features with no /score are always shown
           if(this_feature_score != -1 &&
-             (this_feature_score < getMinimumScore() ||
-               this_feature_score > getMaximumScore()) &&
+             (this_feature_score < min_score ||
+              this_feature_score > max_score) &&
               !getSelection().contains(this_feature)) 
             continue;
         }
@@ -1436,37 +1406,85 @@ public class FeatureDisplay extends EntryGroupPanel
    *  used for double buffering when drawing the canvas.
    *  @param g The Graphics object of the canvas.
    **/
-  protected void paintCanvas(Graphics g) 
+  protected void paintComponent(Graphics g) 
   {
+    super.paintComponent(g);
     if(!isVisible()) 
       return;
+
+//  System.out.println("1 "+ System.currentTimeMillis());
+    int scrollbar_hgt = 0;
+    if(scrollbar_style == SCROLLBAR_AT_TOP)
+    {
+      scrollbar_hgt = scrollbar.getPreferredSize().height;
+      ((Graphics2D)g).translate(0,scrollbar_hgt);
+    }
 
     if(update_visible_features) 
       updateVisibleFeatureVector();
 
     fillBackground(g);
 
+    g.setFont(getFont());
+//  System.out.println("2 "+ System.currentTimeMillis());
     final Selection selection = getSelection();
     final FeatureVector selected_features = selection.getAllFeatures();
 
     final FeatureSegmentVector selected_segments =
       selection.getSelectedSegments();
 
+    int num_visible_features = getVisibleFeatures().size();
+    final int segment_height = getFeatureHeight() - 1;
+    final int seq_length = getSequenceLength();
+
+//  System.out.println("3 "+ System.currentTimeMillis());
+    FontMetrics fm = g.getFontMetrics();
+
     // we draw the feature backgrounds first then the visible indication
     // that there is a MarkerRange selected, then the feature outlines.
-    for(int i = 0 ; i < getVisibleFeatures().size() ; ++i) 
-      drawFeature(g, getVisibleFeatures().elementAt(i),
-                  true, selected_features, selected_segments);
+    Vector segment_borders = new Vector(num_visible_features);
 
+    for(int i = 0; i < num_visible_features; ++i)
+      drawFeature(g, segment_borders, getVisibleFeatures().elementAt(i),
+                  true, selected_features, selected_segments,
+                  segment_height, seq_length, fm);
+
+
+//  System.out.println("4 "+ System.currentTimeMillis());
     drawBaseSelection(g);
     drawScale(g);
     drawCodons(g);
     drawBases(g);
 
-    // now draw the feature outlines
-    for(int i = 0 ; i < getVisibleFeatures().size() ; ++i) 
-      drawFeature(g, getVisibleFeatures().elementAt(i),
-                  false, selected_features, selected_segments);
+//  System.out.println("5 "+ System.currentTimeMillis());
+
+    // draw the segment borders
+    g.setColor(Color.black);
+
+    final int arrowWidth = getFontWidth() * 8 / 10;
+    Enumeration enumSegmentBorder = segment_borders.elements();
+    
+//  System.out.println("6 "+ System.currentTimeMillis());
+
+    if(scrollbar_style == SCROLLBAR_AT_TOP)
+      ((Graphics2D)g).translate(0,-scrollbar_hgt);
+ 
+// draw drag and drop line
+    if(highlight_drop_base > 0)
+    {   
+      g.setColor(Color.red);
+      final int draw_x_position = getLowXPositionOfBase(highlight_drop_base);
+      int nlines = 16;
+       
+      if(!show_forward_lines)
+        nlines -= 6; 
+      if(!show_reverse_lines)
+        nlines -= 6;
+
+      g.drawLine(draw_x_position, 0,
+                 draw_x_position, (nlines*getFontHeight()));
+    }
+//  Thread.yield();
   }
 
   /**
@@ -1474,14 +1492,16 @@ public class FeatureDisplay extends EntryGroupPanel
    **/
   private void fillBackground(Graphics g) 
   {
-    g.setColor(Color.white);
+    final int first_visible_base_coord =
+      getLowXPositionOfBase(getFirstVisibleForwardBase());
 
-    g.fillRect(0, 0, getCanvas().getSize().width,
-                     getCanvas().getSize().height);
+    final int last_visible_base_coord =
+      getHighXPositionOfBase(getLastVisibleForwardBase());
 
     if(getOneLinePerEntryFlag()) 
     {
-      for(int i = 0 ; i < getEntryGroup().size() ; ++i) 
+      final int group_size = getEntryGroup().size();
+      for(int i = 0 ; i < group_size; ++i) 
       {
         final int forward_entry_line = getDisplayLineOfEntryIndex(i, true);
         final int reverse_entry_line = getDisplayLineOfEntryIndex(i, false);
@@ -1489,57 +1509,66 @@ public class FeatureDisplay extends EntryGroupPanel
         final Entry current_entry = getEntryGroup().elementAt(i);
 
         if(getEntryGroup().getDefaultEntry() == current_entry &&
-            Options.getOptions().highlightActiveEntryFlag())
+           Options.getOptions().highlightActiveEntryFlag())
         {
-          fillLane(g, forward_entry_line, active_entry_colour);
-          fillLane(g, reverse_entry_line, active_entry_colour);
+          g.setColor(active_entry_colour);
+          fillLane(g, forward_entry_line,
+                   first_visible_base_coord, last_visible_base_coord);
+          fillLane(g, reverse_entry_line,
+                   first_visible_base_coord, last_visible_base_coord);
         } 
         else
         {
-          fillLane(g, forward_entry_line, light_grey);
-          fillLane(g, reverse_entry_line, light_grey);
+          g.setColor(light_grey);
+          fillLane(g, forward_entry_line,
+                   first_visible_base_coord, last_visible_base_coord);
+          fillLane(g, reverse_entry_line,
+                   first_visible_base_coord, last_visible_base_coord);
         }
       }
     } 
     else
     {
+      g.setColor(light_grey);
       if(show_forward_lines) 
       {
-        fillLane(g, getFrameDisplayLine(FORWARD_FRAME_1), light_grey);
-        fillLane(g, getFrameDisplayLine(FORWARD_FRAME_2), light_grey);
-        fillLane(g, getFrameDisplayLine(FORWARD_FRAME_3), light_grey);
+        fillLane(g, getFrameDisplayLine(FORWARD_FRAME_1),
+                 first_visible_base_coord, last_visible_base_coord);
+        fillLane(g, getFrameDisplayLine(FORWARD_FRAME_2),
+                 first_visible_base_coord, last_visible_base_coord);
+        fillLane(g, getFrameDisplayLine(FORWARD_FRAME_3),
+                 first_visible_base_coord, last_visible_base_coord);
       }
 
       if(show_reverse_lines) 
       {
-        fillLane(g, getFrameDisplayLine(REVERSE_FRAME_1), light_grey);
-        fillLane(g, getFrameDisplayLine(REVERSE_FRAME_2), light_grey);
-        fillLane(g, getFrameDisplayLine(REVERSE_FRAME_3), light_grey);
+        fillLane(g, getFrameDisplayLine(REVERSE_FRAME_1),
+                 first_visible_base_coord, last_visible_base_coord);
+        fillLane(g, getFrameDisplayLine(REVERSE_FRAME_2),
+                 first_visible_base_coord, last_visible_base_coord);
+        fillLane(g, getFrameDisplayLine(REVERSE_FRAME_3), 
+                 first_visible_base_coord, last_visible_base_coord);
       }
     }
 
-    fillLane(g, getFrameDisplayLine(FORWARD_STRAND), not_so_light_grey);
-    fillLane(g, getFrameDisplayLine(REVERSE_STRAND), not_so_light_grey);
+    g.setColor(not_so_light_grey);
+    fillLane(g, getFrameDisplayLine(FORWARD_STRAND), 
+             first_visible_base_coord, last_visible_base_coord);
+    fillLane(g, getFrameDisplayLine(REVERSE_STRAND), 
+             first_visible_base_coord, last_visible_base_coord);
   }
 
   /**
    *  Fill one lane/frame line with the given colour.
    **/
-  private void fillLane(Graphics g, int fill_line_number, Color colour) 
+  private void fillLane(Graphics g, int fill_line_number, 
+                        int first_visible_base_coord, int last_visible_base_coord) 
   {
-    final int fill_line_top = fill_line_number*getLineHeight() + 1;
-
-    g.setColor(colour);
-
-    final int first_visible_base_coord =
-      getLowXPositionOfBase(getFirstVisibleForwardBase());
-
-    final int last_visible_base_coord =
-      getHighXPositionOfBase(getLastVisibleForwardBase());
+    int fill_line_top = fill_line_number*getFontHeight() + 1;
 
     g.fillRect(first_visible_base_coord, fill_line_top,
-                last_visible_base_coord - first_visible_base_coord + 1,
-                getFeatureHeight());
+               last_visible_base_coord - first_visible_base_coord + 1,
+               getFeatureHeight());
   }
 
 
@@ -1552,10 +1581,10 @@ public class FeatureDisplay extends EntryGroupPanel
     g.setColor(Color.black);
 
     final int scale_line = getFrameDisplayLine(SCALE_LINE);
-    final int scale_number_y_pos = scale_line * getLineHeight();
+    final int scale_number_y_pos = scale_line * getFontHeight();
 
     final float bases_per_pixel =
-     (float)getMaxVisibleBases() / getCanvasWidth();
+     (float)getMaxVisibleBases()/getWidth();
 
     final int base_label_spacing;
 
@@ -1564,21 +1593,22 @@ public class FeatureDisplay extends EntryGroupPanel
       // set the spacing so that the labels are at multiples of ten at the
       // lowest scale factor
       base_label_spacing =
-          (int) Math.ceil(MINIMUM_LABEL_SPACING * bases_per_pixel / 10) * 10;
+          (int)Math.ceil(MINIMUM_LABEL_SPACING * bases_per_pixel / 10) * 10;
     } 
     else 
     {
       // set the spacing so that the labels are at multiples of 100 otherwise
       base_label_spacing =
-          (int) Math.ceil(MINIMUM_LABEL_SPACING * bases_per_pixel / 100) * 100;
+          (int)Math.ceil(MINIMUM_LABEL_SPACING * bases_per_pixel / 100) * 100;
     }
 
-    final int label_spacing =(int)(base_label_spacing / bases_per_pixel);
+    final int label_spacing = (int)(base_label_spacing / bases_per_pixel);
 
     final int possible_index_of_first_label;
+    final int seq_length = getSequenceLength();
 
     if(isRevCompDisplay()) 
-      possible_index_of_first_label = (getSequenceLength() -
+      possible_index_of_first_label = (seq_length -
                          getLastVisibleForwardBase() + 1) / base_label_spacing;
     else 
       possible_index_of_first_label =
@@ -1594,11 +1624,15 @@ public class FeatureDisplay extends EntryGroupPanel
     final int index_of_last_label;
 
     if(isRevCompDisplay()) 
-      index_of_last_label = (getSequenceLength() -
+      index_of_last_label = (seq_length -
                    getFirstVisibleForwardBase() + 1) / base_label_spacing;
     else 
       index_of_last_label =
                    getLastVisibleForwardBase() / base_label_spacing;
+
+    final int font_ascent   = getFontAscent();
+    final int font_width    = getFontWidth();
+    final int font_line_hgt = getFontHeight();
 
     for(int i = index_of_first_label; i <= index_of_last_label; ++i)
     {
@@ -1608,29 +1642,27 @@ public class FeatureDisplay extends EntryGroupPanel
 
       if(isRevCompDisplay()) 
         scale_number_x_pos =
-          getLowXPositionOfBase(getSequenceLength() -
+          getLowXPositionOfBase(seq_length -
                                  i * base_label_spacing + 1);
       else 
         scale_number_x_pos = 
           getLowXPositionOfBase(i * base_label_spacing);
 
-      g.setFont(getFont());
-
       g.drawString(label_string,
-                    scale_number_x_pos + 2,
-                    scale_number_y_pos + getFontAscent() + 1);
+                   scale_number_x_pos + 2,
+                   scale_number_y_pos + font_ascent + 1);
 
       g.drawLine(scale_number_x_pos, scale_number_y_pos,
-                  scale_number_x_pos, scale_number_y_pos + getLineHeight());
+                 scale_number_x_pos, scale_number_y_pos + font_line_hgt);
 
       if(isRevCompDisplay())
         g.drawLine(scale_number_x_pos, scale_number_y_pos,
-                    scale_number_x_pos + getFontWidth(), scale_number_y_pos);
+                   scale_number_x_pos + font_width, scale_number_y_pos);
       else
         g.drawLine(scale_number_x_pos,
-                    scale_number_y_pos + getLineHeight(),
-                    scale_number_x_pos + getFontWidth(),
-                    scale_number_y_pos + getLineHeight());
+                   scale_number_y_pos + font_line_hgt,
+                   scale_number_x_pos + font_width,
+                   scale_number_y_pos + font_line_hgt);
     }
   }
 
@@ -1641,7 +1673,7 @@ public class FeatureDisplay extends EntryGroupPanel
   private void drawBases(Graphics g) 
   {
     if(getScaleFactor() > 1 ||
-        getScaleFactor() == 1 && !show_base_colours) 
+       getScaleFactor() == 1 && !show_base_colours) 
       return;
 
     final Strand forward_strand;
@@ -1659,16 +1691,14 @@ public class FeatureDisplay extends EntryGroupPanel
     }
 
     final Range forward_range =
-      newRange(getFirstVisibleForwardBase(),
-                getLastVisibleForwardBase());
+               newRange(getFirstVisibleForwardBase(),
+                        getLastVisibleForwardBase());
 
     String forward_visible_bases =
       forward_strand.getSubSequence(forward_range).toUpperCase();
 
     final int forward_frame_line = getFrameDisplayLine(FORWARD_STRAND);
-
     final int forward_sequence_length = forward_visible_bases.length();
-
     final int offset;
 
     if(getForwardBaseAtLeftEdge() < 1) 
@@ -1676,53 +1706,56 @@ public class FeatureDisplay extends EntryGroupPanel
     else 
       offset = 0;
     
+    g.setFont(getFont());
+    int yposition = forward_frame_line * getFontHeight();
 
-    for(int base_index = 0; base_index < forward_sequence_length;
-        ++base_index)
+    // draw fwd bases
+    if(getScaleFactor() == 0)
+      g.drawString(forward_visible_bases, offset * getFontWidth(),
+                   yposition + getFontAscent() + 1);
+    else
     {
-      final char char_to_draw =
-        forward_visible_bases.charAt(base_index);
-
-      if(getScaleFactor() == 0) 
-        drawOneBaseLetter(g,
-                           char_to_draw,
-                          (offset + base_index) * getFontWidth(),
-                           forward_frame_line * getLineHeight());
-      else 
-        drawOnePixelBase(g,
-                          char_to_draw,
-                          offset + base_index,
-                          forward_frame_line * getLineHeight());
+      for(int base_index = 0; base_index < forward_sequence_length;
+          ++base_index)
+        drawOnePixelBase(g, forward_visible_bases.charAt(base_index),
+                         offset + base_index, yposition);
     }
 
     final Range reverse_range = newRange(getFirstVisibleReverseBase(),
-                                          getLastVisibleReverseBase());
+                                         getLastVisibleReverseBase());
 
     String reverse_visible_bases =
       reverse_strand.getSubSequence(reverse_range).toUpperCase();
 
+    reverse_visible_bases = reverse(reverse_visible_bases);
+
     final int reverse_frame_line = getFrameDisplayLine(REVERSE_STRAND);
-
     final int reverse_sequence_length = reverse_visible_bases.length();
+    yposition = reverse_frame_line * getFontHeight();
 
-    for(int base_index = 0; base_index < reverse_sequence_length;
-        ++base_index) 
+    // draw bwd bases
+    if(getScaleFactor() == 0)
+      g.drawString(reverse_visible_bases, offset * getFontWidth(),
+                   yposition + getFontAscent() + 1);
+    else
     {
-      final char char_to_draw =
-        reverse_visible_bases.charAt(reverse_sequence_length -
-                                      base_index - 1);
-
-      if(getScaleFactor() == 0) 
-        drawOneBaseLetter(g,
-                           char_to_draw,
-                          (offset + base_index) * getFontWidth(),
-                           reverse_frame_line * getLineHeight());
-      else 
-        drawOnePixelBase(g,
-                          char_to_draw,
-                          offset + base_index,
-                          reverse_frame_line * getLineHeight());
+      for(int base_index = 0; base_index < reverse_sequence_length;
+          ++base_index) 
+        drawOnePixelBase(g, reverse_visible_bases.charAt(base_index),
+                         offset + base_index, yposition);
     }
+  }
+
+
+  /** 
+  *
+  * Reverse the String.
+  *
+  */
+  private String reverse(String string) 
+  {
+    StringBuffer sb = new StringBuffer(string);
+    return sb.reverse().toString();
   }
 
 
@@ -1756,190 +1789,120 @@ public class FeatureDisplay extends EntryGroupPanel
         if(!getOneLinePerEntryFlag()) 
         {
           if(show_forward_lines) 
-            drawForwardCodons(g);
+            drawCodons(g,true);
 
           if(show_reverse_lines) 
-            drawReverseCodons(g);
+            drawCodons(g,false);
         }
       }
     }
   }
 
+
   /**
-   *  Mark the start and stop codons into the three forward frame lines.
+   *  Mark the start and stop codons on the three forward frame lines.
    *  @param g The object to draw into.
    **/
-  private void drawForwardCodons(Graphics g) 
+  private void drawCodons(Graphics g, boolean fwd) 
   {
     final Strand strand;
+    final int first_visible_base;
+    final int end_base;
+    final int direction;
 
-    if(isRevCompDisplay()) 
-      strand = getBases().getReverseStrand();
-    else 
-      strand = getBases().getForwardStrand();
-
-    final int first_visible_base = getForwardBaseAtLeftEdge();
-
-    final int frame_shift =(first_visible_base - 1) % 3;
-
-    // base to start translation at - we start slightly off the left of the
-    // screen
-    final int start_base = first_visible_base - frame_shift;
-
-    // base to end translation at
-    // we + 3 to the upper bound because partial codons do not get translated
-    // by getTranslation()
-    final int end_base = getLastVisibleForwardBase() + 3;
-
-    // not used if show_stop_codons is false
-    int [][] forward_stop_codons = null;
-
-    if(show_stop_codons) 
+    if(fwd)
     {
-      forward_stop_codons = new int [][] {
-        strand.getStopCodons(newRange(start_base, end_base)),
-        strand.getStopCodons(newRange(start_base + 1, end_base)),
-        strand.getStopCodons(newRange(start_base + 2, end_base))
-      };
-    }
-
-    // not used if show_start_codons is false
-    int [][] forward_start_codons = null;
-
-    if(show_start_codons) 
-    {
-      final StringVector start_codons;
-
-      if(Options.getOptions().isEukaryoticMode()) 
-        start_codons = Options.getOptions().getEukaryoticStartCodons();
+      direction = FORWARD;
+      if(isRevCompDisplay()) 
+        strand = getBases().getReverseStrand();
       else 
-        start_codons = Options.getOptions().getProkaryoticStartCodons();
-
-      forward_start_codons = new int [][] {
-        strand.getMatchingCodons(newRange(start_base, end_base),
-                                  start_codons),
-        strand.getMatchingCodons(newRange(start_base + 1, end_base),
-                                  start_codons),
-        strand.getMatchingCodons(newRange(start_base + 2, end_base),
-                                  start_codons)
-      };
+        strand = getBases().getForwardStrand();
+      first_visible_base = getForwardBaseAtLeftEdge();
+      // base to end translation at
+      // we + 3 to the upper bound because partial codons do not get translated
+      // by getTranslation()
+      end_base   = getLastVisibleForwardBase() + 3;
     }
-
-    for(int i = 0 ; i < 3 ; ++i) 
+    else
     {
-      final int frame_line = getFrameDisplayLine(FORWARD_FRAME_1 + i);
-
-      final int frame_x_start = i;
-
-      if(show_start_codons) 
-      {
-        final int [] this_frame_start_codons = forward_start_codons [i];
-
-        drawCodonMarkLine(g,
-                           frame_line,
-                           this_frame_start_codons,
-                           FORWARD,
-                           80);
-      }
-
-      if(show_stop_codons) 
-      {
-        final int [] this_frame_stop_codons = forward_stop_codons [i];
-
-        drawCodonMarkLine(g,
-                           frame_line,
-                           this_frame_stop_codons,
-                           FORWARD,
-                           100);
-      }
+      direction = REVERSE;
+      if(isRevCompDisplay()) 
+        strand = getBases().getForwardStrand();
+      else 
+        strand = getBases().getReverseStrand();
+      first_visible_base = getFirstVisibleReverseBase();
+      end_base   = getLastVisibleReverseBase() + 3;
     }
-  }
-
-  /**
-   *  Mark the stop codons into the three reverse frame lines.
-   *  @param g The object to draw into.
-   **/
-  private void drawReverseCodons(Graphics g) 
-  {
-    final Strand strand;
-
-    if(isRevCompDisplay()) 
-      strand = getBases().getForwardStrand();
-    else 
-      strand = getBases().getReverseStrand();
-
-    final int first_visible_base = getFirstVisibleReverseBase();
-
+     
     final int frame_shift = (first_visible_base - 1) % 3;
 
-    // base to start translation at
-    final int start_base = first_visible_base - frame_shift;
-
-    // base to end translation at
-    // we + 3 to the upper bound because partial codons do not get translated
-    // by getTranslation()
-    final int end_base = getLastVisibleReverseBase() + 3;
+    // base to start translation at - we start slightly off the 
+    // left of the screen
+    int start_base = first_visible_base - frame_shift;
 
     // not used if show_stop_codons is false
-    int [][] reverse_stop_codons = null;
+    int [][] stop_codons = null;
 
     if(show_stop_codons) 
     {
-      reverse_stop_codons = new int [][] {
-        strand.getStopCodons(newRange(start_base, end_base)),
-        strand.getStopCodons(newRange(start_base + 1, end_base)),
-        strand.getStopCodons(newRange(start_base + 2, end_base))
-      };
+      if(fwd && start_base < 1)
+        start_base = 1;
+ 
+//      stop_codons = strand.getStopCodons2(newRange(start_base, end_base));
+//    stop_codons = new int [][] 
+//    {
+//      strand.getStopCodons(newRange(start_base, end_base)),
+//      strand.getStopCodons(newRange(start_base + 1, end_base)),
+//      strand.getStopCodons(newRange(start_base + 2, end_base))
+//    };
     }
 
     // not used if show_start_codons is false
-    int [][] reverse_start_codons = null;
+    int [][] start_codons = null;
 
     if(show_start_codons) 
     {
-      final StringVector start_codons;
-
-      if(Options.getOptions().isEukaryoticMode()) 
-        start_codons = Options.getOptions().getEukaryoticStartCodons();
-      else 
-        start_codons = Options.getOptions().getProkaryoticStartCodons();
-
-      reverse_start_codons = new int [][] {
+      final StringVector starts = Options.getOptions().getStartCodons();
+      
+      start_codons = new int [][] 
+      {
         strand.getMatchingCodons(newRange(start_base, end_base),
-                                  start_codons),
+                                 starts),
         strand.getMatchingCodons(newRange(start_base + 1, end_base),
-                                  start_codons),
+                                 starts),
         strand.getMatchingCodons(newRange(start_base + 2, end_base),
-                                  start_codons)
+                                 starts)
       };
     }
 
     for(int i = 0 ; i < 3 ; ++i) 
     {
-      final int frame_line = getFrameDisplayLine(REVERSE_FRAME_1 - i);
-      final int frame_x_start = i;
+      final int this_frame_line;
+      if(fwd)
+        this_frame_line = getFrameDisplayLine(FORWARD_FRAME_1 + i);
+      else
+        this_frame_line = getFrameDisplayLine(REVERSE_FRAME_1 - i);
 
       if(show_start_codons) 
       {
-        final int [] this_frame_start_codons = reverse_start_codons [i];
-        drawCodonMarkLine(g,
-                          frame_line,
+        final int[] this_frame_start_codons = start_codons[i];
+
+        drawCodonMarkLine(g, this_frame_line,
                           this_frame_start_codons,
-                          REVERSE,
-                          80);
+                          direction, 80);
       }
 
       if(show_stop_codons) 
       {
-        final int [] this_frame_stop_codons = reverse_stop_codons [i];
-        drawCodonMarkLine(g,
-                          frame_line,
+        final int[] this_frame_stop_codons = stop_codons[i];
+
+        drawCodonMarkLine(g, this_frame_line,
                           this_frame_stop_codons,
-                          REVERSE,
-                          100);
+                          direction, 100);
       }
     }
   }
+  
 
   /**
    *  Draw the codon letters into the three forward frame lines.
@@ -1956,34 +1919,28 @@ public class FeatureDisplay extends EntryGroupPanel
 
     final int first_visible_base = getFirstVisibleForwardBase();
 
+    // base to end translation at - we end slightly off the 
+    // right of the screen
+    final int end_base   = getLastVisibleForwardBase() + 1;
+
     for(int i = 0 ; i < 3 ; ++i) 
     {
-      final int frame_shift = 1 -(first_visible_base + 3 - i) % 3;
+      final int frame_shift = 1 - (first_visible_base + 3 - i) % 3;
 
       // base to start translation at - we start slightly off the left of the
       // screen so that the first partial codon is translated as '.'
       final int start_base = first_visible_base + frame_shift;
-
-      // base to end translation at - we end slightly off the right of the
-      // screen
-      final int end_base = getLastVisibleForwardBase() + 1;
-
       final int frame_line = getFrameDisplayLine(FORWARD_FRAME_1 + i);
 
-      int frame_x_start = frame_shift;
-
       final AminoAcidSequence this_frame_translation =
-        strand.getTranslation(newRange(start_base, end_base),
-                               false);
+                   strand.getTranslation(newRange(start_base, end_base), false);
 
       final String this_frame_translation_string =
-        this_frame_translation.toString();
+                   this_frame_translation.toString();
 
-      drawCodonLine(g,
-                     frame_x_start,
-                     frame_line,
-                     this_frame_translation_string,
-                     FORWARD);
+      drawCodonLine(g, frame_shift, frame_line,
+                    this_frame_translation_string,
+                    FORWARD);
     }
   }
 
@@ -2000,36 +1957,29 @@ public class FeatureDisplay extends EntryGroupPanel
     else 
       strand = getBases().getReverseStrand();
 
+    // base to end translation at - we end slightly off the 
+    // left of the screen
     final int first_visible_base = getFirstVisibleReverseBase();
+    final int end_base = getLastVisibleReverseBase() + 1;
 
     for(int i = 0 ; i < 3 ; ++i) 
     {
-      final int frame_shift = 1 -(first_visible_base + 3 - i) % 3;
+      final int frame_shift = 1 - (first_visible_base + 3 - i) % 3;
 
       // base to start translation at - we start slightly off the right of the
       // screen so that the first partial codon is translated as '.'
       final int start_base = first_visible_base + frame_shift;
-
-      // base to end translation at - we end slightly off the left of the
-      // screen
-      final int end_base = getLastVisibleReverseBase() + 1;
-
       final int frame_line = getFrameDisplayLine(REVERSE_FRAME_1 - i);
 
-      int frame_x_start = frame_shift;
-
-      final AminoAcidSequence this_frame_translation =
-        strand.getTranslation(newRange(start_base, end_base),
-                               false);
+      final AminoAcidSequence this_frame_translation = 
+                    strand.getTranslation(newRange(start_base, end_base), false);
 
       final String this_frame_translation_string =
-        this_frame_translation.toString();
+                    this_frame_translation.toString();
 
-      drawCodonLine(g,
-                     frame_x_start,
-                     frame_line,
-                     this_frame_translation_string,
-                     REVERSE);
+      drawCodonLine(g, frame_shift, frame_line,
+                    this_frame_translation_string,
+                    REVERSE);
     }
   }
 
@@ -2046,11 +1996,9 @@ public class FeatureDisplay extends EntryGroupPanel
    *  @param direction The direction to draw the letters in(see the
    *    frame_start parameter).
    **/
-  private void drawCodonLine(Graphics g,
-                              int frame_start,
-                              int line_number,
-                              String codons,
-                              int direction) 
+  private void drawCodonLine(Graphics g, int frame_start,
+                             int line_number, String codons,
+                             int direction) 
   {
     final int offset;
 
@@ -2059,31 +2007,26 @@ public class FeatureDisplay extends EntryGroupPanel
     else 
       offset = 0;
 
-    final String upper_case_codons = codons.toUpperCase();
-    final int draw_y_position = line_number * getLineHeight();
-
-    // draw each AA letter
-    for(int i = 0 ; i < upper_case_codons.length() ; ++i) 
+//  codons = codons.toUpperCase();
+    final int draw_y_position = line_number * getFontHeight();
+    final int draw_x_position;
+    
+    if(direction == REVERSE)
     {
-      final char aa_char = upper_case_codons.charAt(i);
+      draw_x_position = getLowXPositionOfBase(getLastVisibleForwardBase()) -
+           (int)((offset+frame_start+codons.length()) * getScaleValue());
 
-      int draw_x_position =
-       (int)((offset + frame_start + 3 * i + 1) * getScaleValue());
-
-      if(direction == REVERSE) 
-      {
-        // draw in the opposite direction
-        draw_x_position =
-          getLowXPositionOfBase(getLastVisibleForwardBase()) -
-          draw_x_position;
-      }
-
-      drawOneLetter(g, aa_char, draw_x_position, draw_y_position);
+      codons = reverse(codons);
     }
+    else
+       draw_x_position = (int)((offset + frame_start + 1) * getScaleValue());
+
+    g.drawString(codons, draw_x_position,
+                 draw_y_position + getFontAscent() + 1);
   }
 
   /**
-   *  Draw one line of codons marks(stop codons or start codons).
+   *  Draw one line of codons marks (stop codons or start codons).
    *  @param g The object to draw into.
    *  @param line_number The frame line to draw into. (see
    *    getFrameDisplayLine() for more details about these line numbers).
@@ -2106,7 +2049,7 @@ public class FeatureDisplay extends EntryGroupPanel
     final int last_visible_forward_base = getLastVisibleForwardBase();
     final double scale_value = getScaleValue();
 
-    final int line_height = getLineHeight();
+    final int line_height = getFontHeight();
 
     final Integer colour_number =
       Options.getOptions().getIntegerProperty("colour_of_start_codon");
@@ -2130,7 +2073,18 @@ public class FeatureDisplay extends EntryGroupPanel
     // used to remember the position of the previously drawn codon
     int last_x_position = -1;
 
-    for(int i = 0 ; i < codon_positions.length ; ++i) 
+    if(height_percent < 100)
+      g.setColor(start_codon_colour);
+    else
+      g.setColor(Color.black);
+
+
+    int length = 0;
+    if(direction != FORWARD)
+      length = getBases().getLength();
+
+    final int codon_positions_length = codon_positions.length;
+    for(int i = 0; i < codon_positions_length; ++i) 
     {
       final int codon_base_start = codon_positions[i];
 
@@ -2141,23 +2095,20 @@ public class FeatureDisplay extends EntryGroupPanel
       int draw_x_position;
 
       if(direction == FORWARD) 
-        draw_x_position = getLowXPositionOfBase(codon_base_start);
+        draw_x_position = getLowXPositionOfBase(codon_base_start+2);
       else
       { 
-        final int raw_base_position =
-          getBases().getComplementPosition(codon_base_start);
+        final int raw_base_position = length - codon_base_start + 1;
+//      final int raw_base_position =
+//        getBases().getComplementPosition(codon_base_start);
         draw_x_position = getLowXPositionOfBase(raw_base_position);
       }
 
       // draw only if we haven't drawn on the position already
-      if(last_x_position == -1 || draw_x_position != last_x_position) 
+      if(draw_x_position != last_x_position || last_x_position == -1) 
       {
-        if(height_percent < 100) 
-          drawOneCodonMark(g, draw_x_position, draw_y_position,
-                            direction, mark_height, start_codon_colour);
-        else 
-          drawOneCodonMark(g, draw_x_position, draw_y_position,
-                            direction, mark_height, Color.black);
+        drawOneCodonMark(g, draw_x_position, draw_y_position,
+                         direction, mark_height);
 
         last_x_position = draw_x_position;
       }
@@ -2187,40 +2138,6 @@ public class FeatureDisplay extends EntryGroupPanel
 
 
   /**
-   *  Draw a letter at a specified position in a Graphics object.
-   *  @param g The object to draw into.
-   *  @param letter The character to draw.
-   *  @param x_pos The x position at which to draw the letter.
-   *  @param y_pos The y position at which to draw the letter.
-   **/
-  private void drawOneLetter(final Graphics g, final char letter,
-                              final int x_pos, final int y_pos) 
-  {
-    draw_one_char_temp_array[0] = letter;
-
-    g.setFont(getFont());
-    g.drawChars(draw_one_char_temp_array, 0, 1, x_pos,
-                y_pos + getFontAscent() + 1);
-  }
-
-  /**
-   *  Draw a letter at a specified position in a Graphics object.
-   *  @param g The object to draw into.
-   *  @param base_char The character of the base to draw(A, T, G or C).
-   *  @param x_pos The x position at which to draw the letter.
-   *  @param y_pos The y position at which to draw the letter.
-   **/
-  private void drawOneBaseLetter(final Graphics g, final char base_char,
-                                  final int x_pos, final int y_pos) 
-  {
-    if(show_base_colours) 
-      g.setColor(getColourOfBase(base_char));
-
-    drawOneLetter(g, base_char, x_pos, y_pos);
-  }
-
-
-  /**
    *  Draw a codon mark at the given position.  The codon is represented
    *  by a one pixel wide line for scale factor greater than 1 and 3 pixels
    *  wide if the scale factor is one.
@@ -2231,32 +2148,28 @@ public class FeatureDisplay extends EntryGroupPanel
    *  @param direction If this is FORWARD the line is draw from the y position
    *    to the right, otherwise it is drawn to the left.
    *  @param height The height in pixels of the codon mark.
-   *  @param colour The colour to use when drawing the mark.
    **/
   private void drawOneCodonMark(final Graphics g,
                                  final int x_pos, final int y_pos,
                                  final int direction,
-                                 final int height,
-                                 final Color colour) 
+                                 final int height)
   {
-    g.setColor(colour);
-
     if(getScaleFactor() == 1) 
     {
       // draw a line three pixels/bases wide
       if(direction == FORWARD) 
       {
         g.drawLine(x_pos + 1, y_pos,
-                    x_pos + 1, y_pos + height - 1);
+                   x_pos + 1, y_pos + height - 1);
         g.drawLine(x_pos + 2, y_pos,
-                    x_pos + 2, y_pos + height - 1);
+                   x_pos + 2, y_pos + height - 1);
       } 
       else
       {
         g.drawLine(x_pos - 1, y_pos,
-                    x_pos - 1, y_pos + height - 1);
+                   x_pos - 1, y_pos + height - 1);
         g.drawLine(x_pos - 2, y_pos,
-                    x_pos - 2, y_pos + height - 1);
+                   x_pos - 2, y_pos + height - 1);
       }
     }
     g.drawLine(x_pos, y_pos, x_pos, y_pos + height - 1);
@@ -2277,7 +2190,7 @@ public class FeatureDisplay extends EntryGroupPanel
                                  int x_pos, int y_pos) 
   {
     g.setColor(getColourOfBase(base_char));
-    g.drawLine(x_pos, y_pos, x_pos, y_pos + getLineHeight() - 1);
+    g.drawLine(x_pos, y_pos, x_pos, y_pos + getFontHeight() - 1);
   }
 
   /**
@@ -2291,16 +2204,16 @@ public class FeatureDisplay extends EntryGroupPanel
     {
       final Feature feature = segment.getFeature();
       if((feature.isProteinFeature() || frame_features_flag) &&
-         (show_forward_lines &&(feature.isForwardFeature() ^
+          (show_forward_lines && (segment.isForwardSegment() ^
                                   isRevCompDisplay()) ||
-          show_reverse_lines &&(!feature.isForwardFeature() ^
-                                  isRevCompDisplay()))) 
+           show_reverse_lines && (!segment.isForwardSegment() ^
+                                  isRevCompDisplay())))
       {
-        return getFeatureDisplayLine(feature);
+        return getFeatureDisplayLine(feature,segment);
       } 
       else
       {
-        if(feature.isForwardFeature() ^ isRevCompDisplay()) 
+        if(segment.isForwardSegment() ^ isRevCompDisplay())
           return getFrameDisplayLine(FORWARD_STRAND);
         else 
           return getFrameDisplayLine(REVERSE_STRAND);
@@ -2310,7 +2223,7 @@ public class FeatureDisplay extends EntryGroupPanel
     {
       final int frame_id =
         maybeFlipFrameDirection(getSegmentFrameID(segment));
-
+  
       return getFrameDisplayLine(frame_id);
     }
   }
@@ -2321,13 +2234,12 @@ public class FeatureDisplay extends EntryGroupPanel
   private int getSegmentFrameID(final FeatureSegment segment) 
   {
     final int frame_id = segment.getFrameID();
-
     final Feature feature = segment.getFeature();
 
     if((feature.isProteinFeature() || frame_features_flag) &&
-       (show_forward_lines &&(feature.isForwardFeature() ^
+       (show_forward_lines && (segment.isForwardSegment() ^
                                 isRevCompDisplay())||
-         show_reverse_lines &&(! feature.isForwardFeature() ^
+         show_reverse_lines && (!segment.isForwardSegment() ^
                                 isRevCompDisplay()))) 
     {
       return frame_id;
@@ -2361,14 +2273,15 @@ public class FeatureDisplay extends EntryGroupPanel
   /**
    *  Return the line on the canvas where the given feature should be drawn
    *  when one_line_per_entry is true.  Call getLineCount() to find out the
-   *  total number of lines.  Each line is getLineHeight() pixels high.
+   *  total number of lines.  Each line is getFontHeight() pixels high.
    *  @return The line to draw into.
    **/
-  private int getFeatureDisplayLine(final Feature feature) 
+  private int getFeatureDisplayLine(final Feature feature,
+                                    final FeatureSegment segment) 
   {
     final int entry_index = getEntryGroup().indexOf(feature.getEntry());
     return getDisplayLineOfEntryIndex(entry_index,
-                                      feature.isForwardFeature() ^
+                                      segment.isForwardSegment() ^
                                       isRevCompDisplay());
   }
 
@@ -2385,7 +2298,7 @@ public class FeatureDisplay extends EntryGroupPanel
     {
       if(getShowForwardFrameLines()) 
       {
-        if(getShowLabels()) 
+        if(show_labels) 
           return entry_index * 2;
         else 
           return entry_index;
@@ -2396,7 +2309,7 @@ public class FeatureDisplay extends EntryGroupPanel
     else
     {
       int return_value = 0;
-      if(getShowLabels()) 
+      if(show_labels) 
       {
         return_value = getEntryGroup().size() * 2 + 3 - entry_index * 2;
 
@@ -2453,7 +2366,7 @@ public class FeatureDisplay extends EntryGroupPanel
   /**
    *  Return the line on the canvas where this frame ID should be drawn.  Call
    *  getLineCount() to find out the total number of lines.  Each line is
-   *  getLineHeight() pixels high.
+   *  getFontHeight() pixels high.
    *  @param frame_id The frame ID.
    *  @return The line to draw into.
    **/
@@ -2624,16 +2537,10 @@ public class FeatureDisplay extends EntryGroupPanel
 
     int extra_line_count;
 
-    if(getOneLinePerEntryFlag())
-    {
-      // some number of entry lines
+    if(getOneLinePerEntryFlag())  // some number of entry lines
       extra_line_count = getEntryGroup().size();
-    } 
-    else
-    {
-      // three frame line
+    else    // three frame line
       extra_line_count = 3;
-    }
 
     if(show_labels) 
       extra_line_count *= 2;
@@ -2657,7 +2564,6 @@ public class FeatureDisplay extends EntryGroupPanel
     // one "line" is font_height pixels high,(the number of lines times the
     // font_height is the height of the height of canvas)
     final int line = getSegmentDisplayLine(segment);
-
     return getLineOffset(line);
   }
 
@@ -2667,7 +2573,7 @@ public class FeatureDisplay extends EntryGroupPanel
    **/
   private int getLineOffset(int line) 
   {
-    return line * getLineHeight();
+    return line * getFontHeight();
   }
 
   /**
@@ -2680,7 +2586,7 @@ public class FeatureDisplay extends EntryGroupPanel
    **/
   private int getLowXPositionOfBase(int base_number) 
   {
-    return(int)((base_number - getForwardBaseAtLeftEdge()) *
+    return (int)((base_number - getForwardBaseAtLeftEdge()) *
                   getScaleValue());
   }
 
@@ -2790,11 +2696,12 @@ public class FeatureDisplay extends EntryGroupPanel
   private MarkerRange getMarkerRangeFromPosition(final Point position,
                                                   final boolean whole_codon) 
   {
-
     final int frame_id;
-
     int base_position;
     final Strand strand;
+
+//  if(scrollbar_style == SCROLLBAR_AT_TOP)
+//    position.x += scrollbar.getPreferredSize().height;
 
     if(getOneLinePerEntryFlag()) 
     {
@@ -2830,6 +2737,7 @@ public class FeatureDisplay extends EntryGroupPanel
     else
     {
       frame_id = getFrameFromPoint(position);
+
       // calculate the frame/strand line and base position
       switch(frame_id) 
       {
@@ -2957,15 +2865,20 @@ public class FeatureDisplay extends EntryGroupPanel
    *  @param feature The feature to draw.
    **/
   private void drawFeature(final Graphics g,
+                           final Vector segment_borders,
                            final Feature feature,
                            final boolean draw_feature_fill,
                            final FeatureVector selected_features,
-                           final FeatureSegmentVector selected_segments) 
+                           final FeatureSegmentVector selected_segments, 
+                           final int segment_height,
+                           final int seq_length,
+                           final FontMetrics fm) 
   {
     final FeatureSegmentVector this_feature_segments = feature.getSegments();
+    final int num_segs = this_feature_segments.size();
 
     // don't try to draw a feature with no segments
-    if(this_feature_segments.size() == 0) 
+    if(num_segs == 0) 
       return;
 
     // set to true if and only if the whole of this feature should be
@@ -2982,54 +2895,51 @@ public class FeatureDisplay extends EntryGroupPanel
     {
       // if the feature border flag is off and the feature is not selected
       // then don't draw the border
-      if(!show_feature_borders && !draw_feature_fill) 
-        return;
-
       highlight_feature_flag = false;
     }
 
+    boolean highlight_segment_flag;
+    boolean draw_direction_arrow_flag;
+    FeatureSegment current_segment;
+     
+    if(show_labels)
+      drawFeatureLabel(g, feature, seq_length, fm);
+
     // draw each segment/exon
-    for(int i = 0 ; i < this_feature_segments.size() ; ++i) 
+    boolean trans_spliced = false;
+    for(int i = 0; i < num_segs; ++i) 
     {
-      final FeatureSegment current_segment =
-                           this_feature_segments.elementAt(i);
-      final boolean highlight_segment_flag;
+      current_segment = this_feature_segments.elementAt(i);
 
       if(selected_segments.indexOf(current_segment) == -1) 
         highlight_segment_flag = false;
       else 
         highlight_segment_flag = true;
 
-      final boolean draw_direction_arrow_flag;
-
       // draw an arrow only on the last segment
-      if(i == this_feature_segments.size() - 1 && show_feature_arrows) 
+      if(i == num_segs - 1 && show_feature_arrows) 
         draw_direction_arrow_flag = true;
       else 
         draw_direction_arrow_flag = false;
 
-      drawSegment(g, current_segment,
-                   highlight_feature_flag, highlight_segment_flag,
-                   draw_feature_fill,
-                   draw_direction_arrow_flag);
+     
+     
 
-      if(i + 1 < this_feature_segments.size()) 
+      // draw a line between the segments
+      if(i + 1 < num_segs) 
       {
-          // draw a line between the segments
-
         final FeatureSegment next_segment =
           this_feature_segments.elementAt(i + 1);
 
-        drawSegmentConnection(g, current_segment, next_segment);
+        trans_spliced = drawSegmentConnection(g, current_segment, 
+                                    next_segment, trans_spliced);
       }
     }
 
     // draw the label last if the is no label line because in this case the
     // label is draw on top of the feature segments
-    if(draw_feature_fill) 
-      drawFeatureLabel(g, feature);
-
-    Thread.yield();
+    if(!show_labels) 
+      drawFeatureLabel(g, feature, seq_length, fm);
   }
 
   /**
@@ -3043,12 +2953,30 @@ public class FeatureDisplay extends EntryGroupPanel
    *    the start of the Strand.  The connection line will finish at the end
    *    of this segment.
    **/
-  private void drawSegmentConnection(Graphics g,
+  private boolean drawSegmentConnection(Graphics g,
                                      FeatureSegment lower_segment,
-                                     FeatureSegment upper_segment) 
+                                     FeatureSegment upper_segment,
+                                     boolean trans_spliced) 
   {
-    final Marker upper_segment_start_marker = upper_segment.getStart();
-    final Marker lower_segment_end_marker = lower_segment.getEnd();
+    Marker upper_segment_start_marker = upper_segment.getStart();
+    Marker lower_segment_end_marker   = lower_segment.getEnd();
+
+    // trans-spliced
+    if((upper_segment.isForwardSegment() ^ lower_segment.isForwardSegment()) ||
+       trans_spliced)
+    {
+      trans_spliced = true;
+      int start = upper_segment.getStart().getRawPosition();
+      int end   = upper_segment.getEnd().getRawPosition();
+      if(end < start)
+        upper_segment_start_marker = upper_segment.getEnd();
+
+      start = lower_segment.getStart().getRawPosition();
+      end   = lower_segment.getEnd().getRawPosition();
+
+      if(end < start)
+        lower_segment_end_marker = lower_segment.getStart(); 
+    }
 
     int next_segment_start_coord =
       getLowXPositionOfMarker(upper_segment_start_marker);
@@ -3105,14 +3033,16 @@ public class FeatureDisplay extends EntryGroupPanel
       g.setColor(feature_colour);
 
     g.drawLine(this_segment_end_coord,
-                line_y_position_for_this,
-                horizontal_position_of_centre,
-                line_y_position_for_centre);
+               line_y_position_for_this,
+               horizontal_position_of_centre,
+               line_y_position_for_centre);
 
     g.drawLine(horizontal_position_of_centre,
-                line_y_position_for_centre,
-                next_segment_start_coord,
-                line_y_position_for_next);
+               line_y_position_for_centre,
+               next_segment_start_coord,
+               line_y_position_for_next);
+
+    return trans_spliced;
   }
 
   /**
@@ -3122,38 +3052,38 @@ public class FeatureDisplay extends EntryGroupPanel
    *  @param g The Graphics object on which to draw.
    *  @param feature The feature to draw the label for.
    **/
-  private void drawFeatureLabel(Graphics g, Feature feature) 
+  private void drawFeatureLabel(Graphics g, final Feature feature, 
+                                final int seq_length,
+                                final FontMetrics fm) 
   {
-
     // the three frame translation is visible when the scale factor is 0,
     // don't draw labels over it
     if(!show_labels && getScaleFactor() == 0) 
       return;
 
-    String label_or_gene = feature.getIDString();
     final String label = feature.getLabel();
 
     // special case - don't display a label if the label qualifier is "*"
-    if(label != null && label.equals("*")) 
-      label_or_gene = "";
+    if(label != null && label.equals("*"))
+      return;
+  
+    final String label_or_gene = feature.getIDString(); 
 
     // don't waste time drawing nothing
-    if(label_or_gene.length() == 0) 
+    if(label_or_gene.length() == 0)
       return;
 
-    final FontMetrics fm = g.getFontMetrics();
-    final int string_width = fm.stringWidth(label_or_gene);
-
+    final int string_width = fm.stringWidth(label_or_gene); 
     final FeatureSegment first_segment = feature.getSegments().elementAt(0);
     final int label_x_coord;
 
-    if(feature.isForwardFeature() ^ isRevCompDisplay())
+    if(first_segment.isForwardSegment() ^ isRevCompDisplay())
     {
       int segment_start_pos =
         first_segment.getStart().getRawPosition();
 
       if(isRevCompDisplay()) 
-        segment_start_pos = getSequenceLength() - segment_start_pos + 1;
+        segment_start_pos = seq_length - segment_start_pos + 1;
 
       label_x_coord = getLowXPositionOfBase(segment_start_pos);
     } 
@@ -3163,29 +3093,30 @@ public class FeatureDisplay extends EntryGroupPanel
         first_segment.getEnd().getRawPosition();
 
       if(isRevCompDisplay()) 
-        segment_end_pos = getSequenceLength() - segment_end_pos + 1;
+        segment_end_pos = seq_length - segment_end_pos + 1;
 
       // reverse the start and end on the complementary strand
       label_x_coord = getLowXPositionOfBase(segment_end_pos);
     }
 
-    if(label_x_coord >= getCanvas().getSize().width) 
+    if(label_x_coord >= getSize().width) 
       return;
 
 //  if(label_x_coord + string_width <= 0) {
       // don't draw the label if it is not visible on screen
 //  }
 
-
     int vertical_offset =
       getSegmentVerticalOffset(first_segment);
 
     if(show_labels) 
-      vertical_offset += getLineHeight(); // move to the label line
+      vertical_offset += getFontHeight(); // move to the label line
 
     // save this so we can restore it later
-    final Shape saved_clip = g.getClip();
-
+    Shape saved_clip = null;
+    if(!show_labels)
+      saved_clip = g.getClip();
+ 
     // if we have a labels line draw a white background behind the
     // label
     if(show_labels) 
@@ -3193,9 +3124,9 @@ public class FeatureDisplay extends EntryGroupPanel
       g.setColor(Color.white);
 
       g.fillRect(label_x_coord - getFontWidth(),
-                 vertical_offset,
+                 vertical_offset+2,
                  string_width + getFontWidth() * 2,
-                 getLineHeight());
+                 getFontHeight()-1);
     } 
     else
     {
@@ -3210,30 +3141,30 @@ public class FeatureDisplay extends EntryGroupPanel
       {
         if(segment_end_coord > segment_start_coord)
           g.setClip(segment_start_coord, vertical_offset,
-                     segment_end_coord - segment_start_coord,
-                     getFeatureHeight());
+                    segment_end_coord - segment_start_coord,
+                    getFeatureHeight());
         else 
           g.setClip(segment_end_coord, vertical_offset,
-                     segment_start_coord - segment_end_coord,
-                     getFeatureHeight());
+                    segment_start_coord - segment_end_coord,
+                    getFeatureHeight());
       }
       else 
         return;  // don't draw small labels if there is no room
     }
 
     g.setColor(Color.black);
-    g.setFont(getFont());
     g.drawString(label_or_gene, label_x_coord + 1,
-                  vertical_offset + getFontAscent() + 1);
+                 vertical_offset + getFontAscent() + 1);
 
     if(!show_labels)
       g.setClip(saved_clip);
+
   }
 
   /**
    *  Return the position on the canvas where this segment starts.  The
    *  returned value will be -1 if the position is off the left of the screen
-   *  and will be(width of the canvas) if the position is off the right of
+   *  and will be (width of the canvas) if the position is off the right of
    *  the screen.
    **/
   private int getSegmentStartCoord(FeatureSegment segment) 
@@ -3243,11 +3174,9 @@ public class FeatureDisplay extends EntryGroupPanel
       getLowXPositionOfMarker(segment_start_marker);
 
     // make sure we don't wrap around when drawing
-    if(segment_start_coord > getCanvas().getSize().width) 
-      segment_start_coord = getCanvas().getSize().width;
-
-    // make sure we don't wrap around when drawing
-    if(segment_start_coord < 0) 
+    if(segment_start_coord > getSize().width) 
+      segment_start_coord = getSize().width;
+    else if(segment_start_coord < 0) 
       segment_start_coord = -1;
 
     return segment_start_coord;
@@ -3264,8 +3193,8 @@ public class FeatureDisplay extends EntryGroupPanel
     int segment_end_coord = getHighXPositionOfMarker(segment_end_marker);
 
     // make sure we don't wrap around when drawing
-    if(segment_end_coord > getCanvas().getSize().width) 
-      segment_end_coord = getCanvas().getSize().width;
+    if(segment_end_coord > getSize().width) 
+      segment_end_coord = getSize().width;
 
     // make sure we don't wrap around when drawing
     if(segment_end_coord < 0) 
@@ -3305,8 +3234,8 @@ public class FeatureDisplay extends EntryGroupPanel
     int segment_end_coord = getSegmentEndCoord(segment);
 
     if(segment_end_coord < 0 && segment_start_coord < 0 ||
-        segment_start_coord >= getCanvas().getSize().width &&
-        segment_end_coord >= getCanvas().getSize().width) 
+        segment_start_coord >= getSize().width &&
+        segment_end_coord >= getSize().width) 
       return false;
     else 
       return true;
@@ -3338,130 +3267,7 @@ public class FeatureDisplay extends EntryGroupPanel
     return false;
   }
 
-  /**
-   *  Draw one FeatureSegment into a Graphics object.
-   *  @param g The Graphics object on which to draw.
-   *  @param segment The feature segment to draw
-   *  @param highlight_feature If true draw an extra thick line
-   *  @param highlight_segment If true draw the segment with a doubly thick
-   *    line.
-   *  @param draw_feature_fill If true then just the solid block of colour
-   *    inside the segments will be drawn.  If false then only the feature
-   *    outline is drawn.
-   *  @param draw_arrow If true draw a direction arrow at the end of the
-   *    segment.
-   **/
-  private void drawSegment(Graphics g, FeatureSegment segment,
-                            boolean highlight_feature,
-                            boolean highlight_segment,
-                            boolean draw_feature_fill,
-                            boolean draw_arrow) 
-  {
-    // not on screen
-    if(!segmentVisible(segment)) 
-      return;
-
-    final Feature segment_feature = segment.getFeature();
-
-    final int vertical_offset = getSegmentVerticalOffset(segment) + 1;
-
-    int segment_start_coord = getSegmentStartCoord(segment);
-    int segment_end_coord = getSegmentEndCoord(segment);
-
-    final int segment_height = getFeatureHeight() - 1;
-
-    // this is 1 if the feature is on the forward strand or on a forward frame
-    // and -1 otherwise.  this used to draw the feature arrow in the right
-    // direction.
-    final int feature_direction;
-    if(segment.getFeature().isForwardFeature() ^ isRevCompDisplay()) 
-      feature_direction = 1;
-    else 
-      feature_direction = -1;
-
-    final int [] x_points = {
-      segment_start_coord, segment_end_coord,
-      segment_end_coord, segment_start_coord
-    };
-
-    final int [] y_points = {
-      vertical_offset, vertical_offset,
-      vertical_offset + segment_height, vertical_offset + segment_height
-    };
-
-    if(draw_feature_fill) 
-    {
-      final Color feature_colour = segment_feature.getColour();
-
-      // no colour means draw in white
-      if(feature_colour == null) 
-        g.setColor(Color.white);
-      else 
-        g.setColor(feature_colour);
-
-      if(segment_feature.isForwardFeature() ^ isRevCompDisplay()) 
-      {
-        final int segment_width = segment_end_coord - segment_start_coord + 1;
-
-        g.fillRect(segment_start_coord, vertical_offset,
-                    segment_width, segment_height + 1);
-      }
-      else
-      {
-        final int segment_width = segment_start_coord - segment_end_coord + 1;
-
-        g.fillRect(segment_end_coord, vertical_offset,
-                    segment_width, segment_height + 1);
-      }
-    }
-    else 
-    {
-      g.setColor(Color.black);
-      g.drawPolygon(x_points, y_points, 4);
-
-      if(highlight_feature)  // highlight selected features
-      {
-        // selected - highlight by drawing a thicker line
-
-        x_points[0] -= feature_direction; x_points[1] += feature_direction;
-        x_points[2] += feature_direction; x_points[3] -= feature_direction;
-        y_points[0] -= 1; y_points[1] -= 1;
-        y_points[2] += 1; y_points[3] += 1;
-        g.drawPolygon(x_points, y_points, 4);
-
-        x_points[0] -= feature_direction; x_points[1] += feature_direction;
-        x_points[2] += feature_direction; x_points[3] -= feature_direction;
-        y_points[0] -= 1; y_points[1] -= 1;
-        y_points[2] += 1; y_points[3] += 1;
-        g.drawPolygon(x_points, y_points, 4);
-
-        if(highlight_segment) {
-          x_points[0] -= feature_direction; x_points[1] += feature_direction;
-          x_points[2] += feature_direction; x_points[3] -= feature_direction;
-          y_points[0] -= 1; y_points[1] -= 1;
-          y_points[2] += 1; y_points[3] += 1;
-          g.drawPolygon(x_points, y_points, 4);
-
-          x_points[0] -= feature_direction; x_points[1] += feature_direction;
-          x_points[2] += feature_direction; x_points[3] -= feature_direction;
-          y_points[0] -= 1; y_points[1] -= 1;
-          y_points[2] += 1; y_points[3] += 1;
-          g.drawPolygon(x_points, y_points, 4);
-        }
-      }
-
-      if(draw_arrow)
-      {
-        // now draw the arrow point
-        final int arrow_tip_x =
-          x_points[1] + feature_direction * getFontWidth() * 8 / 10;
-        final int arrow_tip_y =(y_points[1] + y_points[2]) / 2;
-
-        g.drawLine(x_points[1], y_points[1], arrow_tip_x, arrow_tip_y);
-        g.drawLine(arrow_tip_x, arrow_tip_y, x_points[2], y_points[2]);
-      }
-    }
-  }
+ 
 
   /**
    *  Draw/highlight the selected range of bases on the FORWARD_STRAND or
@@ -3492,8 +3298,8 @@ public class FeatureDisplay extends EntryGroupPanel
     final int end_coord = getHighXPositionOfMarker(raw_end_base);
 
     // not on screen
-    if(start_coord > getCanvas().getSize().width &&
-        end_coord > getCanvas().getSize().width) 
+    if(start_coord > getSize().width &&
+       end_coord > getSize().width) 
       return;
 
     // not on screen
@@ -3580,11 +3386,11 @@ public class FeatureDisplay extends EntryGroupPanel
     if(end_coord < -1) 
       end_coord = -1;
 
-    if(end_coord > getCanvasWidth()) 
-      end_coord = getCanvasWidth();
+    if(end_coord > getWidth()) 
+      end_coord = getWidth();
 
-    if(start_coord > getCanvasWidth()) 
-      start_coord = getCanvasWidth();
+    if(start_coord > getWidth()) 
+      start_coord = getWidth();
 
     final int frame_line = getFrameDisplayLine(frame_id);
 
@@ -3636,14 +3442,20 @@ public class FeatureDisplay extends EntryGroupPanel
    **/
   private void addListeners() 
   {
-    getCanvas().addMouseListener(new MouseAdapter() 
+    addMouseListener(new MouseAdapter() 
     {
+      private FeaturePopup popup = null;
+
       /**
        *  Listen for mouse press events so that we can do popup menus and
        *  selection.
        **/
       public void mousePressed(MouseEvent event)
       {
+        // adjust for scrollbar 
+        if(scrollbar_style == SCROLLBAR_AT_TOP)
+          event.translatePoint(0,-scrollbar.getPreferredSize().height);
+
         // finish dragging if the user presses any other button because
         // we may not get a mouseReleased() call on some platforms
         if(click_segment_marker != null) 
@@ -3661,12 +3473,12 @@ public class FeatureDisplay extends EntryGroupPanel
 
         if(isMenuTrigger(event)) 
         {
-          final FeaturePopup popup =
-            new FeaturePopup(FeatureDisplay.this,
-                             getEntryGroup(),
-                             getSelection(),
-                             getGotoEventSource(),
-                             getBasePlotGroup());
+          if(popup == null)
+            popup = new FeaturePopup(FeatureDisplay.this,
+                                     getEntryGroup(),
+                                     getSelection(),
+                                     getGotoEventSource(),
+                                     getBasePlotGroup());
           final JComponent parent = (JComponent)event.getSource();
 
           parent.add(popup);
@@ -3679,6 +3491,10 @@ public class FeatureDisplay extends EntryGroupPanel
        **/
       public void mouseReleased(MouseEvent event) 
       {
+        // adjust for scrollbar
+        if(scrollbar_style == SCROLLBAR_AT_TOP)
+          event.translatePoint(0,-scrollbar.getPreferredSize().height);
+
         last_mouse_press_event = null;
 
         if(click_segment_marker != null) 
@@ -3690,17 +3506,21 @@ public class FeatureDisplay extends EntryGroupPanel
     });
 
     // Listen for mouse motion events so that we can select ranges of bases.
-    getCanvas().addMouseMotionListener(new MouseMotionAdapter() 
+    addMouseMotionListener(new MouseMotionAdapter() 
     {
       public void mouseDragged(MouseEvent event) 
       {
+        // adjust for scrollbar
+        if(scrollbar_style == SCROLLBAR_AT_TOP)
+          event.translatePoint(0,-scrollbar.getPreferredSize().height);
+
         if(last_mouse_press_event != null &&
-            !isMenuTrigger(last_mouse_press_event)) 
+           !isMenuTrigger(last_mouse_press_event)) 
           handleCanvasMouseDrag(event);
       }
     });
 
-    getCanvas().addKeyListener(new KeyAdapter() 
+    addKeyListener(new KeyAdapter() 
     {
       public void keyPressed(final KeyEvent event) 
       {
@@ -3718,14 +3538,14 @@ public class FeatureDisplay extends EntryGroupPanel
     if(event.getID() != MouseEvent.MOUSE_PRESSED) 
       return;
 
-    getCanvas().requestFocus();
+    requestFocus();
 
     if(event.getClickCount() == 2) 
       handleCanvasDoubleClick(event);
     else
       handleCanvasSingleClick(event);
 
-    getCanvas().repaint();
+    repaint();
   }
 
   /**
@@ -3739,7 +3559,6 @@ public class FeatureDisplay extends EntryGroupPanel
     if((event.getModifiers() & InputEvent.BUTTON2_MASK) != 0 ||
         event.isAltDown()) 
     {
-
       final Selectable clicked_thing = getThingAtPoint(event.getPoint());
 
       if(clicked_thing == null) 
@@ -3771,7 +3590,7 @@ public class FeatureDisplay extends EntryGroupPanel
         if(Options.readWritePossible()) 
           new FeatureEdit(clicked_feature, getEntryGroup(),
                            getSelection(),
-                           getGotoEventSource()).show();
+                           getGotoEventSource()).setVisible(true);
       }
     }
 
@@ -3837,7 +3656,6 @@ public class FeatureDisplay extends EntryGroupPanel
 
       getSelection().setMarkerRange(new_selection_range);
       click_range = new_selection_range;
-
     }  
     else
     {
@@ -3918,7 +3736,7 @@ public class FeatureDisplay extends EntryGroupPanel
       }
 
       if(Options.getOptions().canDirectEdit() &&
-          !clicked_feature.isReadOnly()) 
+         !clicked_feature.isReadOnly()) 
       {
         // check to see if the click was on a marker, the second argument is
         // false because we want the range to cover just one base
@@ -3970,10 +3788,10 @@ public class FeatureDisplay extends EntryGroupPanel
   private Feature getFeatureOf(final Object object) 
   {
     if(object instanceof Feature) 
-      return(Feature) object;
+      return (Feature)object;
     else 
       // object must be a FeatureSegment
-      return((FeatureSegment) object).getFeature();
+      return ((FeatureSegment)object).getFeature();
   }
 
   /**
@@ -4026,7 +3844,7 @@ public class FeatureDisplay extends EntryGroupPanel
   private void handleCanvasMouseDrag(final MouseEvent event)
   {
     if(event.isShiftDown() &&
-        getSelection().getAllFeatures().size() > 0) 
+       getSelection().getAllFeatures().size() > 0) 
       return;
 
     if(click_segment_marker != null) 
@@ -4045,7 +3863,7 @@ public class FeatureDisplay extends EntryGroupPanel
     // if the start and current positions of the drag are not on the
     // same Strand then ignore this event
     if(selected_range != null &&
-        drag_range.getStrand() != selected_range.getStrand()) 
+       drag_range.getStrand() != selected_range.getStrand()) 
       return;
 
     try 
@@ -4067,7 +3885,7 @@ public class FeatureDisplay extends EntryGroupPanel
     }
 
     final boolean start_base_is_visible = baseVisible(drag_range.getStart());
-    final boolean end_base_is_visible = baseVisible(drag_range.getEnd());
+    final boolean end_base_is_visible   = baseVisible(drag_range.getEnd());
 
     if(!start_base_is_visible) 
       makeBaseVisible(drag_range.getStart());
@@ -4088,7 +3906,7 @@ public class FeatureDisplay extends EntryGroupPanel
 
     getSelection().setMarkerRange(new_marker_range);
 
-    getCanvas().repaint();
+    repaint();
   }
 
   /**
@@ -4125,9 +3943,9 @@ public class FeatureDisplay extends EntryGroupPanel
           // the start and end positions of the segment
 
           if(p.x >= getSegmentStartCoord(current_segment) &&
-              p.x <= getSegmentEndCoord(current_segment) ||
-              p.x <= getSegmentStartCoord(current_segment) &&
-              p.x >= getSegmentEndCoord(current_segment)) 
+             p.x <= getSegmentEndCoord(current_segment) ||
+             p.x <= getSegmentStartCoord(current_segment) &&
+             p.x >= getSegmentEndCoord(current_segment)) 
           {
             final Feature segment_feature = current_segment.getFeature();
 
@@ -4151,6 +3969,7 @@ public class FeatureDisplay extends EntryGroupPanel
   private void createScrollbar(final boolean scrollbar_at_top) 
   {
     scrollbar = new JScrollBar(Scrollbar.HORIZONTAL);
+     
     scrollbar.addAdjustmentListener(new AdjustmentListener() 
     {
       public void adjustmentValueChanged(AdjustmentEvent e) 
@@ -4167,21 +3986,23 @@ public class FeatureDisplay extends EntryGroupPanel
               left_edge_base = getSequenceLength();
           }
 
-          fireAdjustmentEvent(DisplayAdjustmentEvent.SCROLL_ADJUST_EVENT);
-
           needVisibleFeatureVectorUpdate();
-          getCanvas().repaint();
+          fireAdjustmentEvent(DisplayAdjustmentEvent.SCROLL_ADJUST_EVENT);
+          repaint();
         }
       }
     });
 
+    Box box = Box.createHorizontalBox();
+    box.add(scrollbar);
+
+    if(UIManager.getLookAndFeel().getName().equals("Mac OS X Aqua"))
+      box.add(Box.createHorizontalStrut(scrollbar.getPreferredSize().height));
+
     if(scrollbar_at_top) 
-      getMidPanel().add(scrollbar, "North");
+      add(box, "North");
     else 
-      getMidPanel().add(scrollbar, "South");
-    
-    fixScrollbar();
-    fireAdjustmentEvent(DisplayAdjustmentEvent.ALL_CHANGE_ADJUST_EVENT);
+      add(box, "South");
   }
 
   /**
@@ -4224,10 +4045,11 @@ public class FeatureDisplay extends EntryGroupPanel
     // deadlock
     synchronized(this) 
     {
-      targets =(Vector) listeners.clone();
+      targets = (Vector)listeners.clone();
     }
 
-    for(int i = 0; i < targets.size(); ++i) 
+    final int targets_size = targets.size();
+    for(int i = 0; i < targets_size; ++i) 
     {
       ChangeListener change_listener = (ChangeListener)targets.elementAt(i);
 
@@ -4275,7 +4097,6 @@ public class FeatureDisplay extends EntryGroupPanel
       return;
 
     final int sequence_length = getSequenceLength();
-
     final int max_visible_bases;
 
     // make sure max_visible_bases is at least 1 to stop setBlockIncrement()
@@ -4305,21 +4126,26 @@ public class FeatureDisplay extends EntryGroupPanel
    **/
   private void fixCanvasSize() 
   {
-    final int new_width  = getCanvas().getSize().width;
-    final int new_height = getLineHeight() * getLineCount();
+    int new_width  = getSize().width;
+    int new_height = getFontHeight() * getLineCount();
 
-    if(new_height != getCanvas().getSize().width ||
-        new_width != getCanvas().getSize().height) 
+    if(scale_changer != null)
+      new_width  += scale_changer.getPreferredSize().height;
+    if(scrollbar != null)
+      new_height += scrollbar.getPreferredSize().height;
+
+    if(new_height != getSize().width ||
+        new_width != getSize().height) 
     {
       final Dimension preferred_size =
-        new Dimension(getCanvas().getSize().width, new_height);
-      getCanvas().setPreferredSize(preferred_size);
+        new Dimension(getSize().width, new_height);
+      setPreferredSize(preferred_size);
 
       final Dimension minimum_size = new Dimension(1, new_height);
-      getCanvas().setMinimumSize(minimum_size);
+      setMinimumSize(minimum_size);
 
-      getCanvas().revalidate();
-      getCanvas().repaint();
+      revalidate();
+//    repaint();
     }
   }
 
@@ -4347,17 +4173,8 @@ public class FeatureDisplay extends EntryGroupPanel
         scrollbar.setValue(new_position);
       
       needVisibleFeatureVectorUpdate();
-      getCanvas().repaint();
+      repaint();
     }
-  }
-
-  /**
-   *  Return the height each line of the display should be.  Each frame will
-   *  be drawn into one line.
-   **/
-  private int getLineHeight() 
-  {
-    return getFontHeight();
   }
 
   /**
@@ -4365,7 +4182,7 @@ public class FeatureDisplay extends EntryGroupPanel
    *  than or equal to zero than controls the number of bases that can appear
    *  on screen.  See getScaleValue().
    **/
-  public int getScaleFactor() 
+  protected int getScaleFactor() 
   {
     return scale_factor;
   }
@@ -4392,16 +4209,23 @@ public class FeatureDisplay extends EntryGroupPanel
       return REVERSE_STRAND;
   }
 
+
+  protected int getDisplayWidth()
+  {
+    return getWidth() - scale_changer.getWidth();
+  }
+
+
   /**
    *  Return the display line that contains the given point, or -1 if
    *  the point is off screen.
    **/
   private int getLineFromPoint(final Point point) 
   {
-    if(point.y >= getCanvasHeight()) 
+    if(point.y >= getHeight() - scrollbar.getHeight()) 
       return -1;
 
-    final int return_value = point.y / getLineHeight();
+    final int return_value = point.y / getFontHeight();
 
     if(return_value < 0)
       return -1;
@@ -4441,9 +4265,9 @@ public class FeatureDisplay extends EntryGroupPanel
         final int line_height;
 
         if(show_labels) 
-          line_height = getLineHeight() * 2;
+          line_height = getFontHeight() * 2;
         else 
-          line_height = getLineHeight();
+          line_height = getFontHeight();
 
         if(point.y >= top_of_line &&
            point.y < top_of_line + line_height) 
@@ -4463,7 +4287,7 @@ public class FeatureDisplay extends EntryGroupPanel
    *  the sequence length.  If hard_left_edge is true this method will always
    *  return the same as getForwardBaseAtLeftEdge*(.
    **/
-  public int getFirstVisibleForwardBase() 
+  protected int getFirstVisibleForwardBase() 
   {
     if(left_edge_base < 1) 
       return 1;
@@ -4478,7 +4302,7 @@ public class FeatureDisplay extends EntryGroupPanel
    *  being display in the forward direction will be the reverse strand if
    *  rev_comp_display is true.
    **/
-  public int getForwardBaseAtLeftEdge() 
+  protected int getForwardBaseAtLeftEdge() 
   {
     return left_edge_base;
   }
@@ -4512,7 +4336,7 @@ public class FeatureDisplay extends EntryGroupPanel
    *  edge of the canvas.  The number returned will always be > 1 and < the
    *  sequence length.
    **/
-  public int getLastVisibleForwardBase() 
+  protected int getLastVisibleForwardBase() 
   {
     final int possible_last_base =
      (int)(getForwardBaseAtLeftEdge() + getMaxVisibleBases());
@@ -4575,7 +4399,7 @@ public class FeatureDisplay extends EntryGroupPanel
    *  -(scale_factor - 1), except for a scale_factor of zero which gives a
    *  scale value of font_width.
    **/
-  float getScaleValue() 
+  protected float getScaleValue() 
   {
     return scale_value;
   }
@@ -4585,7 +4409,7 @@ public class FeatureDisplay extends EntryGroupPanel
    **/
   private int getFeatureHeight() 
   {
-    // don't use getLineHeight() because we want a nice space between
+    // we want a nice space between
     // frames/lines
     return getFontAscent() + 2;
   }
@@ -4594,9 +4418,9 @@ public class FeatureDisplay extends EntryGroupPanel
    *  Return the number of bases we can fit on screen at once, ie the number
    *  that will fit side by side on the canvas.
    **/
-  public int getMaxVisibleBases() 
+  protected int getMaxVisibleBases() 
   {
-    return(int)(getCanvasWidth() / getScaleValue());
+    return (int)(getWidth()/getScaleValue());
   }
 
   /**
@@ -4626,17 +4450,17 @@ public class FeatureDisplay extends EntryGroupPanel
    *  Scroll and scale the display so that the given first base is at the left
    *  edge of the screen and the given last base is at the right edge.
    **/
-  public void setFirstAndLastBase(final int first, final int last) 
+  protected void setFirstAndLastBase(final int first, final int last) 
   {
     left_edge_base = first;
-    setScaleValue(1.0F * getCanvasWidth() /(last - first + 1));
+    setScaleValue(1.0F * getWidth() /(last - first + 1));
   }
 
   /**
    *  Scroll the display so that the given first base is at the left edge of
    *  the screen.
    **/
-  public void setFirstBase(int base_position) 
+  protected void setFirstBase(int base_position) 
   {
     if(base_position > getSequenceLength()) 
       base_position = getSequenceLength();
@@ -4670,7 +4494,7 @@ public class FeatureDisplay extends EntryGroupPanel
 
     fixScrollbar();
     needVisibleFeatureVectorUpdate();
-    getCanvas().repaint();
+    repaint();
     fireAdjustmentEvent(DisplayAdjustmentEvent.SCALE_ADJUST_EVENT);
   }
 
@@ -4697,5 +4521,245 @@ public class FeatureDisplay extends EntryGroupPanel
   {
     update_visible_features = true;
   }
+
+
+////////////////////
+// DRAG AND DROP
+////////////////////
+
+  /**
+  *
+  *  Read an entry from a remote file node (ssh)
+  *
+  **/
+  private void readAnEntryFromRemoteFileNode(final RemoteFileNode node)
+  {
+    SwingWorker entryWorker = new SwingWorker()
+    {
+      public Object construct()
+      {
+        try
+        {
+          EntryInformation new_entry_information =
+             new SimpleEntryInformation(Options.getArtemisEntryInformation());
+
+          final Entry entry =  new Entry(getEntryGroup().getBases(),
+                           EntryFileDialog.getEntryFromFile(null,
+                           new RemoteFileDocument(node),
+                           new_entry_information, true));
+          if(entry != null)
+            getEntryGroup().add(entry);
+        }
+        catch(final OutOfRangeException e)
+        {
+          new MessageDialog(null,
+                         "read failed: one of the features " +
+                         "in the entry has an out of " +
+                         "range location: " +
+                         e.getMessage());
+        }
+        return null;
+      }
+    };
+    entryWorker.start();
+  }
+
+
+  /**
+   *  Read an entry
+   **/
+  private void readAnEntryFromFile(final File file,
+                                   final EntryGroup entry_group)
+  {
+    SwingWorker entryWorker = new SwingWorker()
+    {
+      public Object construct()
+      {
+        try
+        {
+          EntryInformation new_entry_information =
+             new SimpleEntryInformation(Options.getArtemisEntryInformation());
+
+          final Entry new_entry =  new Entry(entry_group.getBases(),
+                         EntryFileDialog.getEntryFromFile(null,
+                          new FileDocument(file),
+                          new_entry_information, true));
+
+          if(new_entry != null)
+            entry_group.add(new_entry);
+        }
+        catch(final OutOfRangeException e)
+        {
+          new MessageDialog(null,
+                         "read failed: one of the features " +
+                         "in the entry has an out of " +
+                         "range location: " +
+                         e.getMessage());
+        }
+        return null;
+      }
+    };
+    entryWorker.start();
+  }
+
+  protected static Vector getContigKeys()
+  {
+    Vector contig_keys = new Vector(3);
+    contig_keys.add("fasta_record");
+    contig_keys.add("contig");
+    contig_keys.add("insertion_gap");
+    
+    return contig_keys;
+  }
+
+  /**
+  *
+  */
+  protected FeatureVector getContigs()
+  {
+    FeatureVector contig_features = new FeatureVector();
+    // find all fasta_record features
+    Vector contigKeys = getContigKeys();
+    final FeaturePredicate key_predicate_contig[]
+           =  new FeatureKeyQualifierPredicate[contigKeys.size()];
+
+    for(int i=0; i<contigKeys.size(); i++)
+      key_predicate_contig[i] = new FeatureKeyQualifierPredicate(
+                                             new Key((String)contigKeys.get(i)),
+                                             null, // match any qialifier
+                                             false);
+
+    final FeatureEnumeration test_enumerator = getEntryGroup().features();
+    contig_features = new FeatureVector();
+
+    while(test_enumerator.hasMoreFeatures())
+    {
+      final Feature this_feature = test_enumerator.nextFeature();
+
+      for(int i=0; i<contigKeys.size(); i++)
+      {
+        if(key_predicate_contig[i].testPredicate(this_feature))
+          contig_features.add(this_feature);
+      }
+    }
+    return contig_features;
+  }
+
+  
+// drop
+  protected static Border dropBorder = new BevelBorder(BevelBorder.LOWERED);
+
+  private void getNearestFeatureEnd(Point loc)
+  {
+    final int base_pos = getBasePositionOfPoint(loc, FORWARD_STRAND);
+    FeatureVector features_from_entry = getVisibleFeatures();   
+    int first;
+    int last;
+    Vector contig_keys = getContigKeys();
+
+    for(int i = 0; i < features_from_entry.size(); i++)
+    {
+      final Feature this_feature = features_from_entry.elementAt(i);
+
+      if(contig_keys.contains(this_feature.getKey()))
+      {
+        first = this_feature.getRawFirstBase();
+        last  = this_feature.getRawLastBase();
+ 
+        if( Math.abs(first - base_pos) < Math.abs(base_pos - highlight_drop_base) )
+          highlight_drop_base = first;
+        if( Math.abs(last - base_pos) < Math.abs(base_pos - highlight_drop_base) )
+          highlight_drop_base = last+1;
+      }
+    }
+  }
+
+  public void drop(DropTargetDropEvent e)
+  {
+    Transferable t = e.getTransferable();
+    try
+    {
+      if(t.isDataFlavorSupported(FileNode.FILENODE))
+      {
+        FileNode fn = (FileNode)t.getTransferData(FileNode.FILENODE);
+        readAnEntryFromFile(fn.getFile(), getEntryGroup());
+      }
+      else if(t.isDataFlavorSupported(RemoteFileNode.REMOTEFILENODE))
+      {
+        final RemoteFileNode node =
+            (RemoteFileNode)t.getTransferData(RemoteFileNode.REMOTEFILENODE);
+        readAnEntryFromRemoteFileNode(node);
+      }
+      else if(e.isDataFlavorSupported(DataFlavor.stringFlavor))
+      {
+        final FeatureVector selected_features = getSelection().getAllFeatures();
+        if(selected_features.size() > 1)
+          return;
+ 
+//        reorder(highlight_drop_base, selected_features.elementAt(0));       // rearrange contigs
+      }
+      else
+        e.rejectDrop();
+    }
+    catch(UnsupportedFlavorException ufe)
+    {
+      ufe.printStackTrace();
+    }
+    catch(IOException ioe)
+    {
+      ioe.printStackTrace();
+    }
+    finally
+    {
+      highlight_drop_base = -1;
+      setBorder(null);
+    }
+  }
+
+  public void dragExit(DropTargetEvent e)
+  {
+    highlight_drop_base = -1;
+    setBorder(null);
+    repaint();
+  }
+
+  public void dropActionChanged(DropTargetDragEvent e) {}
+
+  public void dragOver(DropTargetDragEvent e)
+  {
+    if(e.isDataFlavorSupported(FileNode.FILENODE))
+    {
+      setBorder(dropBorder);
+      e.acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE);
+      return;
+    }
+    else if(e.isDataFlavorSupported(DataFlavor.stringFlavor))
+    {
+      Point ploc = e.getLocation();
+      getNearestFeatureEnd(ploc);
+      repaint();
+    }
+    else
+      e.rejectDrag();
+  }
+
+  public void dragEnter(DropTargetDragEvent e)
+  {
+    if(e.isDataFlavorSupported(FileNode.FILENODE))
+      e.acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE);
+  }
+
+
+  public void dragDropEnd(DragSourceDropEvent e) {}
+  public void dragEnter(DragSourceDragEvent e) 
+  {
+  }
+
+  public void dragExit(DragSourceEvent e) 
+  {
+    highlight_drop_base = -1;
+  }
+  public void dragOver(DragSourceDragEvent e) {}
+  public void dropActionChanged(DragSourceDragEvent e) {}
 
 }

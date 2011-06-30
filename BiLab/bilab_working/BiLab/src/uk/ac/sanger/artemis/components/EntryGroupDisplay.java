@@ -20,14 +20,13 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * $Header: /cvsroot/pathsoft/artemis/uk/ac/sanger/artemis/components/EntryGroupDisplay.java,v 1.1 2004/06/09 09:46:29 tjc Exp $
+ * $Header: /cvsroot/pathsoft/artemis/uk/ac/sanger/artemis/components/EntryGroupDisplay.java,v 1.3 2005/08/05 12:26:25 tjc Exp $
  */
 
 package uk.ac.sanger.artemis.components;
 
 import uk.ac.sanger.artemis.*;
-import java.awt.FlowLayout;
-import java.awt.Color;
+import java.awt.*;
 import java.awt.event.*;
 import java.util.Vector;
 
@@ -38,7 +37,7 @@ import javax.swing.*;
  *  objects in an EntryGroup.
  *
  *  @author Kim Rutherford
- *  @version $Id: EntryGroupDisplay.java,v 1.1 2004/06/09 09:46:29 tjc Exp $
+ *  @version $Id: EntryGroupDisplay.java,v 1.3 2005/08/05 12:26:25 tjc Exp $
  **/
 
 public class EntryGroupDisplay extends JPanel
@@ -83,7 +82,7 @@ public class EntryGroupDisplay extends JPanel
     entry_group.addEntryGroupChangeListener(this);
     entry_group.addEntryChangeListener(this);
 
-    final FlowLayout flow_layout = new FlowLayout(FlowLayout.LEFT); 
+    final FlowLayout flow_layout = new FlowLayout(FlowLayout.LEFT,2,1); 
 
     label = new JLabel("Entry: ");
 
@@ -91,6 +90,13 @@ public class EntryGroupDisplay extends JPanel
     refreshButtons();
     
     setBackground(background_colour);
+  }
+
+ 
+  protected void printComponent(Graphics g)
+  {
+    super.paintComponent(g);
+    super.printChildren(g);
   }
 
 

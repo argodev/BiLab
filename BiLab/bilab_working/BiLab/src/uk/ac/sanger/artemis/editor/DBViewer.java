@@ -47,16 +47,22 @@ public class DBViewer extends ScrollPanel
   private boolean colourByScore = false;
   /** popup menu */
   private JPopupMenu popup;
-  /** number height */
-  private int hgtNumber;
   /** scroll bar this panel sits in */ 
   private JScrollPane jsp;
   /** initial scale */
   private float scale = 1.f;
   /** blast/fasta results text view */
   private FastaTextPane fastaTextPane;
-
-
+  /** ruler */
+  private JPanel ruler;
+ 
+  /**
+  *
+  * Database results graphical viewer.
+  * @param fastaTextPane    fasta/blast parser
+  * @param jsp          scroll pane to add this object to
+  *
+  */
   public DBViewer(FastaTextPane fastaTextPane, final JScrollPane jsp)
   {
     super();
@@ -67,9 +73,8 @@ public class DBViewer extends ScrollPanel
     hitInfoCollection = fastaTextPane.getHitCollection();
     qlen = fastaTextPane.getQueryLength();
     
-    Dimension d = new Dimension(500,
-                               (hitInfoCollection.size()*ydisp)+(6*bound));
-    setPreferredSize(d);
+    Dimension dsize = new Dimension(500, (hitInfoCollection.size()*ydisp)+(6*bound));
+    setPreferredSize(dsize);
     setToolTipText("");   //enable tooltip display
 
     Enumeration enumHits = hitInfoCollection.elements();
@@ -180,7 +185,7 @@ public class DBViewer extends ScrollPanel
   /**
   *
   * Set the scale to zoom in/out by.
-  * @param scale 	scale to zoom in/out by.
+  * @param scale    scale to zoom in/out by.
   *
   */
   protected void setZoom(float new_scale)
@@ -190,7 +195,67 @@ public class DBViewer extends ScrollPanel
     double width = d.getWidth()*new_scale;
     d = new Dimension((int)width,(int)d.getHeight());
     setPreferredSize(d);
+    ruler.setPreferredSize(new Dimension((int)width,25));
+    ruler.repaint();
     jsp.setViewportView(this);
+  }
+
+
+  /**
+  *
+  * Get the ruler
+  *
+  */
+  protected JPanel getRuler()
+  {
+    ruler = new JPanel()
+    {
+      public void paintComponent(Graphics g)
+      {
+        super.paintComponent(g);
+        Font font = new Font("monospaced",Font.PLAIN,10);
+        g.setFont(font);
+        FontMetrics metrics = g.getFontMetrics();
+        int hgtNumber = metrics.getAscent();
+
+        Graphics2D g2   = (Graphics2D)g;
+        int resultwidth = (int)getPreferredSize().getWidth()-(2*bound);
+        g2.setColor(Color.black);
+        g2.setStroke(new BasicStroke(3.f));
+        g2.drawLine(bound,bound+hgtNumber,bound+resultwidth,bound+hgtNumber);
+
+// draw ruler
+        g2.setStroke(new BasicStroke(2.f));
+        g2.drawLine(bound,bound+hgtNumber,bound,bound+hgtNumber-6);
+        g2.drawString("0",bound,hgtNumber+3);
+
+        Point viewPos    = jsp.getViewport().getViewPosition();
+        Dimension extent = jsp.getViewport().getExtentSize();
+
+        int npoints   = (int)(scale*10);
+        int unit      = (int)(resultwidth/npoints);
+        int blastUnit = qlen/npoints;
+
+        for(int i=1; i<npoints; i++)
+        {    
+          String strPos = Integer.toString(i*blastUnit);
+          int strwid = metrics.stringWidth(strPos);
+
+          g2.drawLine(bound+(unit*i), bound+hgtNumber,
+                      bound+(unit*i), bound+hgtNumber-6);
+          g2.drawString(strPos,bound+(unit*i)-strwid,hgtNumber+3);
+        }
+
+        String strQlen = Integer.toString(qlen);
+        int strwid = metrics.stringWidth(strQlen);
+
+        g2.drawLine(bound+resultwidth,bound+hgtNumber,
+                    bound+resultwidth,bound+hgtNumber-6);
+        g2.drawString(strQlen,bound+resultwidth-strwid,hgtNumber+3);
+      }
+    };
+    ruler.setPreferredSize(new Dimension(getPreferredSize().width,25));
+    return ruler;
   }
 
 
@@ -208,48 +273,18 @@ public class DBViewer extends ScrollPanel
     Font font = new Font("monospaced",Font.PLAIN,10);
     g.setFont(font);
     FontMetrics metrics = g.getFontMetrics();
-    hgtNumber = metrics.getAscent();
 
     Graphics2D g2   = (Graphics2D)g;
     int resultwidth = (int)getPreferredSize().getWidth()-(2*bound);
     g2.setColor(Color.black);
-    g2.setStroke(new BasicStroke(3.f));
-    g2.drawLine(bound,bound+hgtNumber,bound+resultwidth,bound+hgtNumber);
-
-// draw ruler
-    g2.setStroke(new BasicStroke(2.f));
-    g2.drawLine(bound,bound+hgtNumber,bound,bound+hgtNumber-6);
-    g2.drawString("0",bound,hgtNumber+3);
-
-    Point viewPos    = jsp.getViewport().getViewPosition();
-    Dimension extent = jsp.getViewport().getExtentSize();
-
-    int npoints   = (int)(scale*10);
-    int unit      = (int)(resultwidth/npoints);
-    int blastUnit = qlen/npoints;
-
-    for(int i=1; i<npoints; i++)
-    {
-      String strPos = Integer.toString(i*blastUnit);
-      int strwid = metrics.stringWidth(strPos);
-
-      g2.drawLine(bound+(unit*i), bound+hgtNumber,
-                  bound+(unit*i), bound+hgtNumber-6);
-      g2.drawString(strPos,bound+(unit*i)-strwid,hgtNumber+3);
-    }
-
-    String strQlen = Integer.toString(qlen);
-    int strwid = metrics.stringWidth(strQlen);
-
-    g2.drawLine(bound+resultwidth,bound+hgtNumber,bound+resultwidth,bound+hgtNumber-6);
-    g2.drawString(strQlen,bound+resultwidth-strwid,hgtNumber+3);
+    g2.setStroke(new BasicStroke(1.f));
 
 // draw hits
-    int ypos = bound+ydisp+hgtNumber;
+    int ypos = 0;
+    float hit_unit = (float)resultwidth/(float)qlen;
     Enumeration enumHits = hitInfoCollection.elements();
     while(enumHits.hasMoreElements())
     {
-      ypos += ydisp;
       HitInfo hit = (HitInfo)enumHits.nextElement();
  
       if(colourByScore)
@@ -274,13 +309,22 @@ public class DBViewer extends ScrollPanel
           g2.setColor(Color.cyan);
       }
 
-      g2.setStroke(new BasicStroke(1.f));
- 
-      float hit_unit = (float)resultwidth/(float)qlen;     
-      int start = (int)(bound+(hit_unit*hit.getQueryStart()));
-      int end   = (int)(bound+(hit_unit*hit.getQueryEnd()));
-      g2.drawLine(start,bound+ypos,end,bound+ypos);
+//    g2.setStroke(new BasicStroke(1.f));
+//    float hit_unit = (float)resultwidth/(float)qlen;    
 
+  //    Vector queryPosition = hit.getQueryPosition();
+       
+  //    if(queryPosition.size() == 0)
+        continue;
+
+  //    for(int i=0; i<queryPosition.size(); i+=2)
+  //    {
+  //      int start = (int)(bound+(hit_unit*((Integer)queryPosition.elementAt(i)).intValue()));
+  //      int end   = (int)(bound+(hit_unit*((Integer)queryPosition.elementAt(i+1)).intValue()));
+  //      g2.drawLine(start,bound+ypos,end,bound+ypos);
+  //    }
+
+   //   ypos += ydisp;
 //    System.out.println(hit.getID()+" "+hit.getQueryStart()+" -> "+hit.getQueryEnd()+
 //                       " start "+start+" end "+end+" resultwidth "+resultwidth);
 //                       ", E = "+hit.getEValue()+"  Length = "+hit.getQueryLength());
@@ -309,7 +353,8 @@ public class DBViewer extends ScrollPanel
         maybeShowPopup(e);
       else if(e.getClickCount() == 2)
       {
-        int seqPos = (int)((e.getY()-bound-ydisp-bound-ydisp-hgtNumber)/ydisp);
+//      int seqPos = (int)((e.getY()-bound-ydisp-bound-ydisp-hgtNumber)/ydisp);
+        int seqPos = (int)((e.getY()-bound)/ydisp);
         HitInfo hit = (HitInfo)hitInfoCollection.get(seqPos);
         fastaTextPane.show(hit);
       }
@@ -339,13 +384,20 @@ public class DBViewer extends ScrollPanel
   public String getToolTipText(MouseEvent e)
   {
     Point loc = e.getPoint();
-    int seqPos = (int)((loc.y-bound-ydisp-bound-ydisp-hgtNumber)/ydisp);
+//  int seqPos = (int)((loc.y-bound-ydisp-bound-ydisp-hgtNumber)/ydisp);
+    int seqPos = (int)((loc.y-bound)/ydisp);
 
     if(seqPos >= 0 && seqPos<hitInfoCollection.size())
     {
       HitInfo hit = (HitInfo)hitInfoCollection.get(seqPos);
-      return hit.getID()+"\n"+hit.getOrganism()+"\nE-value:"+hit.getEValue()+
-             " Score:"+hit.getScore();
+
+      StringBuffer tip = new StringBuffer();
+      tip.append(hit.getID()+"\n");
+      if(hit.getOrganism() != null)
+        tip.append(hit.getOrganism()+"\n");
+      tip.append("E-value:"+hit.getEValue()+" Score:"+hit.getScore());
+
+      return tip.toString();
     }
     return null;
   }

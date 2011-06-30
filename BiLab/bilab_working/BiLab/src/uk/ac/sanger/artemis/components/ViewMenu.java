@@ -144,21 +144,8 @@ public class ViewMenu extends SelectionMenu {
       }
     });
 
-    forward_overview_item = new JMenuItem ("Show Forward Strand Overview");
-    forward_overview_item.addActionListener (new ActionListener () {
-      public void actionPerformed (ActionEvent event) {
-        new EntryGroupInfoDisplay (getParentFrame (), entry_group,
-                                   EntryGroupInfoDisplay.FORWARD);
-      }
-    });
+    
 
-    reverse_overview_item = new JMenuItem ("Show Reverse Strand Overview");
-    reverse_overview_item.addActionListener (new ActionListener () {
-      public void actionPerformed (ActionEvent event) {
-        new EntryGroupInfoDisplay (getParentFrame (), entry_group,
-                                   EntryGroupInfoDisplay.REVERSE);
-      }
-    });
 
     view_cds_item = new JMenuItem ("Show CDS Genes And Products");
     view_cds_item.addActionListener (new ActionListener () {

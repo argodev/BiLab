@@ -69,7 +69,7 @@
             class="bilab.BrowserView"
             icon="icons/sample.gif"
             category="bilab.Global"
-            name="HTML Viewer"
+            name="Help Viewer"
             id="bilab.BrowserView"/>
    </extension>
    <extension 

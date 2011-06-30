@@ -2,7 +2,7 @@
 
 # (Note that comment lines start with a hash (#) symbol)
 
-# $Header: /cvsroot/pathsoft/artemis/etc/options,v 1.10 2004/08/09 14:32:39 tjc Exp $
+# $Header: //tmp/pathsoft/artemis/etc/options,v 1.73 2009-08-06 16:15:19 tjc Exp $
 
 # This file should contain option settings that look like this:
 #
@@ -39,13 +39,44 @@ direct_edit = yes
 
 # This setting controls which set of codons will be used for start codons.
 # This can be changed from the options menu.
-# There are two possible settings: eukaryote or prokaryote
-organism_type = eukaryote
+# Give the translation table number.
+#
+genetic_code_default = 1
 
 # This option gives the bases of the possible start codons
 eukaryotic_start_codons = atg
 prokaryotic_start_codons = atg gtg ttg
 
+
+#
+# Genetic Codes :
+# http://www.ncbi.nlm.nih.gov/Taxonomy/Utils/wprintgc.cgi?mode=c
+#
+
+genetic_codes = \
+     Standard \
+     Vertebrate_Mitochondrial \
+     Yeast_Mitochondrial \
+     Mold,_Protozoan,_Coelenterate_Mitochondrial_and_Mycoplasma/Spiroplasma \
+     Invertebrate_Mitochondrial \
+     Ciliate_Dasycladacean_and_Hexamita \
+     - \
+     - \
+     Echinoderm_Flatworm_Mitochondrial \
+     Euplotid \
+     Bacterial_and_Plant_Plastid \
+     Alternative_Yeast_Nuclear \
+     Ascidian_Mitochondrial \
+     Alternative_Flatworm_Mitochondrial \
+     Blepharisma_Nuclear \
+     Chlorophycean_Mitochondrial \
+     - \
+     - \
+     - \
+     - \
+     Trematode_Mitochondrial \
+     Scenedesmus_Obliquus_Mitochondrial \
+     Thraustochytrium_Mitochondrial
 
 # The translation_table option is used to lookup codon translations.  The
 # table must have exactly 64 entries, and there is one entry for each codon.
@@ -54,52 +85,142 @@ prokaryotic_start_codons = atg gtg ttg
 #   TCT, TCC, ...,
 #   ...
 
-# this is the default table:
-#
-# translation_table = \
-#     f f l l \
-#     s s s s \
-#     y y # + \
-#     c c * w \
-#             \
-#     l l l l \
-#     p p p p \
-#     h h q q \
-#     r r r r \
-#             \
-#     i i i m \
-#     t t t t \
-#     n n k k \
-#     s s r r \
-#             \
-#     v v v v \
-#     a a a a \
-#     d d e e \
-#     g g g g
+# 1. standard code (default)
+translation_table_1 = \
+     F F L L \
+     S S S S \
+     Y Y # + \
+     C C * W \
+             \
+     L L L L \
+     P P P P \
+     H H Q Q \
+     R R R R \
+             \
+     I I I M \
+     T T T T \
+     N N K K \
+     S S R R \
+             \
+     V V V V \
+     A A A A \
+     D D E E \
+     G G G G
 
-# this is the eukaryotic mitochondrial table:
-#
-# translation_table = \
-#     f f l l \
-#     s s s s \
-#     y y * * \
-#     c c w w \
-#             \
-#     l l l l \
-#     p p p p \
-#     h h q q \
-#     r r r r \
-#             \
-#     i i m m \
-#     t t t t \
-#     n n k k \
-#     s s * * \
-#             \
-#     v v v v \
-#     a a a a \
-#     d d e e \
-#     g g g g
+start_codons_1 = atg
 
+#
+# For the following Genetic Code tables the differences
+# from the Standard Code are given.
+#
+#
+# 2. Vertebrate Mitochondrial Code
+#
+translation_table_2 = \
+      aga* agg* atam tgaw
+ 
+start_codons_2 = atg      
+#start_codons_2_bos = ata
+#start_codons_2_homo = ata att
+#start_codons_2_mus = ata att atc
+#start_codons_2_coturnix_gallus = gtg 
+
+# 3. Yeast Mitochondrial Code
+translation_table_3 = \
+      atam cttt ctct ctat ctgt tgaw
+
+start_codons_3 = ata atg
+
+# 4. Mold, Protozoan, and Coelenterate Mitochondrial Code and the
+#    Mycoplasma/Spiroplasma Code 
+translation_table_4 = \
+      tgaw
+
+start_codons_4 = atg
+
+#start_codons_4_Trypanosoma = tta ttg ctg
+#start_codons_4_Leishmania = att ata
+#start_codons_4_Tertrahymena = att ata atg
+#start_codons_4_Paramecium = att ata atg atc gtg gta
+
+# 5. Invertebrate Mitochondrial Code
+translation_table_5 = \
+      agas aggs atam tgaw
+
+start_codons_5 = atg ata att
+#start_codons_5_apis = atg ata atc att
+#start_codons_5_polyplacophora = atg ata gtg
+
+# 6. Ciliate, Dasycladacean and Hexamita Nuclear Code
+translation_table_6 = \
+      taaq tagq 
+
+start_codons_6 = atg
+
+# 9. Echinoderm and Flatworm Mitochondrial Code
+translation_table_9 = \
+      aaan agas aggs tgaw 
+
+start_codons_9 = atg gtg
+
+# 10. Euplotid Nuclear Code
+translation_table_10 = \
+      tgac
+
+start_codons_10 = atg
+
+# 11. Bacterial and Plant Plastid 
+translation_table_11 = 
+
+start_codons_11 = atg gtg ttg
+
+# 12. Alternative Yeast Nuclear Code
+translation_table_12 = \
+      ctgs
+
+start_codons_12 = ctg atg
+
+# 13.  Ascidian Mitochondrial Code      
+translation_table_13 = \
+      agag aggg atam tgaw
+ 
+start_codons_13 = atg
+
+# 14. Alternative Flatworm Mitochondrial Code
+translation_table_14 = \
+      aaan agas aggs taay tgaw
+
+start_codons_14 = atg
+
+# 15. Blepharisma
+translation_table_15 = \
+      tagq
+
+start_codons_15 = atg
+
+# 16. Chlorophycean Mitochondrial
+translation_table_16 = \
+      tagl
+
+start_codons_16 = atg
+
+# 21. Trematode Mitochondrial
+translation_table_21 = \
+      tgaw atam aaan agas aggs
+
+start_codons_21 = atg gtg
+
+# 22. Scenedesmus obliquus mitochondrial
+translation_table_22 = \
+      tca* tagl
+
+start_codons_22 = atg
+
+# 23. Thraustochytrium Mitochondrial 
+translation_table_23 = \
+      tta*
+
+start_codons_23 = att atg gtg
 
 # the sequence of colour numbers must not have any gaps - if for example
 # colour_5 is missing then all colours with higher numbers will be ignored
@@ -142,6 +263,15 @@ colour_15 = 255  63  63
 colour_16 = 255 127 127
 colour_17 = 255 191 191
 
+# GeneDB colours
+#
+colour_101 = 102 51 153
+colour_102 = 153 102 204
+colour_103 = 255 248 220
+
+#
+#
+
 colour_of_CDS = 5
 colour_of_cds? = 7
 colour_of_BLASTCDS = 2
@@ -174,8 +304,8 @@ feature_file_suffixes = tab embl gbk genbank tab_embl gff feature feat \
    art artemis
 
 # suffixes used on files that contain sequence - used in file requesters
-sequence_file_suffixes = embl gbk genbank tab_embl seq dna \
-   art artemis
+sequence_file_suffixes = embl gbk genbank gff tab_embl seq dna \
+   art artemis fa fasta fas gb fna ffn
 
 # this is the URL that contains the IOR of the EMBL server
 #embl_ior_url = http://corba.ebi.ac.uk/EMBL/IOR/Embl.IOR
@@ -185,7 +315,7 @@ sequence_file_suffixes = embl gbk genbank tab_embl seq dna \
 
 
 # the default height for the base plot window
-base_plot_height = 150
+base_plot_height = 100
 
 
 # the default height for the feature plot window
@@ -226,6 +356,15 @@ show_results = no
 # default to true on start up
 features_on_frame_lines = no
 
+# if these options are "yes" the forward and reverse feature lines
+# are displayed
+show_forward_lines = yes
+show_reverse_lines = yes
+
+# features to show on the frame line
+#frame_line_features =  \
+#  CDS \
+#  polypeptide
 
 # if this option is "yes" the "feature labels" option will
 # default to true on start up
@@ -269,16 +408,19 @@ extra_keys = \
     CRUNCH_D CRUNCH_X fasta_record allele mutation splicesite \
     TMM signalP
 
+# this list is added to the keys from the feature_keys_gff file
+extra_keys_gff = CDS
+
 # Names of qualifiers to search when attempting to find the primary or display
 # name of a gene.  These qualifiers names are searched in order when looking
 # for gene names.
-display_name_qualifiers = primary_name synonym systematic_id \
-    temporary_systematic_id gene locus_tag label
+display_name_qualifiers = primary_name Name synonym systematic_id \
+    temporary_systematic_id gene locus_tag label ID
 
 # Names of qualifiers to search when attempting to find the systematic name of
 # a gene
 systematic_name_qualifiers = systematic_id temporary_systematic_id \
-     locus_tag gene label
+     locus_tag gene label ID Name
 
 
 # this list is added to the qualifiers from the qualifier_types file
@@ -326,6 +468,7 @@ extra_qualifiers = \
     comment_Cterm "text" \
     comment_Nterm "text" \
     confidence_level "text" \
+    controlled_curation "text" \
     coord "text" \
     contig_id "text" \
     created "text" \
@@ -364,10 +507,13 @@ extra_qualifiers = \
     obsolete_product "text" \
     origid "text" \
     ortholog "text" \
+    other_transcript  "text" \
     paralog "text" \
     pepstats_file "text" \
     percent_id text \
     pfam_match "text" \
+    previous_other_transcript "text" \
+    previous_shared_id "text" \
     previous_systematic_id "text" \
     primary_name "text" \
     prosite_match "text" \
@@ -378,6 +524,7 @@ extra_qualifiers = \
     score text \
     sequence_source "text" \
     sequence_status "text" \
+    shared_id "text" \
     sigcleave_file "text" \
     signal "text" \
     similarity "text" \
@@ -404,6 +551,37 @@ extra_qualifiers = \
     transferred_synonym "text" \
     transferred_systematic_id "text" \
     type "text"
+
+# this list is added to the qualifiers from the qualifier_types_gff file
+extra_qualifiers_gff = \
+    blast_score text \
+    blast_file "text" \
+    blastn_file "text" \
+    blastp_file "text" \
+    blastp+go_file "text" \
+    blastx_file "text" \
+    cluster "text" \
+    colour text \
+    color text \
+    controlled_curation "text" \
+    fasta_file "text" \
+    GO "text" \
+    history "text" \
+    isFminPartial none \
+    isFmaxPartial none \
+    literature "text" \
+    note "text" \
+    orthologous_to "text" \
+    paralogous_to "text" \
+    polypeptide_domain "text" \
+    previous_systematic_id "text" \
+    primary_name "text" \
+    product_synonym "text" \
+    similarity "text" \
+    stop_codon_redefined_as_selenocysteine none \
+    synonym "text" \
+    systematic_id "text" \
+    temporary_systematic_id "text"
 
 # this is a list of extra qualifiers that are legal but are not displayed in
 # popup menus (such as the one in the feature editor window).  this hack is
@@ -443,10 +621,6 @@ invisible_qualifiers = \
     fasta_file     \
     fasta_match    \
     gene_id        \
-    gff_feature    \
-    gff_group      \
-    gff_seqname    \
-    gff_source     \
     go_from_interpro \
     hp_match       \
     hth_file       \
@@ -475,10 +649,120 @@ invisible_qualifiers = \
     type           \
     usedin
 
+invisible_qualifiers_gff= \
+	Alias          \
+	allele         \
+	bound_moiety   \
+	cell_line      \
+	cell_type      \
+	charge         \
+	chromosome     \
+    class          \
+    clone          \
+    clone_lib      \
+    cluster        \
+    controlled_curation \
+    country        \
+    cultivar       \
+    cytoplasm_location \
+    cytoplasmic_polypeptide_region \
+    Dbxref \
+    DNA_transposon \
+    Derives_from   \
+    dev_stage      \
+    ecotype        \
+    environmental_sample \
+    estimated_length     \
+    exception      \
+    feature_id     \
+    feature_relationship_rank \
+    focus          \
+    Gap            \
+    gff_feature    \
+    gff_group      \
+    gff_seqname    \
+    gff_source     \
+    GO             \
+    GPI_anchored \
+    GPI_anchor_cleavage_site \
+    history \
+    ID             \
+    insertion_seq  \
+    isFminPartial \
+    isFmaxPartial \
+    isObsolete \
+    isoelectric    \
+    isolation_source \
+    isolate        \
+    kinetoplast    \
+    lab_host       \
+    literature     \
+    locus_tag      \
+    macronuclear   \
+    map            \
+    mass           \
+    membrane_structure \
+    mod_base       \
+    mol_type       \
+    Name           \
+    non_cytoplasm_location \
+    non_cytoplasmic_polypeptide_region \
+    Note           \
+    note           \
+    Ontology_term  \
+    operon         \
+    organell       \
+    orthologous_to \
+    paralogous_to  \
+    Parent         \
+    PCR_conditions \
+    plasmid        \
+    PlasmoAP_score \
+    pop_variant    \
+    previous_systematic_id \
+    primary_name \
+    product        \
+    product_synonym \
+    protein_id     \
+    replace        \
+    results        \
+    segment        \
+    sequenced_mol  \
+    serotype       \
+    serovar        \
+    sex            \
+    signal_anchor_probability \
+    signal_peptide \
+    signal_peptide_probability \
+    SignalP_prediction \
+    similarity     \
+    source         \
+    specific_host  \
+    specimen_voucher \
+    standard_name  \
+    strain         \
+    sub_clone      \
+    sub_species    \
+    sub_strain     \
+    synonym \
+    systematic_id \
+    Target         \
+    temporary_systematic_id \
+    timelastmodified  \
+    tissue_lib     \
+    tissue_type    \
+    transmembrane  \
+    transmembrane_polypeptide_region  \
+    transgenic     \
+    translation
+
 
 # These pairs consist of a program name and a parameter string.
 # For blast and fasta the parameter string is the name of the database to
 # search.
+#
+# /nfs/pathsoft/databases/GO/new
+# /nfs/pathsoft/databases/protein/go_all
 feature_protein_programs = \
     fasta %uniprot \
     fasta %uniprot_archaea \
@@ -498,7 +782,8 @@ feature_protein_programs = \
     blastp %uniprot_rest \
     blastp psu/Kineto_aa \
     tblastn %embl_other \
-    blastp+go /nfs/pathsoft/databases/protein/go_all \
+    blastp+go psu/go_all \
+    blastp+go /nfs/pathsoft/databases/GO/new/go_all \
     hth - \
     smart - \
     clustalx PROTEIN \
@@ -508,11 +793,22 @@ feature_dna_programs = \
     tblastx %embl_other \
     blastn %embl_other \
     blastx %uniprot \
-    fastx %L \
+    fastx %uniprot \
     clustalx DNA
 
 application_programs = \
     jalview
+
+ncbi_dna_search = \
+   blastn http://blast.ncbi.nlm.nih.gov/Blast.cgi?PAGE=Nucleotides&PROGRAM=blastn&MEGABLAST=on&BLAST_PROGRAMS=blastn&PAGE_TYPE=BlastSearch&DATABASE=nr&SHOW_DEFAULTS=on&QUERY= \
+   blastx http://blast.ncbi.nlm.nih.gov/Blast.cgi?PAGE=Translations&PROGRAM=blastx&BLAST_PROGRAMS=blastx&PAGE_TYPE=BlastSearch&SHOW_DEFAULTS=on&QUERY= \
+   tblastx http://blast.ncbi.nlm.nih.gov/Blast.cgi?PAGE=Translations&PROGRAM=tblastx&BLAST_PROGRAMS=tblastx&PAGE_TYPE=BlastSearch&SHOW_DEFAULTS=on&QUERY=
+
+ncbi_protein_search = \
+   blastp http://blast.ncbi.nlm.nih.gov/Blast.cgi?PAGE=Proteins&PROGRAM=blastp&BLAST_PROGRAMS=blastp&PAGE_TYPE=BlastSearch&QUERY= \
+   tblastn http://blast.ncbi.nlm.nih.gov/Blast.cgi?PAGE=Translations&PROGRAM=tblastn&BLAST_PROGRAMS=tblastn&PAGE_TYPE=BlastSearch&SHOW_DEFAULTS=on&QUERY=
+
+mess_fasta_hits = 10
 
 # this is the list of keys that should be displayed by default in the edit
 # window
@@ -522,3 +818,64 @@ common_keys = \
     repeat_unit rRNA scRNA snRNA source stem_loop STS TATA_signal terminator \
     tRNA unsure variation -10_signal -35_signal CDS_motif gene \
     BLASTN_HIT BLASTCDS 3'UTR 5'UTR
+
+# SRS
+srs_url = http://srs.ebi.ac.uk/srsbin/cgi-bin/
+
+# hyperlinked databases in feature editor
+hyperlinks = \
+  EMBL+SWALL+UniProt+UniProtKB srs_url \
+  PubMed+PMID http://www.ncbi.nlm.nih.gov/sites/entrez?Db=pubmed&Cmd=ShowDetailView&TermToSearch= \
+  InterPro http://www.ebi.ac.uk/interpro/ISearch?query= \
+  OrthoMCLDB http://www.orthomcl.org/cgi-bin/OrthoMclWeb.cgi?rm=groupList&type=ackeyword&in=Accession&q= \
+  PlasmoDB http://plasmodb.org/plasmodb/servlet/sv?page=gene&source_id= \
+  Pfam http://pfam.sanger.ac.uk/family?acc= \
+  SMART http://smart.embl-heidelberg.de/smart/do_annotation.pl?DOMAIN= \
+  Prosite http://www.expasy.org/prosite/ \
+  ProDom http://prodom.prabi.fr/prodom/current/cgi-bin/request.pl?question=DBEN&query= \
+  PIRSF http://pir.georgetown.edu/cgi-bin/ipcSF?id= \
+  TIGR_TIGRFAMS http://cmr.tigr.org/tigr-scripts/CMR/HmmReport.cgi?hmm_acc= \
+  OPI http://chemlims.com/OPI/MServlet.ChemInfo?module=GeneGo&act=findGenes&Gene_Name_= \
+  GO http://amigo.geneontology.org/cgi-bin/amigo/term-details.cgi?term= \
+  PANTHER http://www.pantherdb.org/panther/family.do?clsAccession= \
+  Superfamily http://supfam.org/SUPERFAMILY/cgi-bin/scop.cgi?ipid= \
+  PDB http://www.rcsb.org/pdb/explore.do?structureId= \
+  AID http://pubchem.ncbi.nlm.nih.gov/assay/assay.cgi?aid= \
+  GeneID http://www.ncbi.nlm.nih.gov/sites/entrez?db=gene&cmd=Retrieve&dopt=full_report&list_uids= \
+  Rfam http://rfam.sanger.ac.uk/family/
+
+# Lookseq url
+#lookseq = http://www.sanger.ac.uk/cgi-bin/teams/team112/lookseq/get_data.pl?
+#lookseq_chr  = MAL1
+#lookseq_lane = sample_7a
+
+#
+# CHADO DATABASE OPTIONS 
+#
+# chado gene model features default types
+chado_exon_model=CDS
+
+# infer CDS and UTR features from gene model
+chado_infer_CDS_UTR=no
+#chado_transcript=transcript
+
+# provide a list of available servers
+#chado_servers = \
+#  malaria_workshop localhost:10101/malaria_workshop?pathdb \
+#  bigtest localhost:10120/test?pathdb
+
+# define how product qualifiers are stored (as a cv or as a featureprop)
+product_cv=yes
+product_cvname = genedb_products
+# cv containing synonym names
+synonym_cvname = genedb_synonym_type
+# cv containing annotation types for history qualifier
+history_cvname = annotation_change
+
+# set default delete behaviour to make things obsolete, if
+# this is not provided the default is to permanently delete
+set_obsolete_on_delete=yes
+
+# list of features to record residues for in the database
+# - these are included when inserting or updating their featurelocs
+sequence_update_features = polypeptide mRNA rRNA tRNA snRNA snoRNA

@@ -1,3 +1,4 @@
+
 /********************************************************************
 *
 *  This library is free software; you can redistribute it and/or
@@ -21,13 +22,21 @@
 
 package uk.ac.sanger.artemis.components;
 
+import uk.ac.sanger.artemis.components.SwingWorker;
+import uk.ac.sanger.artemis.components.EntryEdit;
+import uk.ac.sanger.artemis.components.EntryFileDialog;
+
 import uk.ac.sanger.artemis.io.EntryInformation;
 import uk.ac.sanger.artemis.io.SimpleEntryInformation;
 import uk.ac.sanger.artemis.*;
+import uk.ac.sanger.artemis.util.InputStreamProgressListener;
+import uk.ac.sanger.artemis.util.InputStreamProgressEvent;
 import uk.ac.sanger.artemis.util.FileDocument;
 import uk.ac.sanger.artemis.util.OutOfRangeException;
 import uk.ac.sanger.artemis.sequence.NoSequenceException;
 import uk.ac.sanger.artemis.components.MessageDialog;
+import uk.ac.sanger.artemis.j2ssh.FileTransferProgressMonitor;
+import uk.ac.sanger.artemis.j2ssh.FTProgress;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -40,6 +49,7 @@ import java.io.*;
 import java.util.Vector;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Date;
 
 
 /**
@@ -54,7 +64,7 @@ public class FileTree extends JTree implements DragGestureListener,
 {
 
   /** root directory */
-  private File root;
+  private File root[];
   /** store of directories that are opened */
   private Vector openNode;
   /** file separator */
@@ -72,13 +82,14 @@ public class FileTree extends JTree implements DragGestureListener,
   /** file filter */
   private FileFilter filter = null;
 
+
   /**
   *
-  * @param rt		root directory
-  * @param f		frame
+  * @param rt       root directory
+  * @param f        frame
   *
   */
-  public FileTree(File rt, final JFrame f,
+  public FileTree(File rt[], final JFrame f,
                   FileFilter filter)
   {
     this.root   = rt;
@@ -99,6 +110,7 @@ public class FileTree extends JTree implements DragGestureListener,
     this.getSelectionModel().setSelectionMode
                   (TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
 
+    setToolTipText("");
     // Popup menu
     addMouseListener(new PopupListener());
     popup = new JPopupMenu();
@@ -159,7 +171,7 @@ public class FileTree extends JTree implements DragGestureListener,
         {
           FileNode node = (FileNode)path.getLastPathComponent();
 
-          if(!node.isExplored()) 
+ //         if(!node.isExplored()) 
           {  
             f.setCursor(cbusy);
             exploreNode(node);
@@ -175,7 +187,7 @@ public class FileTree extends JTree implements DragGestureListener,
   /**
   *
   * Popup menu actions
-  * @param e	action event
+  * @param e    action event
   * 
   */
   public void actionPerformed(ActionEvent e) 
@@ -187,7 +199,7 @@ public class FileTree extends JTree implements DragGestureListener,
     if(source.getText().equals("Refresh")) 
     {
       if(node == null)
-        newRoot(root.getAbsolutePath());
+        return;
       else if(node.isLeaf())
         refresh((FileNode)node.getParent());
       else 
@@ -292,9 +304,32 @@ public class FileTree extends JTree implements DragGestureListener,
 
 
   /**
+   *
+   * Determine the tool tip to display
+   * @param e    mouse event
+   * @return     tool tip
+   *
+   */
+  public String getToolTipText(MouseEvent e)
+  {
+    Point loc = e.getPoint();
+        
+    TreePath path = getClosestPathForLocation(loc.x, loc.y);
+    if(path == null)
+      return null;
+
+    FileNode node = (FileNode)path.getLastPathComponent();
+    File file = node.getFile();
+    Date lastModified = new Date(file.lastModified());
+    
+    return file.getName() + " :: " + lastModified;
+  }
+
+
+  /**
   *
   * Delete a file from the tree
-  * @param node		node to delete
+  * @param node     node to delete
   *
   */
   public void deleteFile(final FileNode node)
@@ -318,9 +353,9 @@ public class FileTree extends JTree implements DragGestureListener,
   /**
   *
   * Method to rename a file and update the filenode's.
-  * @param oldFile 	file to rename
-  * @param oldNode 	filenode to be removed
-  * @param newFullName 	name of the new file
+  * @param oldFile  file to rename
+  * @param oldNode  filenode to be removed
+  * @param newFullName  name of the new file
   *
   */
   private void renameFile(final File oldFile, final FileNode oldNode, 
@@ -339,7 +374,7 @@ public class FileTree extends JTree implements DragGestureListener,
           public void run ()
           {
             addObject(fnew.getName(),fnew.getParent(),oldNode);
-	    deleteObject(oldNode);
+        deleteObject(oldNode);
           };
         };
         SwingUtilities.invokeLater(renameFileInTree);
@@ -357,13 +392,14 @@ public class FileTree extends JTree implements DragGestureListener,
   /**
   * 
   * Define a directory root for the file tree
-  * @param newRoot 	directory to use as the root for
-  *        		the tree.
+  * @param newRoot  directory to use as the root for
+  *             the tree.
   *
   */
   public void newRoot(String newRoot)
   {
-    root = new File(newRoot);
+//  root = new File(newRoot);
+    
     DefaultTreeModel model = (DefaultTreeModel)getModel();
     model = createTreeModel(root);
     setModel(model);
@@ -377,7 +413,7 @@ public class FileTree extends JTree implements DragGestureListener,
   */
   public File getRoot()
   {
-    return root;
+    return null;
   }
 
   /**
@@ -388,7 +424,7 @@ public class FileTree extends JTree implements DragGestureListener,
   */
   public void refresh(FileNode node)
   {
-    node.reExplore(filter);
+ //   node.reExplore(filter);
     DefaultTreeModel model = (DefaultTreeModel)getModel();
     model.nodeStructureChanged(node);
   }
@@ -489,12 +525,24 @@ public class FileTree extends JTree implements DragGestureListener,
   *                     to the given directory
   *
   */
-  private DefaultTreeModel createTreeModel(File root)
+  private DefaultTreeModel createTreeModel(File root[])
   {
-    FileNode rootNode = new FileNode(root);
-    rootNode.explore(filter);
-    openNode = new Vector();
-    openNode.add(rootNode);
+    FileNode rootNode = new FileNode(new File(""));
+    rootNode.setDirectory(true);
+
+    for(int i=0; i<root.length; i++)
+    {
+      FileNode node = new FileNode(root[i]);
+
+      if(i == 0)
+      {
+  //      node.explore(filter);
+        openNode = new Vector();
+        openNode.add(node);
+      }
+      rootNode.add(node);
+    }
+
     return new DefaultTreeModel(rootNode);
   }
 
@@ -525,14 +573,14 @@ public class FileTree extends JTree implements DragGestureListener,
     File newleaf = new File(path + fs + child);
     FileNode childNode = null;
 
-    if(parentNode.isExplored())
+//    if(parentNode.isExplored())
     {
       childNode = new FileNode(newleaf);
       int index = getAnIndex(parentNode,child);
       if(index > -1)
         model.insertNodeInto(childNode, parentNode, index);
     }
-    else if(parentNode.isDirectory())
+ //   else if(parentNode.isDirectory())
     {
       exploreNode(parentNode);
       childNode = getNode(path + fs + child);
@@ -567,7 +615,7 @@ public class FileTree extends JTree implements DragGestureListener,
   public void exploreNode(FileNode dirNode)
   {
     DefaultTreeModel model = (DefaultTreeModel)getModel();
-    dirNode.explore(filter);
+ //   dirNode.explore(filter);
     openNode.add(dirNode);
     model.nodeStructureChanged(dirNode);
   }
@@ -686,7 +734,35 @@ public class FileTree extends JTree implements DragGestureListener,
       System.out.println("Cannot read file: " + filename);
     }
     return b;
+  }
 
+
+  private boolean writeByteFile(byte[] contents, File fn)
+  {
+    if(fn.exists())
+    {
+      int n = JOptionPane.showConfirmDialog(null,
+                                 "Overwrite \n"+fn.getName()+"?",
+                                 "Overwrite File",
+                                 JOptionPane.YES_NO_OPTION);
+      if(n == JOptionPane.NO_OPTION)
+        return false;
+    }
+    else if(!fn.getParentFile().canWrite())
+      JOptionPane.showMessageDialog(null,"Cannot write to "+fn.getName(),
+                        "Write Permission Denied",
+                        JOptionPane.WARNING_MESSAGE);
+
+    try
+    {
+      FileOutputStream out = new FileOutputStream(fn);
+      out.write(contents);
+      out.close(); 
+    }
+    catch(FileNotFoundException fnfe) {return false;} 
+    catch(IOException ioe) {return false;}
+  
+    return true;
   }
 
   /**
@@ -695,12 +771,8 @@ public class FileTree extends JTree implements DragGestureListener,
   * @param filename     file name to display
   *
   */
-  public void showFilePane(final String filename)
+  private void showFilePane(final String filename)
   {
-    final ProgressThread progress_thread = new ProgressThread(null,
-                                                "Loading Entry...");
-
-    progress_thread.start();
     SwingWorker entryWorker = new SwingWorker()
     {
       EntryEdit entry_edit;
@@ -713,7 +785,7 @@ public class FileTree extends JTree implements DragGestureListener,
 
           final Entry entry =  new Entry(EntryFileDialog.getEntryFromFile(
                          null, new FileDocument(new File(filename)),
-                         new_entry_information, false));
+                         new_entry_information, true));
           if(entry == null)
             return null;
 
@@ -744,8 +816,6 @@ public class FileTree extends JTree implements DragGestureListener,
       {
         if(entry_edit != null)
           entry_edit.setVisible(true);
-        if(progress_thread !=null)
-          progress_thread.finished();
       }
     };
     entryWorker.start();
@@ -767,9 +837,23 @@ public class FileTree extends JTree implements DragGestureListener,
     
     // drag only files 
     if(isFileSelection())
-      e.startDrag(DragSource.DefaultCopyDrop,     // cursor
-                 (Transferable)getSelectedNode(), // transferable data
-                                       this);     // drag source listener
+    {
+      final int nlist = getSelectionCount();
+      if(nlist > 1)
+      {
+        TransferableFileNodeList list = new TransferableFileNodeList(nlist);
+        FileNode nodes[] = getSelectedNodes();
+        for(int i=0; i<nodes.length; i++)
+          list.add(nodes[i]);
+        e.startDrag(DragSource.DefaultCopyDrop,     // cursor
+                   (Transferable)list,              // transferable data
+                                         this);     // drag source listener
+      }
+      else
+        e.startDrag(DragSource.DefaultCopyDrop,     // cursor
+                   (Transferable)getSelectedNode(), // transferable data
+                                         this);     // drag source listener
+    }
   }
   public void dragDropEnd(DragSourceDropEvent e) {}
   public void dragEnter(DragSourceDragEvent e) {}
@@ -780,14 +864,16 @@ public class FileTree extends JTree implements DragGestureListener,
 // drop sink
   public void dragEnter(DropTargetDragEvent e)
   {
-    if(e.isDataFlavorSupported(FileNode.FILENODE)) 
+    if(e.isDataFlavorSupported(FileNode.FILENODE) ||
+       e.isDataFlavorSupported(RemoteFileNode.REMOTEFILENODE) || 
+       e.isDataFlavorSupported(TransferableFileNodeList.TRANSFERABLEFILENODELIST)) 
       e.acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE);
   }
 
-  public void drop(DropTargetDropEvent e)
+  public void drop(final DropTargetDropEvent e)
   {
 
-    Transferable t = e.getTransferable();
+    final Transferable t = e.getTransferable();
     final FileNode dropNode = getSelectedNode();
     if(dropNode == null)
     {
@@ -795,25 +881,43 @@ public class FileTree extends JTree implements DragGestureListener,
       return;
     }
 
-    //local drop
-    if(t.isDataFlavorSupported(FileNode.FILENODE))
+    if(t.isDataFlavorSupported(TransferableFileNodeList.TRANSFERABLEFILENODELIST))
     {
-       try
-       {
-         FileNode fn = (FileNode)t.getTransferData(FileNode.FILENODE);
-         fn = getNode(fn.getFile().getAbsolutePath());
+      try
+      {
+        TransferableFileNodeList filelist = (TransferableFileNodeList)
+                  t.getTransferData(TransferableFileNodeList.TRANSFERABLEFILENODELIST);
 
-         if (dropNode.isLeaf())
-         {
-           e.rejectDrop();
-           return;
-         }
-        
-         String dropDir = dropNode.getFile().getAbsolutePath();
-         String newFullName = dropDir+fs+fn.toString();
-         renameFile(fn.getFile(),fn,newFullName);  
-       }
-       catch(Exception ufe){}        
+        if(filelist.get(0) instanceof RemoteFileNode)
+          remoteDrop(e, filelist, dropNode);
+        else
+          localDrop(e, filelist, dropNode);
+      }
+      catch(UnsupportedFlavorException exp){}
+      catch(IOException ioe){}
+    }
+    else if(t.isDataFlavorSupported(FileNode.FILENODE))
+    {
+      try
+      {
+        Vector v = new Vector();
+        FileNode fn = (FileNode)t.getTransferData(FileNode.FILENODE);
+        v.add(fn);
+        localDrop(e, v, dropNode);
+      }
+      catch(Exception ufe){}        
+    }
+    else if(t.isDataFlavorSupported(RemoteFileNode.REMOTEFILENODE))
+    {
+      try
+      {
+        Vector v = new Vector();
+        final RemoteFileNode fn =
+             (RemoteFileNode)t.getTransferData(RemoteFileNode.REMOTEFILENODE);
+        v.add(fn);
+        remoteDrop(e, v, dropNode);
+      }
+      catch(Exception ufe){}
     }
     else
     {
@@ -851,6 +955,19 @@ public class FileTree extends JTree implements DragGestureListener,
         e.acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE);
       }
     }
+    else if(e.isDataFlavorSupported(RemoteFileNode.REMOTEFILENODE) ||
+            e.isDataFlavorSupported(TransferableFileNodeList.TRANSFERABLEFILENODELIST))
+    {
+      Point ploc = e.getLocation();
+      TreePath ePath = getPathForLocation(ploc.x,ploc.y);
+      if (ePath == null)
+        e.rejectDrag();
+      else
+      {
+        setSelectionPath(ePath);
+        e.acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE);
+      }
+    }
     else
       e.rejectDrag();
     
@@ -859,6 +976,98 @@ public class FileTree extends JTree implements DragGestureListener,
 
   public void dropActionChanged(DropTargetDragEvent e) {}
   public void dragExit(DropTargetEvent e){}
+
+
+  private void localDrop(DropTargetDropEvent e, Vector vnode, FileNode dropNode)
+  {
+    try
+    {
+      for(int i=0; i<vnode.size(); i++)
+      {
+        FileNode fn = (FileNode)vnode.get(i);
+        fn = getNode(fn.getFile().getAbsolutePath());
+
+        if (dropNode.isLeaf())
+        {
+          e.rejectDrop();
+          return;
+        }
+
+        String dropDir = dropNode.getFile().getAbsolutePath();
+        String newFullName = dropDir+fs+fn.toString();
+        renameFile(fn.getFile(),fn,newFullName);
+      }
+    }
+    catch(Exception ufe){}
+  }
+
+  private void remoteDrop(final DropTargetDropEvent e, 
+                          final Vector vnode, final FileNode dropNode)
+  {
+    SwingWorker getFileWorker = new SwingWorker()
+    {
+      FileTransferProgressMonitor monitor;
+
+      public Object construct()
+      {
+        try
+        {
+          monitor = new FileTransferProgressMonitor(FileTree.this);
+          for(int i=0; i<vnode.size(); i++)
+          {
+            final RemoteFileNode fn = (RemoteFileNode)vnode.get(i);
+            final File dropDest;
+            String dropDir = null;
+            if (dropNode.isLeaf())
+            {
+              FileNode pn = (FileNode)dropNode.getParent();
+              dropDir = pn.getFile().getAbsolutePath();
+              dropDest = new File(dropDir,fn.getFile());
+            }
+            else
+            {
+              dropDir = dropNode.getFile().getAbsolutePath();
+              dropDest = new File(dropDir,fn.getFile());
+            }
+
+            try
+            {
+              FTProgress progress = monitor.add(fn.getFile());
+
+              final byte[] contents = fn.getFileContents(progress);
+              final String ndropDir = dropDir;
+//            Runnable updateTheTree = new Runnable()
+//            {
+//              public void run ()
+//              {
+                  if(writeByteFile(contents, dropDest))
+                    addObject(fn.getFile(),ndropDir,dropNode);
+//              };
+//            };
+//            SwingUtilities.invokeLater(updateTheTree);
+            }
+            catch (Exception exp)
+            {
+              System.out.println("FileTree: caught exception");
+            }
+          }
+          e.getDropTargetContext().dropComplete(true);
+        }
+        catch (Exception exp)
+        {
+          e.rejectDrop();
+        }
+        return null;
+      }
+
+      public void finished()
+      {
+        if(monitor != null)
+          monitor.close();
+      }
+    };
+    getFileWorker.start();
+  }
 
 
 ////////////////////
@@ -936,8 +1145,10 @@ public class FileTree extends JTree implements DragGestureListener,
   public static void main(String[] args)
   {
     JFrame tree_frame = new JFrame("File Manager");
-    FileTree ftree    = new FileTree(new File(System.getProperty("user.home")),
-                                     tree_frame,null);
+
+    File dirs[]  = new File[1];
+    dirs[0] = new File(System.getProperty("user.home"));
+    FileTree ftree    = new FileTree(dirs, tree_frame, null);
     JScrollPane jsp   = new JScrollPane(ftree);
     tree_frame.getContentPane().add(jsp);
     tree_frame.pack();
