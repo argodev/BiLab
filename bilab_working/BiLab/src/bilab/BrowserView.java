@@ -4,7 +4,7 @@
  * 
  * http://computing.ornl.gov/
  * 
- * Copyright Â© 2011 Oak Ridge National Laboratory
+ * Copyright © 2011 Oak Ridge National Laboratory
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +26,10 @@
  */
 
 package bilab;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
@@ -126,7 +130,23 @@ public class BrowserView extends ViewPart {
         viewer.getControl().setLayoutData(viewerData);
 
         // setUrl("http://robgillen.me");
-        setUrl("http://www.ornl.gov/ornlhome/high_performance_computing.shtml");
+        
+        URL url;
+        String fullResourceName = "";
+        try {
+            url = BilabPlugin.findResource("docs/quickstart.html");
+            fullResourceName = url.toString();
+            setUrl(fullResourceName);
+            java.awt.Desktop.getDesktop().browse(java.net.URI.create(fullResourceName));
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+//        String currentdir = System.getProperty("user.dir");
+//        String javaclasspath =System.getProperty("java.class.path"); // java class path new File(".").getAbsolutePath();
+        //Notify.devInfo(this, "MyDir set to " + fullResourceName);
+        //Notify.devInfo(this, "MyDir set to " + javaclasspath);
     }
 
     protected void handleInputKeyEvent(final KeyEvent e) {
